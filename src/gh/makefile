@@ -8,4 +8,4 @@ repo:
 		--license "UNLICENSED" \
 		--public \
 		--push \
-		--source "./"
+		--source "../../"
