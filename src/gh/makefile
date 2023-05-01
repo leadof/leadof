@@ -1,3 +1,5 @@
+# Install the `gh` CLI https://cli.github.com/.
+
 .PHONY: repo
 repo:
 	@gh repo create leadof/leadof \
@@ -40,3 +42,18 @@ leadof-tech:
 		--disable-wiki \
 		--public \
 	&& cd -
+
+.PHONY: settings
+settings:
+	@gh repo edit leadof/leadof \
+		--add-topic "leadership" \
+		--delete-branch-on-merge
+	@gh repo edit leadof/leadof-us \
+		--add-topic "leadership" \
+		--delete-branch-on-merge
+	@gh repo edit leadof/leadof-me \
+		--add-topic "leadership" \
+		--delete-branch-on-merge
+	@gh repo edit leadof/leadof-tech \
+		--add-topic "leadership" \
+		--delete-branch-on-merge
