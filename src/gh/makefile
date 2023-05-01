@@ -7,3 +7,36 @@ repo:
 		--public \
 		--push \
 		--source "../../"
+
+.PHONY: leadof-us
+leadof-us:
+	@cd ../../../ \
+	&& gh repo create leadof/leadof-us \
+		--clone \
+		--description "The website for leadof.us" \
+		--disable-issues \
+		--disable-wiki \
+		--public \
+	&& cd -
+
+.PHONY: leadof-me
+leadof-me:
+	@cd ../../../ \
+	&& gh repo create leadof/leadof-me \
+		--clone \
+		--description "The website for leadof.me" \
+		--disable-issues \
+		--disable-wiki \
+		--public \
+	&& cd -
+
+.PHONY: leadof-tech
+leadof-tech:
+	@cd ../../../ \
+	&& gh repo create leadof/leadof-tech \
+		--clone \
+		--description "The website for leadof.tech" \
+		--disable-issues \
+		--disable-wiki \
+		--public \
+	&& cd -

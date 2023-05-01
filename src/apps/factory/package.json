@@ -1,0 +1,16 @@
+{
+  "name": "@leadof/apps-factory",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "author": "Eric Swanson",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "app": "node ./app.js"
+  },
+  "devDependencies": {
+    "create-svelte": "^4.1.0",
+    "fs-extra": "^11.1.1"
+  }
+}
