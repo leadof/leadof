@@ -28,3 +28,7 @@ install:
 .PHONY: format
 format:
 	@pnpm --recursive format
+
+.PHONY: pr
+pr:
+	@git-town new-pull-request
