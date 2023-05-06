@@ -6,8 +6,9 @@ name: repository.ci
 on:
   pull_request:
     types:
-      - opened
       - edited
+      - opened
+      - reopened
       - synchronize
 
   # Enable manual trigger for workflow.
