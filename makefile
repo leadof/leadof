@@ -37,3 +37,24 @@ format:
 .PHONY: pr
 pr:
 	@git-town new-pull-request
+
+.PHONY: install-firebase-project
+install-firebase-project:
+	@pnpm firebase projects:create \
+		--display-name "$(name)" \
+		--folder "$(folder)" \
+		"$(name)"
+
+.PHONY: install-leadof-me-nonprod
+install-leadof-me-nonprod:
+	@"$(MAKE)" install-firebase-project name=leadof-me-nonprod folder=leadof-me
+
+.PHONY: clean
+clean:
+	@rm --recursive --force firebase-debug.log
+
+.PHONY: reset
+reset: clean
+	@find . -name 'node_modules' -type d -prune -print -exec rm --recursive --force '{}' \;
+	@find . -name '.svelte-kit' -type d -prune -print -exec rm --recursive --force '{}' \;
+	@find . -name 'coverage' -type d -prune -print -exec rm --recursive --force '{}' \;
