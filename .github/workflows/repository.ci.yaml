@@ -18,6 +18,9 @@ env:
 
 jobs:
   integrate:
+    # This name appears in status checks for pull requests and branch protection.
+    name: repository.ci
+
     runs-on: ubuntu-latest
 
     strategy:
