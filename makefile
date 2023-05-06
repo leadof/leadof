@@ -1,6 +1,10 @@
 .DEFAULT_GOAL:=all
 
-all: check install
+all: init check install
+
+.PHONY: init
+init:
+	@pnpm --recursive install
 
 .PHONY: check-integrity
 check-integrity:
