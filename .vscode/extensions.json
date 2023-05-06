@@ -1,6 +1,10 @@
 {
   // See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
   // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
-  "recommendations": ["EditorConfig.EditorConfig", "svelte.svelte-vscode"],
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "svelte.svelte-vscode",
+    "ms-playwright.playwright"
+  ],
   "unwantedRecommendations": []
 }

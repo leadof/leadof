@@ -4,9 +4,9 @@
 	"private": true,
 	"scripts": {
 		"playwright": "playwright",
-		"dev": "vite dev",
+		"dev": "vite dev --port 4175 --strictPort",
 		"build": "vite build",
-		"preview": "vite preview",
+		"preview": "vite preview --port 5175 --strictPort",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
