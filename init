@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+echo ''
+echo 'Installing NodeJS dependencies...'
+pnpm --recursive install
+echo 'Successfully installed NodeJS dependencies.'
+
+echo ''
+echo 'Installing Playwright...'
+# Does not use `--recursive`, because Playwright only needs to be installed 
+# once for all projects.
+pnpm run --filter leadof-me playwright install
+echo 'Successfully installed Playwright.'
+
+echo ''
+echo 'Installing Playwright dependencies...'
+# Does not use `--recursive`, because Playwright dependencies only need to be 
+# installed once for all projects.
+pnpm run --filter leadof-me playwright install-deps
+echo 'Successfully installed Playwright dependencies.'

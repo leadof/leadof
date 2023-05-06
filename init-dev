@@ -1,0 +1,39 @@
+#!/bin/bash
+
+. "$HOME/.nvm/nvm.sh" # Load nvm
+
+set -e
+
+nvm_version=$(nvm --version)
+
+node_version=$(cat ./.nvmrc)
+node_version="${node_version%%*( )}"
+pnpm_version=$(cat ./.pnpmrc)
+pnpm_version="${pnpm_version%%*( )}"
+
+echo "nvm version: $nvm_version"
+echo "Target node version: $node_version"
+echo "Target pnpm version: $pnpm_version"
+
+echo ''
+echo "Installing NodeJS $node_version..."
+nvm install $node_version
+nvm use $node_version
+echo "Successfully installed NodeJS $node_version."
+
+echo ''
+echo "Installing latest npm..."
+npm install --location=global npm@latest
+echo "Successfully installed latest npm."
+
+echo ''
+echo "Removing any previous version of pnpm..."
+npm uninstall --location=global pnpm || true
+echo "Successfully removed any previous version of pnpm."
+
+echo ''
+echo "Installing pnpm $pnpm_version..."
+npm install --location=global pnpm@$pnpm_version
+echo "Successfully installed pnpm $pnpm_version."
+
+. ./init

@@ -4,8 +4,11 @@ all: init check install
 
 .PHONY: init
 init:
-	@pnpm --recursive install \
-	&& pnpm run --recursive playwright install
+	@./init
+
+.PHONY: init-dev
+init-dev:
+	@./init-dev
 
 .PHONY: check-integrity
 check-integrity:
