@@ -1,0 +1,64 @@
+################################################################################
+# Checks the repository.
+################################################################################
+name: repository.ci
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+  # Enable manual trigger for workflow.
+  workflow_dispatch:
+
+env:
+  CI: true
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Should match ".nvmrc" file.
+        node-version: [18.16.0]
+        # Should match ".pnpmrc" file.
+        pnpm-version: [8.4.0]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Setup the environment with a specific version of NodeJS.
+      - name: Use NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Setup the environment with a specific version of `pnpm`.
+      - name: Install pnpm ${{ matrix.pnpm-version }}
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: ${{ matrix.pnpm-version }}
+          run_install: false
+
+      # Determine where `pnpm` will store files in order to cache them.
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      # Setup the `pnpm` cache.
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: make
+        run: make

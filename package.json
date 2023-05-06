@@ -1,0 +1,11 @@
+{
+  "name": "@leadof/all",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "author": "Eric Swanson",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "wireit": "^0.9.5"
+  }
+}
