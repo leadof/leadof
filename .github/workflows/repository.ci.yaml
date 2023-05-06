@@ -16,6 +16,10 @@ on:
 
 env:
   CI: true
+  # Should match ".nvmrc" file.
+  NODE_VERSION: 18.16.0
+  # Should match ".pnpmrc" file.
+  PNPM_VERSION: 8.4.0
 
 jobs:
   integrate:
@@ -24,28 +28,21 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        # Should match ".nvmrc" file.
-        node-version: [18.16.0]
-        # Should match ".pnpmrc" file.
-        pnpm-version: [8.4.0]
-
     steps:
       - uses: actions/checkout@v3
 
       # Setup the environment with a specific version of NodeJS.
-      - name: Install node ${{ matrix.node-version }}
+      - name: Install node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
 
       # Setup the environment with a specific version of `pnpm`.
-      - name: Install pnpm ${{ matrix.pnpm-version }}
+      - name: Install pnpm ${{ env.PNPM_VERSION }}
         uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: ${{ matrix.pnpm-version }}
+          version: ${{ env.PNPM_VERSION }}
           run_install: false
 
       # Determine where `pnpm` will store files in order to cache them.
