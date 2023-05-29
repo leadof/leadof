@@ -3,8 +3,10 @@
   // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
   "recommendations": [
     "editorconfig.editorconfig",
-    "svelte.svelte-vscode",
-    "ms-playwright.playwright"
+    "yzhang.markdown-all-in-one",
+    "esbenp.prettier-vscode"
   ],
-  "unwantedRecommendations": []
+  "unwantedRecommendations": [
+    "ms-vscode.makefile-tools"
+  ]
 }

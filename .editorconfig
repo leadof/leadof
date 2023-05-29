@@ -29,3 +29,6 @@ indent_size = 4
 
 [{Containerfile,**.containerfile}]
 tab_width = 4
+
+[pnpm-lock.yaml]
+quote_type = single
