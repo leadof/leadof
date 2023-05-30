@@ -2,6 +2,12 @@ $schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell
 version: "0.2"
 ignorePaths:
   - node_modules/**
+  - src/apps/leadof-us/.angular/**
+  - src/apps/leadof-us/coverage/**
+  - src/apps/leadof-us/node_modules/**
+  - src/apps/leadof-us/www/**
+  - "*.json"
+  - "*.svg"
   - "*.yaml"
   - makefile
   - pnpm-lock.yaml
@@ -13,6 +19,7 @@ languageSettings:
       - /`[\s\S]+`/gmx
 ignoreWords:
   - ericis
+  - homescreen
   - leadof
   - madr
   - MADR
@@ -20,3 +27,4 @@ ignoreWords:
   - Nygard
   - POSIX
   - pnpmrc
+  - subdir

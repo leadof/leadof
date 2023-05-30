@@ -1,3 +1,8 @@
+node_modules
+
+.angular
+coverage
+www
 
 # pnpm files
 pnpm-lock.yaml
