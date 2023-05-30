@@ -12,12 +12,12 @@ With the baseline decision to [use POSIX shell script automation](./0001-use-pos
 
 ## Decision Drivers
 
-- Middleware consistency.
+-   Middleware consistency.
 
 ## Considered Options
 
-- Use NodeJS
-- Use other scripting or compiled programming languages and code package ecosystems.
+-   Use NodeJS
+-   Use other scripting or compiled programming languages and code package ecosystems.
 
 ## Decision Outcome
 
@@ -25,4 +25,4 @@ Chosen option: "Use NodeJS", because of the ubiquity of JavaScript as a language
 
 ### Consequences
 
-- Developers must install `node` and `npm`.
+-   Developers must install `node` and `npm`.

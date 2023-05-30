@@ -64,4 +64,6 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: make
-        run: make
+        run: |
+          chmod +x ./init.sh
+          make

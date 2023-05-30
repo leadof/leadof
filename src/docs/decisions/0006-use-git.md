@@ -12,11 +12,11 @@ Every modern code base requires source control.
 
 ## Decision Drivers
 
-- Source control.
+-   Source control.
 
 ## Considered Options
 
-- Use [`git`](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)
+-   Use [`git`](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)
 
 ## Decision Outcome
 
@@ -24,4 +24,4 @@ Chosen option: "Use git", because `git` is already a well established and popula
 
 ### Consequences
 
-- Developers must install `git`.
+-   Developers must install `git`.

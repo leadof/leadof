@@ -4,7 +4,7 @@ date: 2023-05-29
 deciders: ericis
 ---
 
-# Adhere to Google Shell Guide
+# Adhere to Google Shell Style Guide
 
 ## Context and Problem Statement
 
@@ -12,13 +12,13 @@ Developers carry different opinions about how to code and how to document that c
 
 ## Decision Drivers
 
-- Code consistency.
+-   Code consistency
 
 ## Considered Options
 
-- Allow complete freedom of choice
-- Create custom shell script standards
-- [Adopt the Google shell script guide](https://google.github.io/styleguide/shellguide.html)
+-   Allow complete freedom of choice
+-   Create custom shell script standards
+-   [Adopt the Google shell script guide](https://google.github.io/styleguide/shellguide.html)
 
 ## Decision Outcome
 
@@ -28,4 +28,4 @@ _\***Exception:** this project uses POSIX-compatible shell scripts rather than t
 
 ### Consequences
 
-- Developers must understand and follow the Google Shell Style Guide.
+-   Developers must understand and follow the Google Shell Style Guide.

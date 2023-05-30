@@ -43,8 +43,8 @@ leadof-tech:
 		--public \
 	&& cd -
 
-.PHONY: settings
-settings:
+.PHONY: config
+config:
 	@gh repo edit leadof/leadof \
 		--add-topic "leadership" \
 		--delete-branch-on-merge

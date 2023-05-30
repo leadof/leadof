@@ -12,18 +12,18 @@ Supporting cross-platform involves basic software pre-requisite decisions. Using
 
 ## Decision Drivers
 
-- Cross-platform automation
-- macOS
-- Windows
-- Linux including Alpine
+-   Cross-platform automation
+-   macOS
+-   Windows
+-   Linux including Alpine
 
 ## Considered Options
 
-- Use POSIX scripts
-- Use Bash scripts
-- Use Node scripts
-- Use other scripting languages
-- Use compiled languages
+-   Use POSIX scripts
+-   Use Bash scripts
+-   Use Node scripts
+-   Use other scripting languages
+-   Use compiled languages
 
 ## Decision Outcome
 
@@ -31,4 +31,4 @@ Chosen option: "Use POSIX scripts", because of native support across nearly all 
 
 ### Consequences
 
-- Developers must be able to execute POSIX shell scripts.
+-   Developers must be able to execute POSIX shell scripts.

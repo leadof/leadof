@@ -6,7 +6,5 @@
     "yzhang.markdown-all-in-one",
     "esbenp.prettier-vscode"
   ],
-  "unwantedRecommendations": [
-    "ms-vscode.makefile-tools"
-  ]
+  "unwantedRecommendations": ["ms-vscode.makefile-tools"]
 }

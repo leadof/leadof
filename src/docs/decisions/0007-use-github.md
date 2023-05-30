@@ -12,12 +12,12 @@ A method of hosting and sharing source control as well as collaboration tools on
 
 ## Decision Drivers
 
-- Source control "Software as a Service"
+-   Source control "Software as a Service"
 
 ## Considered Options
 
-- Use [GitHub](https://github.com/)
-- Use [GitLab](https://about.gitlab.com/)
+-   Use [GitHub](https://github.com/)
+-   Use [GitLab](https://about.gitlab.com/)
 
 ## Decision Outcome
 
@@ -25,4 +25,4 @@ Chosen option: "Use GitHub", because of existing accounts, projects, familarity 
 
 ### Consequences
 
-- Contributors must sign up for GitHub accounts.
+-   Contributors must sign up for GitHub accounts.

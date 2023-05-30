@@ -12,16 +12,16 @@ Cross-platform task automation will require the use of code packages.
 
 ## Decision Drivers
 
-- Cross-platform
-- Middleware consistency
-- Task automation
-- Code packages
+-   Cross-platform
+-   Middleware consistency
+-   Task automation
+-   Code packages
 
 ## Considered Options
 
-- Use [`pnpm`](https://pnpm.io/)
-- Use `npm`
-- Use [`yarn`](https://yarnpkg.com/)
+-   Use [`pnpm`](https://pnpm.io/)
+-   Use `npm`
+-   Use [`yarn`](https://yarnpkg.com/)
 
 ## Decision Outcome
 
@@ -29,4 +29,4 @@ Chosen option: "Use pnpm", because of improved functionality over `npm`. The too
 
 ### Consequences
 
-- Developers must install `pnpm`.
+-   Developers must install `pnpm`.

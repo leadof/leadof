@@ -12,12 +12,12 @@ Consistency across development tools is challenging. Sharing settings can be dif
 
 ## Decision Drivers
 
-- Cross-platform
-- Development consistency
+-   Cross-platform
+-   Development consistency
 
 ## Considered Options
 
-- Implement [EditorConfig](https://editorconfig.org/)
+-   Implement [EditorConfig](https://editorconfig.org/)
 
 ## Decision Outcome
 
@@ -25,4 +25,4 @@ Chosen option: "Implement EditorConfig" with the ".editorconfig" file, because o
 
 ### Consequences
 
-- Contributors are encouraged to use VS Code with built-in support for EditorConfig.
+-   Contributors are encouraged to use VS Code with built-in support for EditorConfig.

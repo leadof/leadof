@@ -12,12 +12,12 @@ Developers may have any NodeJS version installed or none. This project requires 
 
 ## Decision Drivers
 
-- Middleware consistency.
+-   Middleware consistency.
 
 ## Considered Options
 
-- Support multiple versions of NodeJS
-- Require nvm
+-   Support multiple versions of NodeJS
+-   Require nvm
 
 ## Decision Outcome
 
@@ -25,4 +25,4 @@ Chosen option: "Require nvm", because of increased consistency across developer 
 
 ### Consequences
 
-- Developers must install `nvm`.
+-   Developers must install `nvm`.

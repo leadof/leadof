@@ -12,13 +12,13 @@ Automation of the DevOps pipeline, especially Continuous integration (CI), requi
 
 ## Decision Drivers
 
-- Previous decision to use [GitHub](./0007-use-github.md)
-- Cross-platform
-- Continuous integration
+-   Previous decision to use [GitHub](./0007-use-github.md)
+-   Cross-platform
+-   Continuous integration
 
 ## Considered Options
 
-- Use [GitHub Actions](https://github.com/features/actions)
+-   Use [GitHub Actions](https://github.com/features/actions)
 
 ## Decision Outcome
 
@@ -26,4 +26,4 @@ Chosen option: "Use GitHub Actions" as a well-integrated option with GitHub, exp
 
 ### Consequences
 
-- n/a
+-   n/a

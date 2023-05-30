@@ -28,11 +28,15 @@ initNode() {
     node_version=$(cat ./.nvmrc)
     node_version="${node_version%%*( )}"
 
+    set +e
     echo ''
     echo "Installing NodeJS $node_version..."
     nvm install $node_version
-    nvm use $node_version
     echo "Successfully installed NodeJS $node_version."
+    echo "Switching to NodeJS $node_version..."
+    nvm use $node_version
+    echo "Successfully switched to NodeJS $node_version."
+    set -e
 }
 
 #######################################

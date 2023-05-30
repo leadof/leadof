@@ -12,14 +12,14 @@ Developers may use a variety of development tools and environments. Selecting an
 
 ## Decision Drivers
 
-- Cross-platform
-- Development consistency
-- Developer Experience
-- Productivity
+-   Cross-platform
+-   Development consistency
+-   Developer Experience
+-   Productivity
 
 ## Considered Options
 
-- Use [VS Code](https://code.visualstudio.com/)
+-   Use [VS Code](https://code.visualstudio.com/)
 
 ## Decision Outcome
 
@@ -27,4 +27,4 @@ Chosen option: "Use VS Code", because of familarity and free along with a rich e
 
 ### Consequences
 
-- Contributors are encouraged to install and use VS Code.
+-   Contributors are encouraged to install and use VS Code.

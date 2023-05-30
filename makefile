@@ -1,16 +1,21 @@
 .DEFAULT_GOAL:=all
 
-all: init
+all: init check
 
 .PHONY: init
 init:
-	@./executable
 	@./init.sh
 
-.PHONY: init-dev
-init-dev:
-	@./executable
-	@./init-dev
+.PHONY: format
+format:
+	@pnpm format
+
+.PHONY: check-formatting
+check-formatting:
+	@./check-formatting.sh
+
+.PHONY: check
+check: check-formatting
 
 .PHONY: decision
 decision:
