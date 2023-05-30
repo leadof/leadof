@@ -4,7 +4,8 @@
   "recommendations": [
     "editorconfig.editorconfig",
     "yzhang.markdown-all-in-one",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "streetsidesoftware.code-spell-checker"
   ],
   "unwantedRecommendations": ["ms-vscode.makefile-tools"]
 }

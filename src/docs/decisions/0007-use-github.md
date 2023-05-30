@@ -21,7 +21,7 @@ A method of hosting and sharing source control as well as collaboration tools on
 
 ## Decision Outcome
 
-Chosen option: "Use GitHub", because of existing accounts, projects, familarity and free.
+Chosen option: "Use GitHub", because of existing accounts, projects, familiarity and free.
 
 ### Consequences
 

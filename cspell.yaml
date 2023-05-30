@@ -1,0 +1,22 @@
+$schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
+version: "0.2"
+ignorePaths:
+  - node_modules/**
+  - "*.yaml"
+  - makefile
+  - pnpm-lock.yaml
+languageSettings:
+  - languageId:
+      - markdown
+    ignoreRegExpList:
+      - /^\s*```[\s\S]*?^\s*```/gmx
+      - /`[\s\S]+`/gmx
+ignoreWords:
+  - ericis
+  - leadof
+  - madr
+  - MADR
+  - nvmrc
+  - Nygard
+  - POSIX
+  - pnpmrc

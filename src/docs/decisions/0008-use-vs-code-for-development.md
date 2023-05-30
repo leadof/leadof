@@ -23,7 +23,7 @@ Developers may use a variety of development tools and environments. Selecting an
 
 ## Decision Outcome
 
-Chosen option: "Use VS Code", because of familarity and free along with a rich ecosystem of extensions and the ability to standardize and share settings and extensions across the team through source control. Automation is achieved through shell command execution, so developers can still choose their preferred development tools.
+Chosen option: "Use VS Code", because of familiarity and free along with a rich ecosystem of extensions and the ability to standardize and share settings and extensions across the team through source control. Automation is achieved through shell command execution, so developers can still choose their preferred development tools.
 
 ### Consequences
 

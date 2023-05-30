@@ -27,7 +27,7 @@ Supporting cross-platform involves basic software pre-requisite decisions. Using
 
 ## Decision Outcome
 
-Chosen option: "Use POSIX scripts", because of native support across nearly all platforms execpt Windows. However, modern Windows users may install tools like Git BASH or Windows Subsystem for Linux to execute the same scripts.
+Chosen option: "Use POSIX scripts", because of native support across nearly all platforms except Windows. However, modern Windows users may install tools like Git BASH or Windows Subsystem for Linux to execute the same scripts.
 
 ### Consequences
 

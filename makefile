@@ -14,8 +14,12 @@ format:
 check-formatting:
 	@./check-formatting.sh
 
+.PHONY: check-spelling
+check-spelling:
+	@./check-spelling.sh
+
 .PHONY: check
-check: check-formatting
+check: check-formatting check-spelling
 
 .PHONY: decision
 decision:

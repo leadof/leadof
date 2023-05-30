@@ -21,7 +21,7 @@ With the baseline decision to [use POSIX shell script automation](./0001-use-pos
 
 ## Decision Outcome
 
-Chosen option: "Use NodeJS", because of the ubiquity of JavaScript as a language, developer familarity with JavaScript and NodeJS, the availability of NodeJS on machines, the relatively small installation footprint, the cross-platform package ecosystem, how active the community is, and the cross-platform support.
+Chosen option: "Use NodeJS", because of the ubiquity of JavaScript as a language, developer familiarity with JavaScript and NodeJS, the availability of NodeJS on machines, the relatively small installation footprint, the cross-platform package ecosystem, how active the community is, and the cross-platform support.
 
 ### Consequences
 

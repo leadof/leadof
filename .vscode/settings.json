@@ -1,6 +1,17 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "git.autofetch": true,
   "git.fetchOnPull": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "cSpell.languageSettings": [
+    {
+      "languageId": ["markdown"],
+      "ignoreRegExpList": [
+        "/^\\s*```[\\s\\S]*?^\\s*```/gmx",
+        "/`[\\s\\S]+`/gmx"
+      ]
+    }
+  ]
 }
