@@ -4,7 +4,8 @@
 name: repository.ci
 
 on:
-  push: [main]
+  push:
+    branches: [main]
   pull_request:
     types:
       - edited
