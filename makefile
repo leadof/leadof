@@ -52,3 +52,7 @@ create-leadof-us:
 	&& rm -f ./package-lock.json \
 	&& pnpm install \
 	&& pnpm add -D @ionic/cli
+
+.PHONY: pr
+pr:
+	@gh pr create --fill
