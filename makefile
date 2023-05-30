@@ -55,4 +55,28 @@ create-leadof-us:
 
 .PHONY: pr
 pr:
-	@gh pr create --fill
+ifndef title
+	$(error Missing required "title" argument)
+endif
+	@gh pr create --fill --assignee "@me" --label enhancement --title "feat: $(title)"
+
+.PHONY: pr-chore
+pr-chore:
+ifndef title
+	$(error Missing required "title" argument)
+endif
+	@gh pr create --fill --assignee "@me" --label chore --title "chore: $(title)"
+
+.PHONY: pr-bug
+pr-bug:
+ifndef title
+	$(error Missing required "title" argument)
+endif
+	@gh pr create --fill --assignee "@me" --label bug --title "bug: $(title)"
+
+.PHONY: pr-docs
+pr-docs:
+ifndef title
+	$(error Missing required "title" argument)
+endif
+	@gh pr create --fill --assignee "@me" --label documentation --title "docs: $(title)"
