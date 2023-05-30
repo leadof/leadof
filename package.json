@@ -12,6 +12,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@ionic/cli": "^7.1.1",
     "cspell": "^6.31.1",
     "husky": "^8.0.0",
     "madr": "^3.0.0",

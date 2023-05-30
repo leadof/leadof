@@ -1,0 +1,7 @@
+{
+  "name": "leadof-us",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
