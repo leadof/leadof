@@ -8,11 +8,14 @@
   "scripts": {
     "spellcheck": "cspell --config ./cspell.yaml --color **",
     "format": "prettier --write --ignore-path ./.prettierignore ./",
-    "lint": "prettier --check --ignore-path ./.prettierignore ./"
+    "lint": "prettier --check --ignore-path ./.prettierignore ./",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "cspell": "^6.31.1",
+    "husky": "^8.0.0",
     "madr": "^3.0.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "pretty-quick": "^3.1.3"
   }
 }
