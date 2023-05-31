@@ -1,7 +1,7 @@
 ################################################################################
-# Checks the repository.
+# Continuous integration for leadof.us web application.
 ################################################################################
-name: repository.ci
+name: apps.leadof-us.ci
 
 on:
   push:
@@ -12,6 +12,11 @@ on:
       - opened
       - reopened
       - synchronize
+    paths:
+      # run this build when this file changes
+      - ".github/workflows/leadof-us.ci.yaml"
+      # run this build when the source code changes
+      - "src/apps/leadof-us/**"
 
   # Enable manual trigger for workflow.
   workflow_dispatch:
@@ -22,6 +27,7 @@ env:
   NODE_VERSION: 18.16.0
   # Should match ".pnpmrc" file.
   PNPM_VERSION: 8.6.0
+  PROJECT_PATH: ./src/apps/leadof-us/
 
 jobs:
   integrate:
@@ -63,7 +69,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: make
+      - name: Prerequisites
         run: |
           chmod +x ./prerequisites.sh
-          make
+          make prerequisites
+
+      - name: make
+        # change to the project directory
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: make

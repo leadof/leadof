@@ -13,5 +13,9 @@
         "/`[\\s\\S]+`/gmx"
       ]
     }
-  ]
+  ],
+  "[shellscript]": {
+    "files.eol": "\n",
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }

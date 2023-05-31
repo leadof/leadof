@@ -1,10 +1,18 @@
 .DEFAULT_GOAL:=all
 
-all: init check install
+all: prerequisites check install
 
-.PHONY: init
-init:
-	@./init.sh
+# Continuous integration
+.PHONY: ci
+ci: prerequisites check-formatting check-spelling
+
+# Prerequisites
+.PHONY: prerequisites
+prerequisites:
+	@./prerequisites.sh
+
+.PHONY: pre
+pre: prerequisites
 
 .PHONY: format
 format:
@@ -66,6 +74,13 @@ ifndef title
 	$(error Missing required "title" argument)
 endif
 	@gh pr create --fill --assignee "@me" --label chore --title "chore: $(title)"
+
+.PHONY: pr-ci
+pr-ci:
+ifndef title
+	$(error Missing required "title" argument)
+endif
+	@gh pr create --fill --assignee "@me" --label chore --title "ci: $(title)"
 
 .PHONY: pr-bug
 pr-bug:
