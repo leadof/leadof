@@ -70,7 +70,9 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Prerequisites
-        run: make prerequisites
+        run: |
+          chmod +x ./prerequisites.sh
+          make prerequisites
 
       - name: make
         # change to the project directory
