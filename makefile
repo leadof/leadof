@@ -1,10 +1,18 @@
 .DEFAULT_GOAL:=all
 
-all: init check install
+all: prerequisites check install
 
-.PHONY: init
-init:
-	@./init.sh
+# Continuous integration
+.PHONY: ci
+ci: prerequisites check-formatting check-spelling
+
+# Prerequisites
+.PHONY: prerequisites
+prerequisites:
+	@./prerequisites.sh
+
+.PHONY: pre
+pre: prerequisites
 
 .PHONY: format
 format:

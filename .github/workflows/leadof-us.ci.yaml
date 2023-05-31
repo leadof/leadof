@@ -1,0 +1,78 @@
+################################################################################
+# Continuous integration for leadof.us web application.
+################################################################################
+name: apps.leadof-us.ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      # run this build when this file changes
+      - ".github/workflows/leadof-us.ci.yaml"
+      # run this build when the source code changes
+      - "src/apps/leadof-us/**"
+
+  # Enable manual trigger for workflow.
+  workflow_dispatch:
+
+env:
+  CI: true
+  # Should match ".nvmrc" file.
+  NODE_VERSION: 18.16.0
+  # Should match ".pnpmrc" file.
+  PNPM_VERSION: 8.6.0
+  PROJECT_PATH: ./src/apps/leadof-us/
+
+jobs:
+  integrate:
+    # This name appears in status checks for pull requests and branch protection.
+    name: repository.ci
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Setup the environment with a specific version of NodeJS.
+      - name: Install node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # Setup the environment with a specific version of `pnpm`.
+      - name: Install pnpm ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+
+      # Determine where `pnpm` will store files in order to cache them.
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      # Setup the `pnpm` cache.
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Prerequisites
+        run: make prerequisites
+
+      - name: make
+        # change to the project directory
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: make

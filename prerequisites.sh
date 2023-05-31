@@ -5,10 +5,10 @@
 set -e
 
 # import command functions
-. ./src/shell/_command.sh
+. ./src/libraries/shell/_command.sh
 
 # import node functions
-. ./src/shell/_node.sh
+. ./src/libraries/shell/_node.sh
 
 #######################################
 # Initializes for development.
@@ -17,32 +17,14 @@ set -e
 # Arguments:
 #   None
 #######################################
-init_dev() {
+dev_prerequisites() {
   if require_env "CI"; then
     echo 'CI detected. Skipping development setup tasks.'
   else
     echo 'Initializing project for development...'
-    . ./init-dev.sh
+    . ./prerequisites.dev.sh
     echo 'Successfully initialized project for development.'
   fi
-}
-
-#######################################
-# Initializes dependencies.
-# Arguments:
-#   None
-#######################################
-init_dependencies() {
-
-  if ! require pnpm; then
-    echo 'The CLI for pnpm commands could not be found and must be installed.' 1>&2
-    exit 1
-  fi
-
-  echo ''
-  echo 'Installing NodeJS dependencies...'
-  pnpm --recursive install
-  echo 'Successfully installed NodeJS dependencies.'
 }
 
 #######################################
@@ -53,8 +35,9 @@ init_dependencies() {
 main() {
   . ./executable
 
-  init_dev
-  init_dependencies
+  dev_prerequisites
+
+  pnpm_install
 }
 
 main

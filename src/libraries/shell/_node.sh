@@ -1,6 +1,8 @@
 #!/bin/sh
 #
 # Function library for node, npm, pnpm, yarn, etc.
+# Dependencies:
+#   _command.sh
 
 set -e
 
@@ -43,6 +45,10 @@ get_npm_version() {
   echo $version
 }
 
+################################################################################
+# pnpm
+################################################################################
+
 #######################################
 # Gets the current pnpm version.
 # Returns:
@@ -67,4 +73,22 @@ get_target_pnpm_version() {
   version="${version%%*( )}"
 
   echo $version
+}
+
+#######################################
+# Initializes dependencies.
+# Arguments:
+#   None
+#######################################
+pnpm_install() {
+
+  if ! require pnpm; then
+    echo 'The CLI for pnpm commands could not be found and must be installed.' 1>&2
+    exit 1
+  fi
+
+  echo ''
+  echo 'Installing NodeJS dependencies...'
+  pnpm --recursive install --frozen-lockfile
+  echo 'Successfully installed NodeJS dependencies.'
 }
