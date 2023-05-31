@@ -75,6 +75,13 @@ ifndef title
 endif
 	@gh pr create --fill --assignee "@me" --label chore --title "chore: $(title)"
 
+.PHONY: pr-ci
+pr-ci:
+ifndef title
+	$(error Missing required "title" argument)
+endif
+	@gh pr create --fill --assignee "@me" --label chore --title "ci: $(title)"
+
 .PHONY: pr-bug
 pr-bug:
 ifndef title
