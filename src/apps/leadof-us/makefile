@@ -17,6 +17,15 @@ check-lint:
 check-test:
 	@pnpm test
 
+.PHONY: check-performance
+check-performance:
+	@[ -d "./lighthouse/" ] || mkdir ./lighthouse/
+	@pnpm lighthouse \
+		http://localhost:4200 \
+		--output html \
+		--output-path ./lighthouse/app.performance-report.html \
+		 --chrome-flags="--headless"
+
 .PHONY: check
 check: check-lint check-test
 

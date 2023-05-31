@@ -12,7 +12,6 @@ $RECYCLE.BIN/
 *.log
 log.txt
 
-
 /.sourcemaps
 /.versions
 /coverage
@@ -52,7 +51,6 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-
 # Miscellaneous
 /.angular
 /.angular/cache
@@ -66,3 +64,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# lighthouse reports
+lighthouse
