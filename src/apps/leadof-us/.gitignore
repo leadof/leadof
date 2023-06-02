@@ -65,5 +65,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# playwright reports
+playwright-report
+
 # lighthouse reports
+lighthouse-report.html
 performance-report*
