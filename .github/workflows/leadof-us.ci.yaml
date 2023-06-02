@@ -87,3 +87,8 @@ jobs:
         working-directory: ${{ env.PROJECT_PATH }}
         run: |
           make check-performance
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: performance-report
+          path: ${{ env.PROJECT_PATH }}performance-report*
