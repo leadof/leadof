@@ -45,6 +45,28 @@ serve: start
 .PHONY: run
 run: start
 
+.PHONY: update
+update:
+	@pnpm ng update \
+		@angular/animations \
+		@angular/common \
+		@angular/compiler \
+		@angular/core \
+		@angular/forms \
+		@angular/platform-browser \
+		@angular/platform-browser-dynamic \
+		@angular/router \
+		@angular-devkit/build-angular \
+		@angular-eslint/builder \
+		@angular-eslint/eslint-plugin \
+		@angular-eslint/eslint-plugin-template \
+		@angular-eslint/schematics \
+		@angular-eslint/template-parser \
+		@angular/cli \
+		@angular/compiler \
+		@angular/compiler-cli \
+		@angular/language-service
+
 .PHONY: clean
 clean:
 	@rm -rf \
