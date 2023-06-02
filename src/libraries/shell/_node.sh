@@ -45,6 +45,19 @@ get_npm_version() {
   echo $version
 }
 
+#######################################
+# Gets the target npm version.
+# Returns:
+#   The target version of npm.
+#######################################
+get_target_npm_version() {
+  local version=$(cat ./.npm-version)
+  # remove any trailing whitespace
+  version="${version%%*( )}"
+
+  echo $version
+}
+
 ################################################################################
 # pnpm
 ################################################################################
@@ -68,7 +81,7 @@ get_pnpm_version() {
 #   The target version of pnpm.
 #######################################
 get_target_pnpm_version() {
-  local version=$(cat ./.pnpmrc)
+  local version=$(cat ./.pnpm-version)
   # remove any trailing whitespace
   version="${version%%*( )}"
 

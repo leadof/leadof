@@ -25,7 +25,7 @@ env:
   CI: true
   # Should match ".nvmrc" file.
   NODE_VERSION: 18.16.0
-  # Should match ".pnpmrc" file.
+  # Should match ".pnpm-version" file.
   PNPM_VERSION: 8.6.0
   PROJECT_PATH: ./src/apps/leadof-us/
 

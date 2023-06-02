@@ -18,12 +18,14 @@ set -e
 #   None
 #######################################
 dev_prerequisites() {
-  if require_env "CI"; then
-    echo 'CI detected. Skipping development setup tasks.'
-  else
+  if [ x"$CI" = "x" ]; then
+    echo ''
     echo 'Initializing project for development...'
     . ./prerequisites.dev.sh
     echo 'Successfully initialized project for development.'
+  else
+    echo ''
+    echo 'CI detected. Skipping development setup tasks.'
   fi
 }
 

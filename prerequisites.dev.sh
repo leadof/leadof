@@ -109,10 +109,25 @@ init_npm() {
     exit 1
   fi
 
-  echo ''
-  echo "Installing latest npm..."
-  npm install --location=global --no-fund npm@latest
-  echo "Successfully installed latest npm."
+  current_npm_version=$(get_npm_version)
+  target_npm_version=$(get_target_npm_version)
+
+  npm_install_required=1
+
+  if [ "$current_npm_version" = "$target_npm_version" ]; then
+    echo "The \`npm --version\` already matches the project version \"$target_npm_version\"."
+    npm_install_required=0
+  else
+    echo ''
+    echo "Current \`npm --version\` does not match the project version \"$target_npm_version\"."
+  fi
+
+  if [ $npm_install_required = 1 ]; then
+    echo ''
+    echo "Installing npm $target_npm_version..."
+    npm install --location=global npm@$target_npm_version
+    echo "Successfully installed npm $target_npm_version."
+  fi
 
   npm config set fund false --global
   echo 'Disabled npm funding messages.'
