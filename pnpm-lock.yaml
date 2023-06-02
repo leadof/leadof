@@ -35,9 +35,6 @@ importers:
       '@angular/common':
         specifier: ^16.0.0
         version: 16.0.0(@angular/core@16.0.0)(rxjs@7.8.0)
-      '@angular/compiler':
-        specifier: ^16.0.0
-        version: 16.0.0(@angular/core@16.0.0)
       '@angular/core':
         specifier: ^16.0.0
         version: 16.0.0(rxjs@7.8.0)(zone.js@0.13.0)
@@ -105,6 +102,9 @@ importers:
       '@angular/cli':
         specifier: ^16.0.0
         version: 16.0.0
+      '@angular/compiler':
+        specifier: ^16.0.0
+        version: 16.0.0(@angular/core@16.0.0)
       '@angular/compiler-cli':
         specifier: ^16.0.0
         version: 16.0.0(@angular/compiler@16.0.0)(typescript@5.0.2)

@@ -50,7 +50,6 @@ update:
 	@pnpm ng update \
 		@angular/animations \
 		@angular/common \
-		@angular/compiler \
 		@angular/core \
 		@angular/forms \
 		@angular/platform-browser \
