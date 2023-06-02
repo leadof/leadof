@@ -5,24 +5,6 @@
 set -e
 
 #######################################
-# Checks if an environment variable is available.
-# Arguments:
-#   name
-# Returns:
-#   0 if the specified environment variable is available;
-#   otherwise, returns 1.
-#######################################
-require_env() {
-  name="$1"
-
-  if [ x"${name}" = "x" ]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
-#######################################
 # Checks if a command is available.
 # Arguments:
 #   cmd

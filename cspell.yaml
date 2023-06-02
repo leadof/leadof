@@ -6,6 +6,8 @@ ignorePaths:
   - src/apps/leadof-us/coverage/**
   - src/apps/leadof-us/node_modules/**
   - src/apps/leadof-us/www/**
+  - src/apps/leadof-us/performance-report*
+  - "*.ai"
   - "*.json"
   - "*.svg"
   - "*.yaml"
@@ -18,13 +20,18 @@ languageSettings:
       - /^\s*```[\s\S]*?^\s*```/gmx
       - /`[\s\S]+`/gmx
 ignoreWords:
+  - Durandal
+  - MADR
+  - Nygard
+  - POSIX
   - ericis
   - homescreen
   - leadof
   - madr
-  - MADR
+  - msedge
   - nvmrc
-  - Nygard
-  - POSIX
   - pnpmrc
   - subdir
+  - textbox
+  - todos
+  - viewports

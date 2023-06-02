@@ -17,5 +17,8 @@
   "[shellscript]": {
     "files.eol": "\n",
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }

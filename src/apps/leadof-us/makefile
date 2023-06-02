@@ -17,6 +17,10 @@ check-lint:
 check-test:
 	@pnpm test
 
+.PHONY: check-performance
+check-performance:
+	@node ./check-performance.js
+
 .PHONY: check
 check: check-lint check-test
 
@@ -34,3 +38,12 @@ dev: start
 serve: start
 .PHONY: run
 run: start
+
+.PHONY: clean
+clean:
+	@rm -rf \
+		./.angular/ \
+		./coverage/ \
+		./node_modules/ \
+		./www/ \
+		./performance-report*

@@ -1,15 +1,18 @@
 {
   "name": "leadof-us",
+  "description": "Code for the leadof.us website",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Eric Swanson",
+  "homepage": "https://leadof.us/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 4200",
     "build": "ng build --progress false --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage true --progress false --watch false",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e": "playwright test",
+    "e2e:debug": "playwright test --project chromium --headed"
   },
   "private": true,
   "dependencies": {
@@ -46,14 +49,17 @@
     "@capacitor/cli": "5.0.4",
     "@ionic/angular-toolkit": "^9.0.0",
     "@ionic/cli": "^7.1.1",
+    "@playwright/test": "^1.34.3",
     "@types/jasmine": "~4.3.0",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
+    "chrome-launcher": "^0.15.2",
     "eslint": "^7.26.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
     "eslint-plugin-prefer-arrow": "1.2.2",
+    "get-port": "^6.1.2",
     "jasmine-core": "~4.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.0",
@@ -62,8 +68,9 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "lighthouse": "10.2.0",
     "ts-node": "^8.3.0",
-    "typescript": "~5.0.2"
-  },
-  "description": "An Ionic project"
+    "typescript": "~5.0.2",
+    "wait-on": "^7.0.1"
+  }
 }

@@ -4,5 +4,8 @@ node_modules
 coverage
 www
 
+# lighthouse performance reports
+performance-report*
+
 # pnpm files
 pnpm-lock.yaml

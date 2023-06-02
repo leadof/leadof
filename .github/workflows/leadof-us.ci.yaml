@@ -25,7 +25,7 @@ env:
   CI: true
   # Should match ".nvmrc" file.
   NODE_VERSION: 18.16.0
-  # Should match ".pnpmrc" file.
+  # Should match ".pnpm-version" file.
   PNPM_VERSION: 8.6.0
   PROJECT_PATH: ./src/apps/leadof-us/
 
@@ -78,3 +78,12 @@ jobs:
         # change to the project directory
         working-directory: ${{ env.PROJECT_PATH }}
         run: make
+
+      - uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
+
+      - name: Perfomance report
+        # change to the project directory
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: |
+          make check-performance
