@@ -74,10 +74,26 @@ jobs:
           chmod +x ./prerequisites.sh
           make prerequisites
 
-      - name: make
+      - name: Make
         # change to the project directory
         working-directory: ${{ env.PROJECT_PATH }}
         run: make
+
+      - name: Upload code-coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: ${{ env.PROJECT_PATH }}coverage/
+          if-no-files-found: error
+
+      - name: Upload playwright
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright
+          path: |
+            ${{ env.PROJECT_PATH }}playwright-report/
+            ${{ env.PROJECT_PATH }}lighthouse-report.html
+          if-no-files-found: error
 
       - uses: browser-actions/setup-chrome@v1
       - run: chrome --version
@@ -88,7 +104,9 @@ jobs:
         run: |
           make check-performance
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload performance-report
+        uses: actions/upload-artifact@v3
         with:
           name: performance-report
           path: ${{ env.PROJECT_PATH }}performance-report*
+          if-no-files-found: error

@@ -5,10 +5,6 @@ test('performance report', async ({ page, browserName }) => {
   await page.goto('/');
 
   if (browserName === 'chromium') {
-    await page.goto('http://127.0.0.1:8041/json/version');
-
-    console.log('content', await page.content());
-
     const lighthouseOptions = {
       logLevel: 'info',
       output: 'html',

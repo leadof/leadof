@@ -17,12 +17,16 @@ check-lint:
 check-test:
 	@pnpm test
 
+.PHONY: check-e2e
+check-e2e:
+	@pnpm e2e
+
 .PHONY: check-performance
 check-performance:
 	@node ./check-performance.js
 
 .PHONY: check
-check: check-lint check-test
+check: check-lint check-test check-e2e
 
 .PHONY: install
 install:
