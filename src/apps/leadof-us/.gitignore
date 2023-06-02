@@ -66,4 +66,4 @@ testem.log
 Thumbs.db
 
 # lighthouse reports
-lighthouse
+performance-report*

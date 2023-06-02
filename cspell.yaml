@@ -28,3 +28,5 @@ ignoreWords:
   - POSIX
   - pnpmrc
   - subdir
+  - viewports
+  - msedge

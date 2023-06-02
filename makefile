@@ -95,3 +95,7 @@ ifndef title
 	$(error Missing required "title" argument)
 endif
 	@gh pr create --fill --assignee "@me" --label documentation --title "docs: $(title)"
+
+.PHONY: reset
+reset:
+	@pnpm npkill

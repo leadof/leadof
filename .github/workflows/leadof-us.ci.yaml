@@ -78,3 +78,12 @@ jobs:
         # change to the project directory
         working-directory: ${{ env.PROJECT_PATH }}
         run: make
+
+      - uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
+
+      - name: Perfomance report
+        # change to the project directory
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: |
+          make check-performance

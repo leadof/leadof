@@ -6,7 +6,8 @@
     "yzhang.markdown-all-in-one",
     "esbenp.prettier-vscode",
     "streetsidesoftware.code-spell-checker",
-    "foxundermoon.shell-format"
+    "foxundermoon.shell-format",
+    "ms-playwright.playwright"
   ],
   "unwantedRecommendations": ["ms-vscode.makefile-tools"]
 }
