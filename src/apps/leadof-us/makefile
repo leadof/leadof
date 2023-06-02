@@ -5,6 +5,7 @@ all: prerequisites check install
 .PHONY: prerequisites
 prerequisites:
 	@pnpm install --frozen-lockfile
+	@pnpm dlx playwright install
 
 .PHONY: pre
 pre: prerequisites
