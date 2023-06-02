@@ -21,5 +21,7 @@ test('performance report', async ({ page, browserName }) => {
     fs.writeFileSync('./lighthouse-report.html', reportHtml);
   }
 
+  // a single assertion to ensure the test go this far
+  // and that test runners don't complain about an empty test
   expect(true).toBe(true);
 });
