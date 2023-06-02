@@ -29,8 +29,11 @@ check-spelling:
 .PHONY:spellcheck
 spellcheck: check-spelling
 
+.PHONY:check-quick
+check-quick: check-formatting check-spelling
+
 .PHONY: check
-check: check-formatting check-spelling
+check: check-quick
 	@pnpm --recursive lint
 	@pnpm --recursive test
 

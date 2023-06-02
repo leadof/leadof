@@ -4,6 +4,7 @@ ignorePaths:
   - node_modules/**
   - src/apps/leadof-us/.angular/**
   - src/apps/leadof-us/coverage/**
+  - src/apps/leadof-us/dist/**
   - src/apps/leadof-us/node_modules/**
   - src/apps/leadof-us/playwright-report/**
   - src/apps/leadof-us/www/**
@@ -31,6 +32,7 @@ ignoreWords:
   - leadof
   - madr
   - msedge
+  - ngsw
   - nvmrc
   - pnpmrc
   - subdir

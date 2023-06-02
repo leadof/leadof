@@ -2,6 +2,7 @@ node_modules
 
 .angular
 coverage
+dist
 playwright-report
 www
 
