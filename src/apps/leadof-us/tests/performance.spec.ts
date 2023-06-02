@@ -1,16 +1,21 @@
 import { test, expect } from '@playwright/test';
 import * as fs from 'fs';
 
+const chromeDebugPort = 8041;
+
 test('performance report', async ({ page, browserName }) => {
   if (browserName === 'chromium') {
     const lighthouse = require('lighthouse/core/index.cjs');
 
+    // visit the home page
+    // 1) the URL for this page will be used by lighthouse
+    // 2) simulate a warm server (requests have already been made)
     await page.goto('/');
 
     const lighthouseOptions = {
       logLevel: 'info',
       output: 'html',
-      port: 8041,
+      port: chromeDebugPort,
     };
 
     const runnerResult = await lighthouse(page.url(), lighthouseOptions as any);

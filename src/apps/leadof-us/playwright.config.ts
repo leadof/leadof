@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const chromePort = 8041;
+const chromeDebugPort = 8041;
 const hostPort = 4200;
 const hostUrl = `http://localhost:${hostPort}`;
 
@@ -46,7 +46,7 @@ export default defineConfig({
             '--no-sandbox',
             '--disable-gpu',
             '--disable-dev-shm-usage',
-            `--remote-debugging-port=${chromePort}`,
+            `--remote-debugging-port=${chromeDebugPort}`,
           ],
         },
       },
