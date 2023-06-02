@@ -94,19 +94,3 @@ jobs:
             ${{ env.PROJECT_PATH }}playwright-report/
             ${{ env.PROJECT_PATH }}lighthouse-report.html
           if-no-files-found: error
-
-      - uses: browser-actions/setup-chrome@v1
-      - run: chrome --version
-
-      - name: Perfomance report
-        # change to the project directory
-        working-directory: ${{ env.PROJECT_PATH }}
-        run: |
-          make check-performance
-
-      - name: Upload performance-report
-        uses: actions/upload-artifact@v3
-        with:
-          name: performance-report
-          path: ${{ env.PROJECT_PATH }}performance-report*
-          if-no-files-found: error

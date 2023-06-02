@@ -20,7 +20,7 @@ check-test:
 	@pnpm test
 
 .PHONY: check-e2e
-check-e2e:
+check-e2e: prerequisites
 	@pnpm e2e
 
 .PHONY: check-performance
