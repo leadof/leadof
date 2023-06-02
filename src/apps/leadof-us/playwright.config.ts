@@ -43,9 +43,9 @@ export default defineConfig({
         launchOptions: {
           args: [
             '--headless',
-            '--no-sandbox',
-            '--disable-gpu',
-            '--disable-dev-shm-usage',
+            // '--no-sandbox',
+            // '--disable-gpu',
+            // '--disable-dev-shm-usage',
             `--remote-debugging-port=${chromeDebugPort}`,
           ],
         },
@@ -85,7 +85,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: `pnpm ng serve --port ${hostPort} --configuration production`,
+    command: `pnpm ng run app:serve-ssr:production --port ${hostPort}`,
     url: hostUrl,
     reuseExistingServer: !process.env['CI'],
   },

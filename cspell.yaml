@@ -29,12 +29,15 @@ ignoreWords:
   - POSIX
   - ericis
   - homescreen
+  - iisnode
   - leadof
   - madr
   - msedge
   - ngsw
+  - nguniversal
   - nvmrc
   - pnpmrc
+  - shellguide
   - subdir
   - textbox
   - todos

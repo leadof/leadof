@@ -71,6 +71,7 @@ clean:
 	@rm -rf \
 		./.angular/ \
 		./coverage/ \
+		./dist/ \
 		./node_modules/ \
 		./www/ \
 		./performance-report*
