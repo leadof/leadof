@@ -36,7 +36,7 @@ install:
 
 .PHONY: start
 start:
-	@pnpm start
+	@pnpm dev:ssr
 
 .PHONY: dev
 dev: start
@@ -68,6 +68,7 @@ update:
 
 .PHONY: clean
 clean:
+	@podman rm --force fidlit-us-start-container || true
 	@rm -rf \
 		./.angular/ \
 		./coverage/ \
@@ -75,3 +76,17 @@ clean:
 		./node_modules/ \
 		./www/ \
 		./performance-report*
+
+.PHONY: install-container
+install-container:
+	@podman build \
+		--tag fidlit/us:latest \
+		--file ./Containerfile \
+		--ignorefile ./.containerignore \
+		.
+
+.PHONY: start-container
+start-container: install-container
+	@podman rm --force fidlit-us-$@ || true
+	@podman run --name fidlit-us-$@ --detach --publish 4000:4000 fidlit/us:latest
+	@podman logs --follow fidlit-us-$@

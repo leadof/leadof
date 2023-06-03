@@ -1,0 +1,7 @@
+.angular
+coverage
+dist
+node_modules
+playwright-report
+
+makefile

@@ -15,8 +15,8 @@
     "e2e:debug": "playwright test --project chromium --headed",
     "dev:ssr": "ng run app:serve-ssr",
     "serve:ssr": "node dist/app/server/main.js",
-    "build:ssr": "ng build && ng run app:server",
-    "prerender": "ng run app:prerender"
+    "build:ssr": "ng build --progress false --configuration production && ng run app:server:production",
+    "prerender": "ng run app:prerender:production"
   },
   "private": true,
   "dependencies": {
