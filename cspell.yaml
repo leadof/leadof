@@ -42,3 +42,4 @@ ignoreWords:
   - textbox
   - todos
   - viewports
+  - WORKDIR
