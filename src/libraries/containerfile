@@ -1,0 +1,7 @@
+FROM docker.io/library/debian:11.7-slim
+
+RUN mkdir -p /usr/src/libraries/
+
+COPY . /usr/src/libraries/
+
+VOLUME [ "/usr/src/libraries" ]

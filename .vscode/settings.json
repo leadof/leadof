@@ -2,6 +2,10 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
+  "files.associations": {
+    "**/Containerfile": "dockerfile",
+    "**/executable": "shellscript"
+  },
   "git.autofetch": true,
   "git.fetchOnPull": true,
   "prettier.tabWidth": 2,
@@ -15,16 +19,14 @@
       ]
     }
   ],
-  "shellformat.useEditorConfig": true,
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker",
+    "editor.tabSize": 4
+  },
   "[shellscript]": {
-    "files.eol": "\n",
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[dockerfile]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
-    "editor.tabSize": 4
   }
 }

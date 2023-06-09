@@ -5,8 +5,9 @@
     "editorconfig.editorconfig",
     "yzhang.markdown-all-in-one",
     "esbenp.prettier-vscode",
-    "streetsidesoftware.code-spell-checker",
     "foxundermoon.shell-format",
+    "streetsidesoftware.code-spell-checker",
+    "ms-azuretools.vscode-docker",
     "ms-playwright.playwright"
   ],
   "unwantedRecommendations": ["ms-vscode.makefile-tools"]

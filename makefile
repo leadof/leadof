@@ -101,5 +101,5 @@ endif
 
 .PHONY: reset
 reset:
-	@pnpm npkill
+	@pnpm dlx npkill
 	@cd ./src/apps/leadof-us/ && "$(MAKE)" clean

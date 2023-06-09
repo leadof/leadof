@@ -1,0 +1,87 @@
+################################################################################
+# Layer target: base
+################################################################################
+FROM docker.io/library/node:18.16.0-bullseye-slim as base
+
+# Flag that automation can use to detect if execution is hosted in a container.
+ENV IN_CONTAINER=true
+
+RUN npm config set fund false --global \
+  && npm install --location=global npm \
+  && npm install --location=global pnpm
+
+################################################################################
+# Layer target: project dependencies
+################################################################################
+FROM base as dependencies
+
+RUN mkdir -p /tmp/dependencies/
+
+COPY ./package.json /tmp/dependencies/
+
+WORKDIR /tmp/dependencies/
+
+RUN pnpm install
+
+################################################################################
+# Layer target: contains project libraries
+################################################################################
+FROM base as base_libraries
+
+RUN mkdir -p /usr/src/libraries/
+
+# Expects: `--build-context libraries=container-image://localhost/leadof/libraries:latest`
+COPY --from=libraries /usr/src/libraries/ /usr/src/libraries/
+
+RUN chmod +x /usr/src/libraries/shell/executable
+
+################################################################################
+# Layer target: contains project src
+################################################################################
+FROM base_libraries as src
+
+RUN mkdir -p /usr/src/apps/leadof-us/
+
+COPY --from=dependencies /tmp/dependencies/ /usr/src/apps/leadof-us/
+
+COPY . /usr/src/apps/leadof-us/
+
+WORKDIR /usr/src/apps/leadof-us/
+
+# make all shell scripts executable
+RUN . /usr/src/libraries/shell/executable
+
+################################################################################
+# Layer target: "lint" the application
+################################################################################
+FROM src as lint
+
+RUN pnpm lint
+
+################################################################################
+# Layer target: build the application
+################################################################################
+FROM base as build
+
+WORKDIR /usr/src/app/
+
+COPY . .
+
+COPY --from=dependencies /tmp/dependencies/ /usr/src/app/
+
+RUN pnpm build:ssr
+
+################################################################################
+# Layer target: prepare a production image
+################################################################################
+FROM base as production
+
+ENV PORT=4000
+ENV NODE_ENV=production
+
+WORKDIR /usr/src/app/
+
+# TODO: copy build output only
+COPY --from=build /usr/src/app/dist/app/ /usr/src/app/dist/app/
+
+CMD ["node", "/usr/src/app/dist/app/server/main.js"]

@@ -21,7 +21,7 @@ env:
   # Should match ".nvmrc" file.
   NODE_VERSION: 18.16.0
   # Should match ".pnpm-version" file.
-  PNPM_VERSION: 8.6.0
+  PNPM_VERSION: 8.6.1
 
 jobs:
   integrate:

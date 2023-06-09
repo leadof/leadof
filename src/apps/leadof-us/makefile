@@ -1,6 +1,6 @@
 .DEFAULT_GOAL:=all
 
-all: prerequisites check install
+all: prerequisites check-lint check-test install check-e2e
 
 .PHONY: prerequisites
 prerequisites:
@@ -13,7 +13,7 @@ pre: prerequisites
 
 .PHONY: check-lint
 check-lint:
-	@pnpm lint
+	@./lint.sh
 
 .PHONY: check-test
 check-test:
@@ -32,11 +32,19 @@ check: check-lint check-test check-e2e
 
 .PHONY: install
 install:
-	@pnpm build
+	@./install.sh
 
 .PHONY: start
 start:
-	@pnpm dev:ssr
+	@./start.sh
+# @pnpm ng run app:serve-ssr:production --port 4200
+
+.PHONY: stop
+stop:
+	@./stop.sh
+
+.PHONY: restart
+restart: stop start
 
 .PHONY: dev
 dev: start
@@ -68,25 +76,36 @@ update:
 
 .PHONY: clean
 clean:
-	@podman rm --force fidlit-us-start-container || true
+	@podman rm --force leadof-us-start-container || true
 	@rm -rf \
 		./.angular/ \
 		./coverage/ \
 		./dist/ \
 		./node_modules/ \
+		./playwright-report/ \
 		./www/ \
+		./lighthouse-report.html \
 		./performance-report*
 
 .PHONY: install-container
 install-container:
 	@podman build \
-		--tag fidlit/us:latest \
+		--tag leadof/us:latest \
 		--file ./Containerfile \
 		--ignorefile ./.containerignore \
 		.
 
+.PHONY: check-container
+check-container:
+	@podman build \
+		--tag leadof/us:latest \
+		--file ./Containerfile \
+		--ignorefile ./.containerignore \
+		--target lint \
+		.
+
 .PHONY: start-container
 start-container: install-container
-	@podman rm --force fidlit-us-$@ || true
-	@podman run --name fidlit-us-$@ --detach --publish 4000:4000 fidlit/us:latest
-	@podman logs --follow fidlit-us-$@
+	@podman rm --force leadof-us-$@ || true
+	@podman run --name leadof-us-$@ --detach --publish 4000:4000 leadof/us:latest
+	@podman logs --follow leadof-us-$@

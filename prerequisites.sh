@@ -35,7 +35,7 @@ dev_prerequisites() {
 #   None
 #######################################
 main() {
-  . ./executable
+  . ./src/libraries/shell/executable
 
   dev_prerequisites
 
