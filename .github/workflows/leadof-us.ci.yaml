@@ -35,6 +35,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Executable scripts
+        run: |
+          chmod +x ./src/libraries/shell/executable
+          . ./src/libraries/shell/executable
+
       - name: Install libraries
         run: make install-libraries
 
