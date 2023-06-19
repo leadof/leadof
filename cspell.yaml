@@ -3,13 +3,11 @@ version: "0.2"
 ignorePaths:
   - node_modules/**
   - src/apps/leadof-us/.angular/**
-  - src/apps/leadof-us/coverage/**
   - src/apps/leadof-us/dist/**
   - src/apps/leadof-us/node_modules/**
-  - src/apps/leadof-us/playwright-report/**
-  - src/apps/leadof-us/www/**
-  - src/apps/leadof-us/lighthouse-report.html
   - src/apps/leadof-us/performance-report*
+  - src/apps/leadof-us/test-results/**
+  - src/apps/leadof-us/www/**
   - "*.ai"
   - "*.json"
   - "*.svg"
