@@ -8,20 +8,19 @@ set -e
 . ../../libraries/shell/_node.sh
 
 #######################################
-# Installs the application.
+# Runs end-to-end tests.
 # Arguments:
 #   None
 #######################################
-install() {
-  image_tag="leadof-us/web:latest"
-  target_name="web"
+check_e2e() {
+  image_tag="leadof-us/e2e:latest"
+  target_name="e2e"
 
   podman build \
     --tag "${image_tag}" \
     --file ./containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --build-context libraries=container-image://localhost/leadof/libraries:latest \
     --build-arg NODE_VERSION=$(get_node_version) \
     --build-arg NPM_VERSION=$(get_npm_version) \
     --build-arg PNPM_VERSION=$(get_pnpm_version) \
@@ -30,8 +29,20 @@ install() {
     --build-arg NPM_REGISTRY_URL_CONFIG="${NPM_REGISTRY_URL_CONFIG}" \
     --build-arg NPM_REGISTRY_AUTH="${NPM_REGISTRY_AUTH}" \
     --build-arg NPM_REGISTRY_AUTH_TOKEN="${NPM_REGISTRY_AUTH_TOKEN}" \
-    --target ${target_name} \
+    --target "${target_name}" \
     .
+
+  image_name="${target_name}_results"
+
+  echo "Copying output files from container \"${image_name}\"..."
+  # copy output files from container
+  podman run --name ${image_name} --detach ${image_tag} sleep 1000
+  mkdir -p ./test-results/${target_name}/
+  podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
+  mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
+  rm -rf ./test-results/${target_name}/test-results/
+  podman rm --force ${image_name}
+  echo "Successfully copied output files from container \"${image_name}\"."
 }
 
 #######################################
@@ -40,7 +51,7 @@ install() {
 #   None
 #######################################
 main() {
-  install
+  check_e2e
 }
 
 # env vars must be global to the script

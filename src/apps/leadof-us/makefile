@@ -1,6 +1,6 @@
 .DEFAULT_GOAL:=all
 
-all: prerequisites check-lint check-test install check-e2e
+all: check-lint check-test check-e2e install
 
 .PHONY: prerequisites
 prerequisites:
@@ -13,15 +13,15 @@ pre: prerequisites
 
 .PHONY: check-lint
 check-lint:
-	@./lint.sh
+	@./check-lint.sh
 
 .PHONY: check-test
 check-test:
-	@pnpm test
+	@./check-test.sh
 
 .PHONY: check-e2e
-check-e2e: prerequisites
-	@pnpm e2e
+check-e2e:
+	@./check-e2e.sh
 
 .PHONY: check-performance
 check-performance:
@@ -46,12 +46,15 @@ stop:
 .PHONY: restart
 restart: stop start
 
-.PHONY: dev
-dev: start
 .PHONY: serve
 serve: start
 .PHONY: run
 run: start
+
+.PHONY: dev
+dev:
+	@pnpm install
+	@pnpm dev:ssr
 
 .PHONY: update
 update:

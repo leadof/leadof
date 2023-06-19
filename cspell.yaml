@@ -23,8 +23,14 @@ languageSettings:
       - /^\s*```[\s\S]*?^\s*```/gmx
       - /`[\s\S]+`/gmx
 ignoreWords:
+  - autoremove
+  - containerfile
+  - containerignore
+  - dotenv
   - Durandal
+  - ignorefile
   - MADR
+  - noninteractive
   - Nygard
   - POSIX
   - ericis
@@ -40,6 +46,9 @@ ignoreWords:
   - shellguide
   - subdir
   - textbox
-  - todos
+  - unamestr
   - viewports
   - WORKDIR
+words:
+  - smol
+  - todos

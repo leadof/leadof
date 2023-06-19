@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require("path").join(__dirname, "./coverage/app"),
+      dir: require("path").join(__dirname, "./test-results/unit_test/"),
       subdir: ".",
       reporters: [{ type: "html" }, { type: "text-summary" }],
       check: {
@@ -42,7 +42,13 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ["ChromeHeadless"],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"],
+      },
+    },
+    browsers: ["ChromeHeadlessNoSandbox"],
     singleRun: false,
     restartOnFileChange: true,
   });

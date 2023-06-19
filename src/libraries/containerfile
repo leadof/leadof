@@ -1,4 +1,4 @@
-FROM docker.io/library/debian:11.7-slim
+FROM docker.io/redhat/ubi8-micro
 
 RUN mkdir -p /usr/src/libraries/
 

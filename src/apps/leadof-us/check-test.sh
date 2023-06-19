@@ -8,13 +8,13 @@ set -e
 . ../../libraries/shell/_node.sh
 
 #######################################
-# Installs the application.
+# Tests the application.
 # Arguments:
 #   None
 #######################################
-install() {
-  image_tag="leadof-us/web:latest"
-  target_name="web"
+test() {
+  image_tag="leadof-us/test:latest"
+  target_name="unit_test"
 
   podman build \
     --tag "${image_tag}" \
@@ -30,8 +30,20 @@ install() {
     --build-arg NPM_REGISTRY_URL_CONFIG="${NPM_REGISTRY_URL_CONFIG}" \
     --build-arg NPM_REGISTRY_AUTH="${NPM_REGISTRY_AUTH}" \
     --build-arg NPM_REGISTRY_AUTH_TOKEN="${NPM_REGISTRY_AUTH_TOKEN}" \
-    --target ${target_name} \
+    --target "${target_name}" \
     .
+
+  image_name="${target_name}_results"
+
+  echo "Copying output files from container \"${image_name}\"..."
+  # copy output files from container
+  podman run --name ${image_name} --detach ${image_tag} sleep 1000
+  mkdir -p ./test-results/${target_name}/
+  podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
+  mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
+  rm -rf ./test-results/${target_name}/test-results/
+  podman rm --force ${image_name}
+  echo "Successfully copied output files from container \"${image_name}\"."
 }
 
 #######################################
@@ -40,7 +52,7 @@ install() {
 #   None
 #######################################
 main() {
-  install
+  test
 }
 
 # env vars must be global to the script

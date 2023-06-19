@@ -14,6 +14,11 @@ prerequisites:
 .PHONY: pre
 pre: prerequisites
 
+.PHONY: install-libraries
+install-libraries:
+	@cd ./src/libraries/ \
+	&& "$(MAKE)"
+
 .PHONY: format
 format:
 	@pnpm format
@@ -33,9 +38,9 @@ spellcheck: check-spelling
 check-quick: check-formatting check-spelling
 
 .PHONY: check
-check: check-quick
-	@pnpm --recursive lint
-	@pnpm --recursive test
+check: check-quick install-libraries
+	@cd ./src/apps/leadof-us/ \
+	&& "$(MAKE)" check
 
 .PHONY: install
 install:

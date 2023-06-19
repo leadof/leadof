@@ -23,10 +23,6 @@ on:
 
 env:
   CI: true
-  # Should match ".nvmrc" file.
-  NODE_VERSION: 18.16.0
-  # Should match ".pnpm-version" file.
-  PNPM_VERSION: 8.6.1
   PROJECT_PATH: ./src/apps/leadof-us/
 
 jobs:
@@ -39,58 +35,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Setup the environment with a specific version of NodeJS.
-      - name: Install node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      # Setup the environment with a specific version of `pnpm`.
-      - name: Install pnpm ${{ env.PNPM_VERSION }}
-        uses: pnpm/action-setup@v2
-        id: pnpm-install
-        with:
-          version: ${{ env.PNPM_VERSION }}
-          run_install: false
-
-      # Determine where `pnpm` will store files in order to cache them.
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      # Setup the `pnpm` cache.
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Prerequisites
-        run: |
-          chmod +x ./prerequisites.sh
-          make prerequisites
+      - name: Install libraries
+        run: make install-libraries
 
       - name: Make
         # change to the project directory
         working-directory: ${{ env.PROJECT_PATH }}
         run: make
 
-      - name: Upload code-coverage
+      - name: Upload e2e
         uses: actions/upload-artifact@v3
         with:
-          name: code-coverage
-          path: ${{ env.PROJECT_PATH }}coverage/
+          name: e2e
+          path: ${{ env.PROJECT_PATH }}test-results/e2e/
           if-no-files-found: error
 
-      - name: Upload playwright
+      - name: Upload e2e-tests
         uses: actions/upload-artifact@v3
         with:
-          name: playwright
-          path: |
-            ${{ env.PROJECT_PATH }}playwright-report/
-            ${{ env.PROJECT_PATH }}lighthouse-report.html
+          name: e2e-tests
+          path: ${{ env.PROJECT_PATH }}test-results/e2e/
           if-no-files-found: error
