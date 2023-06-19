@@ -39,6 +39,11 @@ jobs:
         run: |
           podman --version
 
+          sudo apt-get update -qq
+          sudo apt-get -qqy upgrade
+
+          DEBIAN_FRONTEND=noninteractive sudo apt-get remove -qqy podman
+
           sudo mkdir -p /etc/apt/keyrings
 
           # Debian Testing/Bookworm
@@ -51,8 +56,6 @@ jobs:
             | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list > /dev/null
 
           # Install Podman
-          sudo apt-get update -qq
-          sudo apt-get -qqy upgrade
           DEBIAN_FRONTEND=noninteractive sudo apt-get install -qqy --no-install-recommends podman
 
           podman --version
