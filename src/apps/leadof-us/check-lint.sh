@@ -2,7 +2,7 @@
 #
 # Initializes the project for development.
 
-set -ex
+set -e
 
 . ../../libraries/shell/_command.sh
 . ../../libraries/shell/_node.sh
@@ -22,9 +22,9 @@ lint() {
     --ignorefile ./.containerignore \
     --network host \
     --build-context libraries=container-image://localhost/leadof/libraries:latest \
-    --build-arg NODE_VERSION=$(get_node_version) \
-    --build-arg NPM_VERSION=$(get_npm_version) \
-    --build-arg PNPM_VERSION=$(get_pnpm_version) \
+    --build-arg NODE_VERSION=$(get_target_node_version) \
+    --build-arg NPM_VERSION=$(get_target_npm_version) \
+    --build-arg PNPM_VERSION=$(get_target_pnpm_version) \
     --build-arg NPM_REGISTRY_URL="${NPM_REGISTRY_URL}" \
     --build-arg NPM_REGISTRY_OLD_URL_CONFIG="${NPM_REGISTRY_OLD_URL_CONFIG}" \
     --build-arg NPM_REGISTRY_URL_CONFIG="${NPM_REGISTRY_URL_CONFIG}" \
