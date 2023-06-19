@@ -3,12 +3,8 @@ node_modules
 .angular
 coverage
 dist
-playwright-report
+test-results
 www
-
-# lighthouse performance reports
-lighthouse-report.html
-performance-report*
 
 # pnpm files
 pnpm-lock.yaml

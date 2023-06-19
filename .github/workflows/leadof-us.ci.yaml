@@ -43,16 +43,9 @@ jobs:
         working-directory: ${{ env.PROJECT_PATH }}
         run: make
 
-      - name: Upload e2e
+      - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
-          name: e2e
-          path: ${{ env.PROJECT_PATH }}test-results/e2e/
-          if-no-files-found: error
-
-      - name: Upload e2e-tests
-        uses: actions/upload-artifact@v3
-        with:
-          name: e2e-tests
-          path: ${{ env.PROJECT_PATH }}test-results/e2e/
+          name: test-results
+          path: ${{ env.PROJECT_PATH }}test-results/
           if-no-files-found: error
