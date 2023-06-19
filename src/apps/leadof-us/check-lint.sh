@@ -2,7 +2,7 @@
 #
 # Initializes the project for development.
 
-set -e
+set -ex
 
 . ../../libraries/shell/_command.sh
 . ../../libraries/shell/_node.sh
