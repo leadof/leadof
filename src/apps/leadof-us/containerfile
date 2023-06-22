@@ -1,20 +1,3 @@
-ARG NODE_VERSION="18.16.0"
-ARG IMAGE_NODE_OS="bullseye-slim"
-ARG IMAGE_NODE_TAG="docker.io/library/node:${NODE_VERSION}-${IMAGE_NODE_OS}"
-
-ARG PLAYWRIGHT_VERSION="1.34.3"
-ARG IMAGE_PLAYWRIGHT_OS="jammy"
-ARG IMAGE_PLAYWRIGHT_TAG="mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-${IMAGE_PLAYWRIGHT_OS}"
-
-ARG NPM_VERSION="9.7.1"
-ARG PNPM_VERSION="8.6.2"
-
-ARG NPM_REGISTRY_URL="http://localhost:8081/repository/npm/"
-ARG NPM_REGISTRY_OLD_URL_CONFIG=""
-ARG NPM_REGISTRY_URL_CONFIG="//localhost:8081/repository/npm/"
-ARG NPM_REGISTRY_AUTH="ZGV2Om1GMjN4N3BxVjlOdVdxTg=="
-ARG NPM_REGISTRY_AUTH_TOKEN="NpmToken.ef6bf8bf-8bf6-3847-8241-7b0d59d9adde"
-
 ################################################################################
 # Layer target: Smallest image
 ################################################################################
@@ -23,33 +6,7 @@ FROM docker.io/redhat/ubi8-micro as smol
 ################################################################################
 # Layer target: node image
 ################################################################################
-FROM ${IMAGE_NODE_TAG} as node
-
-ARG NPM_VERSION
-ARG PNPM_VERSION
-ARG NPM_REGISTRY_URL
-ARG NPM_REGISTRY_OLD_URL_CONFIG
-ARG NPM_REGISTRY_URL_CONFIG
-ARG NPM_REGISTRY_AUTH
-ARG NPM_REGISTRY_AUTH_TOKEN
-
-# Flag as a Continuous Integration server.
-ENV CI=true
-
-# Flag that automation can use to detect if execution is hosted in a container.
-ENV IN_CONTAINER=true
-
-COPY ./configure-npm.sh /usr/local/bin/configure-npm
-
-RUN chmod +x /usr/local/bin/configure-npm \
-  && configure-npm \
-  "${NPM_VERSION}" \
-  "${PNPM_VERSION}" \
-  "${NPM_REGISTRY_URL}" \
-  "${NPM_REGISTRY_OLD_URL_CONFIG}" \
-  "${NPM_REGISTRY_URL_CONFIG}" \
-  "${NPM_REGISTRY_AUTH}" \
-  "${NPM_REGISTRY_AUTH_TOKEN}"
+FROM localhost/leadof/node:latest as node
 
 ################################################################################
 # Layer target: project dependencies
@@ -126,20 +83,7 @@ VOLUME [ "/usr/src/test-results/" ]
 ################################################################################
 # Layer target: node with chrome browser
 ################################################################################
-FROM node as node_chrome
-
-WORKDIR /tmp/
-
-RUN apt-get update -qq \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends wget ca-certificates \
-  && wget --no-verbose https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends ./google-chrome-stable_current_amd64.deb \
-  && rm -f ./google-chrome-stable_current_amd64.deb \
-  # clean up docker layer
-  # https://docs.docker.com/develop/develop-images/dockerfile_best_practices/#run
-  && rm -rf /var/lib/apt/lists/*
-
-ENV CHROME_BIN=/usr/bin/google-chrome
+FROM localhost/leadof/node-chrome:latest as node_chrome
 
 ################################################################################
 # Layer target: build the application
@@ -196,33 +140,7 @@ VOLUME [ "/usr/src/app/dist/app/" ]
 # All tags: https://mcr.microsoft.com/en-us/product/playwright/about
 # IMPORTANT: version must match "@playwright/test" in "./package.json"
 ################################################################################
-FROM ${IMAGE_PLAYWRIGHT_TAG} as playwright
-
-ARG NPM_VERSION
-ARG PNPM_VERSION
-ARG NPM_REGISTRY_URL
-ARG NPM_REGISTRY_OLD_URL_CONFIG
-ARG NPM_REGISTRY_URL_CONFIG
-ARG NPM_REGISTRY_AUTH
-ARG NPM_REGISTRY_AUTH_TOKEN
-
-# Flag as a Continuous Integration server.
-ENV CI=true
-
-# Flag that automation can use to detect if execution is hosted in a container.
-ENV IN_CONTAINER=true
-
-COPY ./configure-npm.sh /usr/local/bin/configure-npm
-
-RUN chmod +x /usr/local/bin/configure-npm \
-  && configure-npm \
-  "${NPM_VERSION}" \
-  "${PNPM_VERSION}" \
-  "${NPM_REGISTRY_URL}" \
-  "${NPM_REGISTRY_OLD_URL_CONFIG}" \
-  "${NPM_REGISTRY_URL_CONFIG}" \
-  "${NPM_REGISTRY_AUTH}" \
-  "${NPM_REGISTRY_AUTH_TOKEN}"
+FROM localhost/leadof/playwright:latest as playwright
 
 ################################################################################
 # Layer target: playwright with dependencies

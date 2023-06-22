@@ -1,0 +1,49 @@
+ARG NODE_VERSION="18.16.0"
+ARG IMAGE_NODE_OS="bullseye-slim"
+ARG IMAGE_NODE_TAG="docker.io/library/node:${NODE_VERSION}-${IMAGE_NODE_OS}"
+
+ARG NPM_VERSION="9.7.1"
+ARG PNPM_VERSION="8.6.2"
+
+ARG NPM_REGISTRY_URL=""
+ARG NPM_REGISTRY_OLD_URL_CONFIG=""
+ARG NPM_REGISTRY_URL_CONFIG=""
+ARG NPM_REGISTRY_AUTH=""
+ARG NPM_REGISTRY_AUTH_TOKEN=""
+
+ARG PLAYWRIGHT_VERSION="1.34.3"
+ARG IMAGE_PLAYWRIGHT_OS="jammy"
+ARG IMAGE_PLAYWRIGHT_TAG="mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-${IMAGE_PLAYWRIGHT_OS}"
+
+################################################################################
+# Layer target: base for playwright browser automation
+# All tags: https://mcr.microsoft.com/en-us/product/playwright/about
+# IMPORTANT: version must match "@playwright/test" in "./package.json"
+################################################################################
+FROM ${IMAGE_PLAYWRIGHT_TAG} as playwright
+
+ARG NPM_VERSION
+ARG PNPM_VERSION
+ARG NPM_REGISTRY_URL
+ARG NPM_REGISTRY_OLD_URL_CONFIG
+ARG NPM_REGISTRY_URL_CONFIG
+ARG NPM_REGISTRY_AUTH
+ARG NPM_REGISTRY_AUTH_TOKEN
+
+# Flag as a Continuous Integration server.
+ENV CI=true
+
+# Flag that automation can use to detect if execution is hosted in a container.
+ENV IN_CONTAINER=true
+
+COPY ./configure-npm.sh /usr/local/bin/configure-npm
+
+RUN chmod +x /usr/local/bin/configure-npm \
+  && configure-npm \
+  "${NPM_VERSION}" \
+  "${PNPM_VERSION}" \
+  "${NPM_REGISTRY_URL}" \
+  "${NPM_REGISTRY_OLD_URL_CONFIG}" \
+  "${NPM_REGISTRY_URL_CONFIG}" \
+  "${NPM_REGISTRY_AUTH}" \
+  "${NPM_REGISTRY_AUTH_TOKEN}"

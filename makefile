@@ -14,6 +14,11 @@ prerequisites:
 .PHONY: pre
 pre: prerequisites
 
+.PHONY: install-containers
+install-containers:
+	@cd ./src/containers/ \
+	&& "$(MAKE)"
+
 .PHONY: install-libraries
 install-libraries:
 	@cd ./src/libraries/ \

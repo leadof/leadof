@@ -1,0 +1,7 @@
+.env
+.npm-version
+.nvmrc
+.pnpm-version
+containerfile
+install.sh
+makefile
