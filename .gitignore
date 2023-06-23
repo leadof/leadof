@@ -1,3 +1,6 @@
+.wireit
+
+dist
 node_modules
 
 .env

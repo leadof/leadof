@@ -1,0 +1,35 @@
+{
+  "name": "@leadof-containers/node-chrome",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "install": "wireit",
+    "clean": "wireit"
+  },
+  "wireit": {
+    "install": {
+      "command": "make",
+      "dependencies": [
+        "../node:install"
+      ],
+      "files": [
+        "*.sh",
+        "./.containerignore",
+        "./containerfile",
+        "./makefile"
+      ],
+      "output": [
+        "dist/*.tar.gz"
+      ]
+    },
+    "clean": {
+      "command": "make clean"
+    }
+  },
+  "devDependencies": {
+    "wireit": "^0.9.5"
+  }
+}

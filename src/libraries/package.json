@@ -1,0 +1,32 @@
+{
+  "name": "@leadof/libraries",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "install": "wireit",
+    "clean": "wireit"
+  },
+  "wireit": {
+    "install": {
+      "command": "make",
+      "files": [
+        "./shell/*",
+        "*.sh",
+        "./containerfile",
+        "./makefile"
+      ],
+      "output": [
+        "dist/*.tar.gz"
+      ]
+    },
+    "clean": {
+      "command": "make clean"
+    }
+  },
+  "devDependencies": {
+    "wireit": "^0.9.5"
+  }
+}

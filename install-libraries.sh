@@ -1,29 +1,21 @@
 #!/bin/sh
 #
-# Executes end-to-end tests.
+# Installs libraries.
 
 set -e
 
-. ../../libraries/shell/_command.sh
-. ../../libraries/shell/_node.sh
-
 #######################################
-# Runs end-to-end tests.
+# Installs libraries.
 # Arguments:
 #   None
 #######################################
-check_e2e() {
-  image_tag="leadof-us/e2e:latest"
-  target_name="e2e"
+install() {
+  echo ''
+  echo 'Installing libraries...'
 
-  podman build \
-    --tag "${image_tag}" \
-    --file ./check-e2e.containerfile \
-    --ignorefile ./.containerignore \
-    --network host \
-    --build-context dependencies=container-image://localhost/leadof-us/dependencies:latest \
-    --target "${target_name}" \
-    .
+  cd ./src/libraries/
+  make
+  cd -
 
   image_name="${target_name}_results"
 
@@ -47,10 +39,7 @@ check_e2e() {
 #   None
 #######################################
 main() {
-  check_e2e
+  install
 }
-
-# env vars must be global to the script
-dotenv
 
 main

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Installs the application.
+# Installs the application's dependencies.
 
 set -e
 
@@ -13,15 +13,14 @@ set -e
 #   None
 #######################################
 install() {
-  image_tag="leadof-us/web:latest"
-  target_name="web"
+  image_tag="leadof-us/dependencies:latest"
+  target_name="all_dependencies"
 
   podman build \
     --tag "${image_tag}" \
-    --file ./containerfile \
+    --file ./dependencies.containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --build-context dependencies=container-image://localhost/leadof-us/dependencies:latest \
     --target ${target_name} \
     .
 }

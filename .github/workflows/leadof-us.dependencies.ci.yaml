@@ -1,12 +1,9 @@
 ################################################################################
-# Continuous integration for leadof.us web application.
+# Continuous integration for leadof.us web application dependencies.
 ################################################################################
-name: apps.leadof-us.ci
+name: apps.leadof-us.dependencies.ci
 
 on:
-  workflow_run:
-    workflows: [apps.leadof-us.dependencies.ci]
-    types: [completed]
   push:
     branches: [main]
   pull_request:
@@ -17,9 +14,9 @@ on:
       - synchronize
     paths:
       # run this build when this file changes
-      - ".github/workflows/leadof-us.ci.yaml"
+      - ".github/workflows/leadof-us.dependencies.ci.yaml"
       # run this build when the source code changes
-      - "src/apps/leadof-us/**"
+      - "src/apps/leadof-us/package.json"
 
   # Enable manual trigger for workflow.
   workflow_dispatch:
@@ -34,8 +31,6 @@ jobs:
     name: apps.leadof-us.ci
 
     runs-on: ubuntu-latest
-
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v3

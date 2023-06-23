@@ -22,7 +22,8 @@ install-containers:
 .PHONY: install-libraries
 install-libraries:
 	@cd ./src/libraries/ \
-	&& "$(MAKE)"
+	&& "$(MAKE)" \
+	@podman run
 
 .PHONY: format
 format:
@@ -50,6 +51,16 @@ check: check-quick install-libraries
 .PHONY: install
 install:
 	@pnpm --recursive build
+
+.PHONY: nexus
+nexus:
+	@podman pull docker.io/sonatype/nexus3
+	@podman run \
+		--name nexus \
+		--detach \
+		--publish 8081:8081 \
+		--volume nexus-data:/nexus-data \
+		docker.io/sonatype/nexus3
 
 .PHONY: decision
 decision:

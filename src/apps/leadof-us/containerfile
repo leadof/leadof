@@ -9,52 +9,27 @@ FROM docker.io/redhat/ubi8-micro as smol
 FROM localhost/leadof/node:latest as node
 
 ################################################################################
-# Layer target: project dependencies
+# Layer target: contains project src
 ################################################################################
-FROM node as dependencies
+FROM node as src
 
-RUN mkdir -p /tmp/dependencies/
+RUN mkdir -p /usr/src/libraries/ \
+  && mkdir -p /usr/src/apps/leadof-us/node_modules/
 
-# application package (not the root)
-COPY ./package.json /tmp/dependencies/
-
-WORKDIR /tmp/dependencies/
-
-RUN pnpm install \
-  && rm -f ./package.json ./pnpm-lock.yaml
-
-VOLUME [ "/tmp/dependencies/" ]
-
-################################################################################
-# Layer target: contains project libraries
-################################################################################
-FROM node as node_libraries
-
-RUN mkdir -p /usr/src/libraries/
-
-# Expects: `--build-context libraries=container-image://localhost/leadof/libraries:latest`
-COPY --from=libraries /usr/src/libraries/ /usr/src/libraries/
+COPY --from=dependencies /usr/src/libraries/ /usr/src/libraries/
 
 RUN chmod +x /usr/src/libraries/shell/executable
 
-VOLUME [ "/usr/src/libraries/" ]
-
-################################################################################
-# Layer target: contains project src
-################################################################################
-FROM node_libraries as src
-
-RUN mkdir -p /usr/src/apps/leadof-us/node_modules/
-
-COPY --from=dependencies /tmp/dependencies/node_modules/ /usr/src/apps/leadof-us/node_modules/
+COPY --from=dependencies /usr/src/dependencies/web/node_modules/ /usr/src/apps/leadof-us/node_modules/
 
 COPY . /usr/src/apps/leadof-us/
 
 WORKDIR /usr/src/apps/leadof-us/
 
 # make all shell scripts executable
-RUN . /usr/src/libraries/shell/executable \
-  && rm -rf /tmp/dependencies/
+RUN . /usr/src/libraries/shell/executable
+
+VOLUME [ "/usr/src/apps/leadof-us/" ]
 
 ################################################################################
 # Layer target: lint the application
@@ -63,9 +38,7 @@ FROM src as run_lint
 
 RUN mkdir -p /usr/src/test-results/ \
   && mkdir -p ./test-results/lint/ \
-  && pnpm lint \
-  && echo "Linting succeeded: $(date)" > /usr/src/test-results/lint-results.txt \
-  && rm -rf /usr/src/apps/
+  && pnpm lint 2>&1 | tee /usr/src/test-results/lint-results.txt
 
 WORKDIR /usr/src/test-results/
 
@@ -97,12 +70,7 @@ WORKDIR /usr/src/apps/leadof-us/
 RUN mkdir -p /usr/src/test-results/ \
   && mkdir -p ./test-results/unit_test/ \
   && pnpm test \
-  && mv ./test-results/unit_test/* /usr/src/test-results/ \
-  && rm -f /usr/src/test-results/.gitkeep \
-  && rm -rf /usr/src/apps/ \
-  && apt-get update -qq \
-  && DEBIAN_FRONTEND=noninteractive apt-get remove -qqy google-chrome-stable \
-  && DEBIAN_FRONTEND=noninteractive apt-get autoremove -qqy
+  && mv ./test-results/unit_test/* /usr/src/test-results/
 
 WORKDIR /usr/src/test-results/
 
@@ -134,73 +102,6 @@ FROM smol as build
 COPY --from=run_build /usr/src/apps/leadof-us/dist/app/ /usr/src/app/dist/app/
 
 VOLUME [ "/usr/src/app/dist/app/" ]
-
-################################################################################
-# Layer target: base for playwright browser automation
-# All tags: https://mcr.microsoft.com/en-us/product/playwright/about
-# IMPORTANT: version must match "@playwright/test" in "./package.json"
-################################################################################
-FROM localhost/leadof/playwright:latest as playwright
-
-################################################################################
-# Layer target: playwright with dependencies
-################################################################################
-FROM playwright as playwright_dependencies
-
-RUN mkdir -p /tmp/dependencies/
-
-COPY --from=dependencies /tmp/dependencies/ /tmp/dependencies/
-
-COPY ./package.json /tmp/dependencies/package.json
-
-WORKDIR /tmp/dependencies/
-
-RUN pnpm install \
-  && pnpm playwright install \
-  && rm -f ./package.json ./pnpm-lock.yaml
-
-VOLUME [ "/tmp/dependencies/" ]
-
-################################################################################
-# Layer target: source code for playwright tests
-################################################################################
-FROM playwright as playwright_src
-
-RUN mkdir -p /usr/src/apps/leadof-us/
-
-COPY --from=src /usr/src/ /usr/src/
-
-RUN rm -rf /usr/src/apps/leadof-us/node_modules/
-
-COPY --from=playwright_dependencies /tmp/dependencies/node_modules/ /usr/src/apps/leadof-us/node_modules/
-
-WORKDIR /usr/src/apps/leadof-us/
-
-################################################################################
-# Layer target: run end-to-end tests
-################################################################################
-FROM playwright_src as run_e2e
-
-RUN mkdir -p /usr/src/test-results/ \
-  && mkdir -p ./test-results/e2e/ \
-  && pnpm playwright test \
-  && mv ./test-results/e2e/lighthouse.html /usr/src/test-results/ \
-  && mv ./test-results/e2e/playwright/index.html /usr/src/test-results/playwright.html \
-  && rm -rf /tmp/dependencies/ \
-  && rm -rf /usr/src/apps/
-
-WORKDIR /usr/src/test-results/
-
-VOLUME [ "/usr/src/test-results/" ]
-
-################################################################################
-# Layer target: end-to-end test results
-################################################################################
-FROM smol as e2e
-
-COPY --from=run_e2e /usr/src/test-results/ /usr/src/test-results/
-
-VOLUME [ "/usr/src/test-results/" ]
 
 ################################################################################
 # Layer target: prepare a web production image

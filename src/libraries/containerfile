@@ -1,7 +1,14 @@
-FROM docker.io/redhat/ubi8-micro
+FROM docker.io/alpine:3.14
 
-RUN mkdir -p /usr/src/libraries/
+RUN mkdir -p /usr/src/libraries/ \
+  && mkdir -p /usr/src/dist/
 
 COPY . /usr/src/libraries/
 
-VOLUME [ "/usr/src/libraries" ]
+WORKDIR /usr/src/
+
+# archive and compress
+# cleanup source
+RUN tar -czvf /usr/src/dist/libraries_shell-scripts.tar.gz ./libraries/shell/
+
+VOLUME [ "/usr/src/libraries/", "/usr/src/dist/" ]

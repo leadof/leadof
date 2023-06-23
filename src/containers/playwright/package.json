@@ -1,0 +1,36 @@
+{
+  "name": "@leadof-containers/playwright",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "install": "wireit",
+    "clean": "wireit"
+  },
+  "wireit": {
+    "install": {
+      "command": "make",
+      "files": [
+        "*.sh",
+        "./.containerignore",
+        "./.env",
+        "./.npm-version",
+        "./.nvmrc",
+        "./.pnpm-version",
+        "./containerfile",
+        "./makefile"
+      ],
+      "output": [
+        "dist/*.tar.gz"
+      ]
+    },
+    "clean": {
+      "command": "make clean"
+    }
+  },
+  "devDependencies": {
+    "wireit": "^0.9.5"
+  }
+}

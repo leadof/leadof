@@ -5,3 +5,11 @@ all: install
 .PHONY: install
 install:
 	@./install.sh
+
+.PHONY: clean
+clean:
+	@rm -rf ./dist/ ./.wireit/*/cache ./node_modules/
+
+.PHONY: reset
+reset: clean
+	@rm -rf ./.wireit/

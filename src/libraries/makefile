@@ -4,7 +4,12 @@ all: install
 
 .PHONY: install
 install:
-	@podman build \
-		--tag leadof/libraries:latest \
-		--file ./containerfile \
-		.
+	@./install.sh
+
+.PHONY: clean
+clean:
+	@rm -rf ./dist/ ./.wireit/*/cache ./node_modules/
+
+.PHONY: reset
+reset: clean
+	@rm -rf ./.wireit/

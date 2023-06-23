@@ -30,6 +30,10 @@ check-performance:
 .PHONY: check
 check: check-lint check-test check-e2e
 
+.PHONY: install-dependencies
+install-dependencies:
+	@./install-dependencies.sh
+
 .PHONY: install
 install:
 	@./install.sh

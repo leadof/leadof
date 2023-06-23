@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Initializes the project for development.
+# Starts the web application.
 
 set -e
 

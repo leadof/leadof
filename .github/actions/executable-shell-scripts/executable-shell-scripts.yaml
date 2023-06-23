@@ -1,0 +1,10 @@
+name: "executable-shell-scripts"
+description: "Ensures that all *.sh scripts in a directory are executable"
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: chmod +x ./executable.sh
+
+    - shell: bash
+      run: ./executable.sh
