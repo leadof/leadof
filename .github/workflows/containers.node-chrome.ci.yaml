@@ -27,6 +27,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  CI: true
   CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
   CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
 
@@ -36,8 +37,6 @@ jobs:
     name: containers.node-chrome.ci
 
     runs-on: ubuntu-latest
-
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v3
