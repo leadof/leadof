@@ -6,6 +6,11 @@ name: apps.leadof-us.dependencies.ci
 on:
   push:
     branches: [main]
+    paths:
+      # run this build when this file changes
+      - ".github/workflows/leadof-us.dependencies.ci.yaml"
+      # run this build when the source code changes
+      - "src/apps/leadof-us/package.json"
   pull_request:
     types:
       - edited

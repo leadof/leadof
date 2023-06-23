@@ -6,6 +6,10 @@ all: install
 install:
 	@./install.sh
 
+.PHONY: deploy
+deploy: install
+	@./deploy.sh
+
 .PHONY: clean
 clean:
 	@rm -rf ./dist/ ./.wireit/*/cache ./node_modules/

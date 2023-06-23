@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Initializes the project for development.
+# Installs the container.
 
 set -e
 
@@ -32,14 +32,16 @@ install() {
     --target ${target_name} \
     .
 
-  archive_file_path="./dist/leadof-node.tar"
+  dist_tag="ghcr.io/leadof/${image_tag}"
+
+  podman tag "${image_tag}" "${dist_tag}"
+
   echo "Generating distribution files..."
   if [ -d "./dist/" ]; then
     rm -rf ./dist/
   fi
   mkdir -p ./dist/
-  podman save --format oci-archive --output ${archive_file_path} "${image_tag}"
-  gzip ${archive_file_path}
+  podman inspect "${image_tag}" --format "{{.Digest}}" >./dist/container-digest.txt
   echo "Successfully generated distribution files."
 }
 

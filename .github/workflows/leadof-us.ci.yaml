@@ -9,6 +9,11 @@ on:
     types: [completed]
   push:
     branches: [main]
+    paths:
+      # run this build when this file changes
+      - ".github/workflows/leadof-us.ci.yaml"
+      # run this build when the source code changes
+      - "src/apps/leadof-us/**"
   pull_request:
     types:
       - edited
