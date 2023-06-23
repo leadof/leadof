@@ -24,6 +24,7 @@ ignoreWords:
   - autoremove
   - containerfile
   - containerignore
+  - czvf
   - dotenv
   - Durandal
   - ignorefile
