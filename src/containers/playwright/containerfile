@@ -1,9 +1,5 @@
-ARG NODE_VERSION="18.16.0"
-ARG IMAGE_NODE_OS="bullseye-slim"
-ARG IMAGE_NODE_TAG="docker.io/library/node:${NODE_VERSION}-${IMAGE_NODE_OS}"
-
-ARG NPM_VERSION="9.7.1"
-ARG PNPM_VERSION="8.6.2"
+ARG NPM_VERSION="9.7.2"
+ARG PNPM_VERSION="8.6.3"
 
 ARG NPM_REGISTRY_URL=""
 ARG NPM_REGISTRY_OLD_URL_CONFIG=""
@@ -11,9 +7,12 @@ ARG NPM_REGISTRY_URL_CONFIG=""
 ARG NPM_REGISTRY_AUTH=""
 ARG NPM_REGISTRY_AUTH_TOKEN=""
 
-ARG PLAYWRIGHT_VERSION="1.34.3"
+ARG PLAYWRIGHT_VERSION="1.35.0"
 ARG IMAGE_PLAYWRIGHT_OS="jammy"
 ARG IMAGE_PLAYWRIGHT_TAG="mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-${IMAGE_PLAYWRIGHT_OS}"
+
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
 
 ################################################################################
 # Layer target: base for playwright browser automation
@@ -29,6 +28,9 @@ ARG NPM_REGISTRY_OLD_URL_CONFIG
 ARG NPM_REGISTRY_URL_CONFIG
 ARG NPM_REGISTRY_AUTH
 ARG NPM_REGISTRY_AUTH_TOKEN
+
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
 
 # Flag as a Continuous Integration server.
 ENV CI=true
@@ -47,3 +49,7 @@ RUN chmod +x /usr/local/bin/configure-npm \
   "${NPM_REGISTRY_URL_CONFIG}" \
   "${NPM_REGISTRY_AUTH}" \
   "${NPM_REGISTRY_AUTH_TOKEN}"
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "Playwright for web browser automation and end-to-end testing"

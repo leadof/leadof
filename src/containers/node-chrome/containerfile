@@ -1,3 +1,6 @@
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
+
 ################################################################################
 # Layer target: node image
 ################################################################################
@@ -7,6 +10,9 @@ FROM ghcr.io/leadof/leadof/node:latest as node
 # Layer target: node with chrome browser
 ################################################################################
 FROM node as node_chrome
+
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
 
 WORKDIR /tmp/
 
@@ -20,3 +26,7 @@ RUN apt-get update -qq \
   && rm -rf /var/lib/apt/lists/*
 
 ENV CHROME_BIN=/usr/bin/google-chrome
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "NodeJS and the Google Chrome browser for web browser automation"

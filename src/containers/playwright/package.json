@@ -6,11 +6,11 @@
   "author": "",
   "license": "UNLICENSED",
   "scripts": {
-    "install": "wireit",
+    "build": "wireit",
     "clean": "wireit"
   },
   "wireit": {
-    "install": {
+    "build": {
       "command": "make",
       "files": [
         "*.sh",
