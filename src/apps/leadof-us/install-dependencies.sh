@@ -12,7 +12,7 @@ set -e
 #   None
 #######################################
 install() {
-  image_tag="leadof-us/dependencies:latest"
+  image_tag="leadof/us-dependencies:latest"
   target_name="all_dependencies"
 
   cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
