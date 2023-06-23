@@ -4,7 +4,6 @@ runs:
   using: "composite"
   steps:
     - shell: bash
-      run: chmod +x ./executable.sh
-
-    - shell: bash
-      run: ./executable.sh
+      run: |
+        chmod +x .github/actions/executable-shell-scripts/executable.sh \
+        && . .github/actions/executable-shell-scripts/executable.sh
