@@ -4,11 +4,16 @@
 FROM docker.io/redhat/ubi8-micro as smol
 
 ################################################################################
+# Layer target: application dependencies
+################################################################################
+FROM ghcr.io/leadof/leadof/us-dependencies:latest as dependencies
+
+################################################################################
 # Layer target: base for playwright browser automation
 # All tags: https://mcr.microsoft.com/en-us/product/playwright/about
 # IMPORTANT: version must match "@playwright/test" in "./package.json"
 ################################################################################
-FROM localhost/leadof/playwright:latest as playwright
+FROM ghcr.io/leadof/leadof/playwright:latest as playwright
 
 ################################################################################
 # Layer target: source code for playwright tests
@@ -20,8 +25,6 @@ RUN mkdir -p /usr/src/libraries/ \
 
 COPY --from=dependencies /usr/src/libraries/ /usr/src/libraries/
 
-RUN chmod +x /usr/src/libraries/shell/executable
-
 COPY --from=dependencies /usr/src/dependencies/playwright/node_modules/ /usr/src/apps/leadof-us/node_modules/
 
 COPY . /usr/src/apps/leadof-us/
@@ -29,7 +32,8 @@ COPY . /usr/src/apps/leadof-us/
 WORKDIR /usr/src/apps/leadof-us/
 
 # make all shell scripts executable
-RUN . /usr/src/libraries/shell/executable
+RUN chmod +x /usr/src/libraries/shell/executable \
+  && . /usr/src/libraries/shell/executable
 
 VOLUME [ "/usr/src/apps/leadof-us/" ]
 
