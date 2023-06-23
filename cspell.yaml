@@ -41,6 +41,7 @@ ignoreWords:
   - ngsw
   - nguniversal
   - nvmrc
+  - opencontainers
   - pnpmrc
   - shellguide
   - subdir
