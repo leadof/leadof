@@ -53,7 +53,9 @@ jobs:
       - name: Make
         # change to the project directory
         working-directory: ${{ env.PROJECT_PATH }}
-        run: make
+        run: |
+          printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
+          make
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
