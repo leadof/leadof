@@ -4,8 +4,8 @@
 
 set -e
 
-. ../../libraries/shell/_command.sh
-. ../../libraries/shell/_node.sh
+. ../libraries/shell/_command.sh
+. ../libraries/shell/_node.sh
 
 #######################################
 # Installs the application.
@@ -29,6 +29,8 @@ install() {
     --build-arg NPM_REGISTRY_URL_CONFIG="${NPM_REGISTRY_URL_CONFIG}" \
     --build-arg NPM_REGISTRY_AUTH="${NPM_REGISTRY_AUTH}" \
     --build-arg NPM_REGISTRY_AUTH_TOKEN="${NPM_REGISTRY_AUTH_TOKEN}" \
+    --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \
+    --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
     --target ${target_name} \
     .
 

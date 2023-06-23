@@ -4,7 +4,7 @@
 
 set -e
 
-. ../libraries/shell/_command.sh
+. ../../containers/libraries/shell/_command.sh
 
 #######################################
 # Deploys the container.
@@ -12,7 +12,7 @@ set -e
 #   None
 #######################################
 deploy() {
-  image_tag="leadof/node:latest"
+  image_tag="leadof/libraries:latest"
   dist_tag="ghcr.io/leadof/${image_tag}"
 
   cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |

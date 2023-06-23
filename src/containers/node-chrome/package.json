@@ -1,5 +1,6 @@
 {
   "name": "@leadof-containers/node-chrome",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "keywords": [],
@@ -22,7 +23,7 @@
         "./makefile"
       ],
       "output": [
-        "dist/*.tar.gz"
+        "dist/*"
       ]
     },
     "clean": {

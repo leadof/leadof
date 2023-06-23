@@ -1,7 +1,4 @@
 .env
-.npm-version
-.nvmrc
-.pnpm-version
 containerfile
 deploy.sh
 install.sh

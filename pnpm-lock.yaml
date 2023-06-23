@@ -213,6 +213,15 @@ importers:
       wait-on:
         specifier: ^7.0.1
         version: 7.0.1
+      wireit:
+        specifier: ^0.9.5
+        version: 0.9.5
+
+  src/containers/libraries:
+    devDependencies:
+      wireit:
+        specifier: ^0.9.5
+        version: 0.9.5
 
   src/containers/node:
     devDependencies:
@@ -227,12 +236,6 @@ importers:
         version: 0.9.5
 
   src/containers/playwright:
-    devDependencies:
-      wireit:
-        specifier: ^0.9.5
-        version: 0.9.5
-
-  src/libraries:
     devDependencies:
       wireit:
         specifier: ^0.9.5

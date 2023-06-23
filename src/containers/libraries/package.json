@@ -1,5 +1,5 @@
 {
-  "name": "@leadof/libraries",
+  "name": "@leadof-containers/libraries",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
@@ -19,7 +19,7 @@
         "./makefile"
       ],
       "output": [
-        "dist/*.tar.gz"
+        "dist/*"
       ]
     },
     "clean": {

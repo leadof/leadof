@@ -1,16 +1,14 @@
 ################################################################################
-# Continuous integration for leadof.us web application dependencies.
+# Continuous integration for libraries container.
 ################################################################################
-name: apps.leadof-us.dependencies.ci
+name: containers.libraries.ci
 
 on:
   push:
     branches: [main]
     paths:
-      # run this build when this file changes
-      - ".github/workflows/leadof-us.dependencies.ci.yaml"
-      # run this build when the source code changes
-      - "src/apps/leadof-us/package.json"
+      - ".github/workflows/containers.libraries.ci.yaml"
+      - "src/containers/libraries/**"
   pull_request:
     types:
       - edited
@@ -18,13 +16,8 @@ on:
       - reopened
       - synchronize
     paths:
-      # run this build when this file changes
-      - ".github/workflows/leadof-us.dependencies.ci.yaml"
-      # run this build when the source code changes
-      - "src/apps/leadof-us/package.json"
-
-  # Enable manual trigger for workflow.
-  workflow_dispatch:
+      - ".github/workflows/containers.libraries.ci.yaml"
+      - "src/containers/libraries/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -32,34 +25,32 @@ concurrency:
 
 env:
   CI: true
-  PROJECT_PATH: ./src/apps/leadof-us/
   CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
   CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
 
 jobs:
   integrate:
     # This name appears in status checks for pull requests and branch protection.
-    name: apps.leadof-us.dependencies.ci
+    name: containers.libraries.ci
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: upgrade-podman
-        uses: ./.github/actions/upgrade-podman/
       - name: executable-shell-scripts
         uses: ./.github/actions/executable-shell-scripts/
 
-      - name: Install libraries
-        run: make install-libraries
-
-      - name: Make
-        # change to the project directory
-        working-directory: ${{ env.PROJECT_PATH }}
+      - name: build
+        working-directory: ./src/containers/libraries/
+        # write the github actions secret to a file
+        # the file allows us to use `podman login --password-stdin`
+        # while it would be possible to:
+        # `echo ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} | podman login --password-stdin`
+        # using a file encourages console logging and history best practices
         run: |
           printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
-          make install-dependencies
+          make deploy
 
       - name: cleanup
         if: ${{ always() }}

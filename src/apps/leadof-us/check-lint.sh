@@ -4,8 +4,8 @@
 
 set -e
 
-. ../../libraries/shell/_command.sh
-. ../../libraries/shell/_node.sh
+. ../../containers/libraries/shell/_command.sh
+. ../../containers/libraries/shell/_node.sh
 
 #######################################
 # Lints the application.

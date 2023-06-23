@@ -4,6 +4,8 @@
 
 set -e
 
+. ../libraries/shell/_command.sh
+
 #######################################
 # Installs the application.
 # Arguments:
@@ -47,5 +49,8 @@ install() {
 main() {
   install
 }
+
+# env vars must be global to the script
+dotenv
 
 main

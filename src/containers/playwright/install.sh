@@ -4,8 +4,8 @@
 
 set -e
 
-. ../../libraries/shell/_command.sh
-. ../../libraries/shell/_node.sh
+. ../libraries/shell/_command.sh
+. ../libraries/shell/_node.sh
 
 #######################################
 # Installs the container.
@@ -21,7 +21,6 @@ install() {
     --file ./containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --build-arg NODE_VERSION=$(get_target_node_version) \
     --build-arg NPM_VERSION=$(get_target_npm_version) \
     --build-arg PNPM_VERSION=$(get_target_pnpm_version) \
     --build-arg NPM_REGISTRY_URL="${NPM_REGISTRY_URL}" \
@@ -29,6 +28,8 @@ install() {
     --build-arg NPM_REGISTRY_URL_CONFIG="${NPM_REGISTRY_URL_CONFIG}" \
     --build-arg NPM_REGISTRY_AUTH="${NPM_REGISTRY_AUTH}" \
     --build-arg NPM_REGISTRY_AUTH_TOKEN="${NPM_REGISTRY_AUTH_TOKEN}" \
+    --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \
+    --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
     --target ${target_name} \
     .
 

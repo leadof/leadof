@@ -3,5 +3,7 @@
 .nvmrc
 .pnpm-version
 containerfile
+deploy.sh
 install.sh
 makefile
+package.json

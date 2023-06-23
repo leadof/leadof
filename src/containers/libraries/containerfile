@@ -1,0 +1,24 @@
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
+
+FROM docker.io/alpine:3.14
+
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
+
+RUN mkdir -p /usr/src/libraries/ \
+  && mkdir -p /usr/src/dist/
+
+COPY . /usr/src/libraries/
+
+WORKDIR /usr/src/
+
+# archive and compress
+# cleanup source
+RUN tar -czvf /usr/src/dist/libraries_shell-scripts.tar.gz ./libraries/shell/
+
+VOLUME [ "/usr/src/libraries/", "/usr/src/dist/" ]
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "The application script libraries."

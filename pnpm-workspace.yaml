@@ -1,4 +1,3 @@
 packages:
   - "src/containers/*"
   - "src/apps/*"
-  - "src/libraries/"

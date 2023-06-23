@@ -4,8 +4,8 @@
 
 set -e
 
-. ../../libraries/shell/_command.sh
-. ../../libraries/shell/_node.sh
+. ../../containers/libraries/shell/_command.sh
+. ../../containers/libraries/shell/_node.sh
 
 #######################################
 # Installs the application.
@@ -28,6 +28,18 @@ install() {
     --network host \
     --target ${target_name} \
     .
+
+  dist_tag="ghcr.io/leadof/${image_tag}"
+
+  podman tag "${image_tag}" "${dist_tag}"
+
+  echo "Generating distribution files..."
+  if [ -d "./dist/" ]; then
+    rm -rf ./dist/
+  fi
+  mkdir -p ./dist/
+  podman inspect "${image_tag}" --format "{{.Digest}}" >./dist/dependencies_container-digest.txt
+  echo "Successfully generated distribution files."
 }
 
 #######################################

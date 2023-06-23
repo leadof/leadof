@@ -4,9 +4,14 @@
 FROM docker.io/alpine:3.14 as smol
 
 ################################################################################
+# Layer target: libraries
+################################################################################
+FROM ghcr.io/leadof/leadof/libraries:latest as libraries
+
+################################################################################
 # Layer target: node image
 ################################################################################
-FROM localhost/leadof/node:latest as node
+FROM ghcr.io/leadof/leadof/node:latest as node
 
 ################################################################################
 # Layer target: project dependencies
@@ -42,7 +47,7 @@ VOLUME [ "/usr/src/libraries/" ]
 # All tags: https://mcr.microsoft.com/en-us/product/playwright/about
 # IMPORTANT: version must match "@playwright/test" in "./package.json"
 ################################################################################
-FROM localhost/leadof/playwright:latest as playwright
+FROM ghcr.io/leadof/leadof/playwright:latest as playwright
 
 ################################################################################
 # Layer target: playwright with dependencies

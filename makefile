@@ -16,14 +16,14 @@ pre: prerequisites
 
 .PHONY: install-containers
 install-containers:
-	@cd ./src/containers/ \
-	&& "$(MAKE)"
-
-.PHONY: install-libraries
-install-libraries:
-	@cd ./src/libraries/ \
-	&& "$(MAKE)" \
-	@podman run
+ifdef CI
+	@podman pull ghcr.io/leadof/leadof/libraries:latest
+	@podman pull ghcr.io/leadof/leadof/node:latest
+	@podman pull ghcr.io/leadof/leadof/node-chrome:latest
+	@podman pull ghcr.io/leadof/leadof/playwright:latest
+else
+	@pnpm --recursive --filter "@leadof-containers/*" build
+endif
 
 .PHONY: format
 format:

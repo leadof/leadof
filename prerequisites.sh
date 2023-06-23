@@ -5,10 +5,10 @@
 set -e
 
 # import command functions
-. ./src/libraries/shell/_command.sh
+. ./src/containers/libraries/shell/_command.sh
 
 # import node functions
-. ./src/libraries/shell/_node.sh
+. ./src/containers/libraries/shell/_node.sh
 
 #######################################
 # Initializes for development.
@@ -35,7 +35,7 @@ dev_prerequisites() {
 #   None
 #######################################
 main() {
-  . ./src/libraries/shell/executable
+  . ./src/containers/libraries/shell/executable
 
   dev_prerequisites
 
