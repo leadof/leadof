@@ -34,6 +34,10 @@ check: check-lint check-test check-e2e
 install-dependencies:
 	@./install-dependencies.sh
 
+.PHONY: deploy-dependencies
+deploy-dependencies: install-dependencies
+	@./deploy-dependencies.sh
+
 .PHONY: install
 install:
 	@./install.sh
@@ -41,7 +45,6 @@ install:
 .PHONY: start
 start:
 	@./start.sh
-# @pnpm ng run app:serve-ssr:production --port 4200
 
 .PHONY: stop
 stop:
