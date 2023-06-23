@@ -19,6 +19,10 @@ on:
       - ".github/workflows/containers.node-chrome.ci.yaml"
       - "src/containers/node/**"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
   CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
