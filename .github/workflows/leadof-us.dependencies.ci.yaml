@@ -40,8 +40,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: ./.github/actions/upgrade-podman/
-      - uses: ./.github/actions/executable-shell-scripts/
+      - name: upgrade-podman
+        uses: ./.github/actions/upgrade-podman/
+      - name: executable-shell-scripts
+        uses: ./.github/actions/executable-shell-scripts/
 
       - name: Install containers
         run: make install-containers
