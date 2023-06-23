@@ -24,6 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  CI: true
   CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
   CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
 
