@@ -1,3 +1,6 @@
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
+
 ################################################################################
 # Layer target: Smallest image
 ################################################################################
@@ -112,6 +115,9 @@ VOLUME [ "/usr/src/app/dist/app/" ]
 ################################################################################
 FROM node as web
 
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
+
 ENV PORT=4000
 ENV NODE_ENV=production
 
@@ -120,3 +126,7 @@ COPY --from=build /usr/src/app/dist/app/ /usr/src/app/dist/app/
 WORKDIR /usr/src/app/
 
 CMD ["node", "/usr/src/app/dist/app/server/main.js"]
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "The leadof.us web application."

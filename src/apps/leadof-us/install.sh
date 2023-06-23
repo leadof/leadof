@@ -26,8 +26,22 @@ install() {
     --file ./containerfile \
     --ignorefile ./.containerignore \
     --network host \
+    --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \
+    --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
     --target ${target_name} \
     .
+
+  dist_tag="ghcr.io/leadof/${image_tag}"
+
+  podman tag "${image_tag}" "${dist_tag}"
+
+  echo "Generating distribution files..."
+  if [ -d "./dist/" ]; then
+    rm -rf ./dist/
+  fi
+  mkdir -p ./dist/
+  podman inspect "${image_tag}" --format "{{.Digest}}" >./dist/app_container-digest.txt
+  echo "Successfully generated distribution files."
 }
 
 #######################################

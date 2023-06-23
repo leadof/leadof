@@ -36,6 +36,8 @@ concurrency:
 env:
   CI: true
   PROJECT_PATH: ./src/apps/leadof-us/
+  CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
+  CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
 
 jobs:
   integrate:
