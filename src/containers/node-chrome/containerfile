@@ -1,7 +1,7 @@
 ################################################################################
 # Layer target: node image
 ################################################################################
-FROM localhost/leadof/node:latest as node
+FROM ghcr.io/leadof/leadof/node:latest as node
 
 ################################################################################
 # Layer target: node with chrome browser
