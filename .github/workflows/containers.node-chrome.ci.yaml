@@ -4,6 +4,9 @@
 name: containers.node-chrome.ci
 
 on:
+  workflow_run:
+    workflows: [containers.node.ci]
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -33,6 +36,8 @@ jobs:
     name: containers.node-chrome.ci
 
     runs-on: ubuntu-latest
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v3
