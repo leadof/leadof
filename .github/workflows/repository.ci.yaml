@@ -23,9 +23,9 @@ concurrency:
 env:
   CI: true
   # Should match ".nvmrc" file.
-  NODE_VERSION: 18.16.0
+  NODE_VERSION: 18.16.1
   # Should match ".pnpm-version" file.
-  PNPM_VERSION: 8.6.1
+  PNPM_VERSION: 8.6.3
 
 jobs:
   integrate:

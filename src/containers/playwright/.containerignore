@@ -1,3 +1,7 @@
+.wireit
+dist
+node_modules
+
 .env
 .npm-version
 .nvmrc

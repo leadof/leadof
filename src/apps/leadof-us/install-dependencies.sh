@@ -5,7 +5,6 @@
 set -e
 
 . ../../containers/libraries/shell/_command.sh
-. ../../containers/libraries/shell/_node.sh
 
 #######################################
 # Installs the application.
@@ -26,6 +25,8 @@ install() {
     --file ./dependencies.containerfile \
     --ignorefile ./.containerignore \
     --network host \
+    --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \
+    --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
     --target ${target_name} \
     .
 

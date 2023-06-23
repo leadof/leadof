@@ -30,6 +30,8 @@ env:
   CI: true
   CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
   CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
+  PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
+  PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
 
 jobs:
   integrate:
