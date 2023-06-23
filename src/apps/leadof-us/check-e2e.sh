@@ -16,6 +16,11 @@ check_e2e() {
   image_tag="leadof-us/e2e:latest"
   target_name="e2e"
 
+  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
+    podman login "ghcr.io" \
+      --username "${CONTAINER_REGISTRY_USERNAME}" \
+      --password-stdin
+
   podman build \
     --tag "${image_tag}" \
     --file ./check-e2e.containerfile \
