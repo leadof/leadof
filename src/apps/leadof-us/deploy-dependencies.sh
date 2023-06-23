@@ -4,7 +4,7 @@
 
 set -e
 
-. ../libraries/shell/_command.sh
+. ../../containers/libraries/shell/_command.sh
 
 #######################################
 # Deploys the container.

@@ -21,7 +21,6 @@ lint() {
     --file ./containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --build-context dependencies=container-image://localhost/leadof-us/dependencies:latest \
     --target "${target_name}" \
     .
 

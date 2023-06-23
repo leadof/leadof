@@ -49,16 +49,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: upgrade-podman
-        uses: ./.github/actions/upgrade-podman/
       - name: executable-shell-scripts
         uses: ./.github/actions/executable-shell-scripts/
-
-      - name: Install containers
-        run: make install-containers
-
-      - name: Install libraries
-        run: make install-libraries
 
       - name: Make
         # change to the project directory

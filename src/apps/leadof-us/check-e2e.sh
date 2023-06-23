@@ -21,7 +21,6 @@ check_e2e() {
     --file ./check-e2e.containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --build-context dependencies=container-image://localhost/leadof-us/dependencies:latest \
     --target "${target_name}" \
     .
 

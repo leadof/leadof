@@ -6,7 +6,12 @@ FROM docker.io/redhat/ubi8-micro as smol
 ################################################################################
 # Layer target: node image
 ################################################################################
-FROM localhost/leadof/node:latest as node
+FROM ghcr.io/leadof/leadof/node:latest as node
+
+################################################################################
+# Layer target: application dependencies
+################################################################################
+FROM ghcr.io/leadof/leadof/us-dependencies:latest as dependencies
 
 ################################################################################
 # Layer target: contains project src
@@ -18,8 +23,6 @@ RUN mkdir -p /usr/src/libraries/ \
 
 COPY --from=dependencies /usr/src/libraries/ /usr/src/libraries/
 
-RUN chmod +x /usr/src/libraries/shell/executable
-
 COPY --from=dependencies /usr/src/dependencies/web/node_modules/ /usr/src/apps/leadof-us/node_modules/
 
 COPY . /usr/src/apps/leadof-us/
@@ -27,7 +30,8 @@ COPY . /usr/src/apps/leadof-us/
 WORKDIR /usr/src/apps/leadof-us/
 
 # make all shell scripts executable
-RUN . /usr/src/libraries/shell/executable
+RUN chmod +x /usr/src/libraries/shell/executable \
+  && . /usr/src/libraries/shell/executable
 
 VOLUME [ "/usr/src/apps/leadof-us/" ]
 
@@ -56,7 +60,7 @@ VOLUME [ "/usr/src/test-results/" ]
 ################################################################################
 # Layer target: node with chrome browser
 ################################################################################
-FROM localhost/leadof/node-chrome:latest as node_chrome
+FROM ghcr.io/leadof/leadof/node-chrome:latest as node_chrome
 
 ################################################################################
 # Layer target: build the application
