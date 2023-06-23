@@ -1,0 +1,55 @@
+################################################################################
+# Continuous integration for playwright container.
+################################################################################
+name: containers.playwright.ci
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/containers.playwright.ci.yaml"
+      - "src/containers/playwright/**"
+  pull_request:
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      - ".github/workflows/containers.playwright.ci.yaml"
+      - "src/containers/playwright/**"
+
+env:
+  CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
+  CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
+
+jobs:
+  integrate:
+    # This name appears in status checks for pull requests and branch protection.
+    name: containers.playwright.ci
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: upgrade-podman
+        uses: ./.github/actions/upgrade-podman/
+      - name: executable-shell-scripts
+        uses: ./.github/actions/executable-shell-scripts/
+
+      - name: build
+        working-directory: ./src/containers/playwright/
+        # write the github actions secret to a file
+        # the file allows us to use `podman login --password-stdin`
+        # while it would be possible to:
+        # `echo ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} | podman login --password-stdin`
+        # using a file encourages console logging and history best practices
+        run: |
+          printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
+          make deploy
+
+      - name: cleanup
+        if: ${{ always() }}
+        run: |
+          rm -f "${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}"

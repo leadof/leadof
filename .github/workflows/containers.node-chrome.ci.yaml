@@ -1,10 +1,13 @@
-name: containers_leadof-node
+################################################################################
+# Continuous integration for node-chrome container.
+################################################################################
+name: containers.node-chrome.ci
 
 on:
   push:
     branches: [main]
     paths:
-      - ".github/workflows/containers_leadof-node.yaml"
+      - ".github/workflows/containers.node-chrome.ci.yaml"
       - "src/containers/node/**"
   pull_request:
     types:
@@ -13,7 +16,7 @@ on:
       - reopened
       - synchronize
     paths:
-      - ".github/workflows/containers_leadof-node.yaml"
+      - ".github/workflows/containers.node-chrome.ci.yaml"
       - "src/containers/node/**"
 
 env:
@@ -21,7 +24,10 @@ env:
   CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
 
 jobs:
-  build:
+  integrate:
+    # This name appears in status checks for pull requests and branch protection.
+    name: containers.node-chrome.ci
+
     runs-on: ubuntu-latest
 
     steps:
@@ -33,7 +39,7 @@ jobs:
         uses: ./.github/actions/executable-shell-scripts/
 
       - name: build
-        working-directory: ./src/containers/node/
+        working-directory: ./src/containers/node-chrome/
         # write the github actions secret to a file
         # the file allows us to use `podman login --password-stdin`
         # while it would be possible to:
