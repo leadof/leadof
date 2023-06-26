@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-. "$(dirname -- "$0")/../check-spelling.sh"
-. "$(dirname -- "$0")/../check-formatting.sh"
+pnpm spellcheck
+pnpm lint
