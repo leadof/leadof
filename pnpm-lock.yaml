@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@ionic/cli':
-        specifier: ^7.1.1
-        version: 7.1.1
       cspell:
         specifier: ^6.31.1
         version: 6.31.1

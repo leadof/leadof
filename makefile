@@ -1,10 +1,13 @@
-.DEFAULT_GOAL:=all
+.DEFAULT_GOAL:=ci
 
 all: prerequisites check install
 
 # Continuous integration
 .PHONY: ci
-ci: prerequisites check-formatting check-spelling
+ci: prerequisites
+	@pnpm install
+	@pnpm container:lint
+	@pnpm container:spelling
 
 # Prerequisites
 .PHONY: prerequisites
@@ -33,6 +36,10 @@ format:
 check-formatting:
 	@./check-formatting.sh
 
+.PHONY: check-lint
+check-lint:
+	@./check-lint.sh
+
 .PHONY: check-spelling
 check-spelling:
 	@./check-spelling.sh
@@ -44,7 +51,7 @@ spellcheck: check-spelling
 check-quick: check-formatting check-spelling
 
 .PHONY: check
-check: check-quick install-libraries
+check: check-quick install-containers
 	@cd ./src/apps/leadof-us/ \
 	&& "$(MAKE)" check
 
@@ -74,7 +81,7 @@ endif
 
 .PHONY: create-leadof-us
 create-leadof-us:
-	@echo 'N' | pnpm ionic start leadof-us blank \
+	@echo 'N' | pnpm dlx @ionic/cli@7.1.1 start leadof-us blank \
 		--type=angular-standalone \
 		--no-deps \
 		--no-git \

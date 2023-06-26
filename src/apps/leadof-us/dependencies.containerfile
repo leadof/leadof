@@ -34,18 +34,6 @@ RUN pnpm install \
 VOLUME [ "/usr/src/dependencies/" ]
 
 ################################################################################
-# Layer target: contains project libraries
-################################################################################
-FROM node as node_libraries
-
-RUN mkdir -p /usr/src/libraries/
-
-# Expects: `--build-context libraries=container-image://localhost/leadof/libraries:latest`
-COPY --from=libraries /usr/src/libraries/ /usr/src/libraries/
-
-VOLUME [ "/usr/src/libraries/" ]
-
-################################################################################
 # Layer target: base for playwright browser automation
 # All tags: https://mcr.microsoft.com/en-us/product/playwright/about
 # IMPORTANT: version must match "@playwright/test" in "./package.json"

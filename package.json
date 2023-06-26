@@ -9,10 +9,41 @@
     "spellcheck": "cspell --config ./cspell.yaml --color **",
     "format": "prettier --write --ignore-path ./.prettierignore ./",
     "lint": "prettier --check --ignore-path ./.prettierignore ./",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "container:lint": "wireit",
+    "container:spelling": "wireit"
+  },
+  "wireit": {
+    "container:lint": {
+      "command": "make check-lint",
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
+      ],
+      "output": [
+        "test-results/lint/container-digest.txt"
+      ]
+    },
+    "container:spelling": {
+      "command": "make check-spelling",
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
+      ],
+      "output": [
+        "test-results/spelling/container-digest.txt"
+      ]
+    }
   },
   "devDependencies": {
-    "@ionic/cli": "^7.1.1",
     "cspell": "^6.31.1",
     "husky": "^8.0.3",
     "madr": "^3.0.0",

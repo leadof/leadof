@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Checks spelling for the application.
+# Executes linting checks.
 
 set -e
 
@@ -8,13 +8,13 @@ set -e
 . ./src/containers/libraries/shell/_node.sh
 
 #######################################
-# Checks spelling for the application.
+# Lints the application.
 # Arguments:
 #   None
 #######################################
-check_spelling() {
-  image_tag="leadof/spelling:latest"
-  target_name="spelling"
+lint() {
+  image_tag="leadof/lint:latest"
+  target_name="lint"
 
   cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
     podman login "ghcr.io" \
@@ -52,7 +52,7 @@ check_spelling() {
 #   None
 #######################################
 main() {
-  check_spelling
+  lint
 }
 
 # env vars must be global to the script

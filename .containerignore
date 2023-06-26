@@ -1,11 +1,12 @@
+node_modules
+
 .angular
+.wireit
 coverage
 dist
-node_modules
 test-results
 www
 
 *.drawio
 
-# pnpm files
-pnpm-lock.yaml
+makefile

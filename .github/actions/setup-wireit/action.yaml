@@ -1,0 +1,50 @@
+name: "setup-wireit"
+description: "Sets up Wireit with specific versions of NodeJS, npm, and pnpm"
+inputs:
+  node-version:
+    description: "Version of NodeJS"
+    required: false
+    default: "18.16.1"
+  npm-version:
+    description: "Version of npm"
+    required: false
+    default: "9.7.2"
+  pnpm-version:
+    description: "Version of pnpm"
+    required: false
+    default: "8.6.5"
+runs:
+  using: "composite"
+  steps:
+    # Setup the environment with a specific version of NodeJS.
+    - name: Install node ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    # Setup the environment with a specific version of `pnpm`.
+    - name: Install pnpm ${{ inputs.pnpm-version }}
+      uses: pnpm/action-setup@v2
+      id: pnpm-install
+      with:
+        version: ${{ inputs.pnpm-version }}
+        run_install: false
+
+    # Determine where `pnpm` will store files in order to cache them.
+    - name: Get pnpm store directory
+      id: pnpm-cache
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    # Setup the `pnpm` cache.
+    - name: Setup pnpm cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    # Set up GitHub Actions caching for Wireit.
+    - uses: google/wireit@setup-github-actions-caching/v1
