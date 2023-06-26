@@ -10,7 +10,11 @@ set -e
 #   None
 #######################################
 stop_container() {
-  podman rm --force leadof-us-dev
+  container_name="leadof-us-dev"
+
+  podman rm --force ${container_name}
+
+  rm -f ./dist/${container_name}_container-digest.txt
 }
 
 #######################################

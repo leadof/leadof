@@ -10,11 +10,19 @@ set -e
 #   None
 #######################################
 start() {
+  container_name="leadof-us-dev"
+
   podman run \
-    --name "leadof-us-dev" \
+    --name "${container_name}" \
     --detach \
     --publish 4000:4000 \
-    leadof/us:latest
+    leadof-us/web:latest
+
+  podman container inspect "${container_name}" --format "{{.Id}}::{{.ImageDigest}}" >./dist/${container_name}_container-digest.txt
+
+  echo ''
+  echo 'Successfully started.'
+  echo 'http://localhost:4000/'
 }
 
 #######################################

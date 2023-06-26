@@ -97,18 +97,24 @@ VOLUME [ "/usr/src/test-results/" ]
 ################################################################################
 FROM src as run_build
 
-RUN pnpm build:ssr
+RUN mkdir -p /usr/src/build-results/ \
+  && pnpm build:ssr \
+  && mv ./dist/* /usr/src/build-results/
 
-VOLUME [ "/usr/src/apps/leadof-us/dist/app/" ]
+VOLUME [ "/usr/src/build-results/" ]
 
 ################################################################################
 # Layer target: build results
 ################################################################################
 FROM smol as build
 
-COPY --from=run_build /usr/src/apps/leadof-us/dist/app/ /usr/src/app/dist/app/
+COPY --from=run_build /usr/src/build-results/ /usr/src/build-results/
 
-VOLUME [ "/usr/src/app/dist/app/" ]
+WORKDIR /usr/src/build-results/
+
+RUN ls -la
+
+VOLUME [ "/usr/src/build-results/" ]
 
 ################################################################################
 # Layer target: prepare a web production image
@@ -121,10 +127,12 @@ ARG PUBLISHED_DOCUMENTATION_URL
 ENV PORT=4000
 ENV NODE_ENV=production
 
-COPY --from=build /usr/src/app/dist/app/ /usr/src/app/dist/app/
+COPY --from=build /usr/src/build-results/app/ /usr/src/app/dist/app/
 
 WORKDIR /usr/src/app/
 
+# Server assumes a working directory above "./dist/app/", so
+# pwd is "/usr/src/app/" above "./dist/app/" (browser and server)
 CMD ["node", "/usr/src/app/dist/app/server/main.js"]
 
 LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}

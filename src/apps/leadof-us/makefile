@@ -1,6 +1,6 @@
 .DEFAULT_GOAL:=all
 
-all: check-lint check-test check-e2e install
+all: install-dependencies check-lint check-test check-e2e install
 
 .PHONY: prerequisites
 prerequisites:

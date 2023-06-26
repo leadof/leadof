@@ -6,5 +6,7 @@ dist
 test-results
 www
 
+*.drawio
+
 # pnpm files
 pnpm-lock.yaml

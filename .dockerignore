@@ -6,6 +6,8 @@ dist
 playwright-report
 www
 
+*.drawio
+
 # lighthouse performance reports
 lighthouse-report.html
 performance-report*

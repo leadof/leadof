@@ -9,6 +9,7 @@ ignorePaths:
   - src/apps/leadof-us/test-results/**
   - src/apps/leadof-us/www/**
   - "*.ai"
+  - "*.drawio"
   - "*.json"
   - "*.svg"
   - "*.yaml"

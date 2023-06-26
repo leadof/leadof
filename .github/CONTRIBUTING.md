@@ -9,5 +9,12 @@ This project is currently shared source, but not licensed for use by others or o
 
 ## Used ports
 
+-   **4000:** leadof.us SSR container host
 -   **4200:** leadof.us
 -   **4201:** leadof.us end-to-end tests
+
+## Developer Setup
+
+### Run the production website locally
+
+`podman run --name leadof-us-dev --detach --publish 4000:4000 ghcr.io/leadof/leadof-us/web:latest`

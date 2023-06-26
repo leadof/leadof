@@ -42,6 +42,7 @@ test() {
   mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
   rm -rf ./test-results/${target_name}/test-results/
   podman rm --force ${image_name}
+  podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
   echo "Successfully copied output files from container \"${image_name}\"."
 }
 
