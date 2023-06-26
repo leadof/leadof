@@ -1,76 +1,225 @@
 {
   "name": "leadof-us",
+  "private": true,
   "description": "Code for the leadof.us website",
   "version": "0.0.1",
   "author": "Eric Swanson",
   "homepage": "https://leadof.us/",
   "scripts": {
-    "ng": "ng",
+    "start::comment": "Normal start for front-end Angular application without SSR",
     "start": "ng serve --port 4200",
+    "build::comment": "Normal build for front-end Angular application without SSR",
     "build": "ng build --progress false --configuration production",
+    "watch::comment": "Watched build for front-end Angular application without SSR",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --code-coverage true --progress false --watch false",
+    "lint::comment": "Linting",
     "lint": "ng lint",
+    "test::comment": "Unit tests",
+    "test": "ng test --code-coverage true --progress false --watch false",
+    "e2e::comment": "End-to-end tests",
     "e2e": "playwright test",
-    "e2e:debug": "playwright test --project chromium --headed"
+    "e2e:debug::comment": "Debugging end-to-end tests with a headed browser",
+    "e2e:debug": "playwright test --project chromium --headed",
+    "dev:ssr::comment": "Development server for SSR",
+    "dev:ssr": "ng run app:serve-ssr",
+    "build:ssr::comment": "Build both the front-end and SSR versions of this application",
+    "build:ssr": "ng build --progress false --configuration production && ng run app:server:production",
+    "serve:ssr::comment": "Run the SSR application",
+    "serve:ssr": "node dist/app/server/main.js",
+    "prerender::comment": "Executes the SSR-prerendering process.",
+    "prerender": "ng run app:prerender:production",
+    "container:dependencies::comment": "Containerized build of system dependencies only",
+    "container:dependencies": "wireit",
+    "container:lint::comment": "Containerized linting",
+    "container:lint": "wireit",
+    "container:test::comment": "Containerized unit testing",
+    "container:test": "wireit",
+    "container:e2e::comment": "Containerized end-to-end testing",
+    "container:e2e": "wireit",
+    "container:build::comment": "Containerized build; creates a production-ready SSR container.",
+    "container:build": "wireit",
+    "container:start::comment": "Starts a production-ready SSR server locally",
+    "container:start": "wireit",
+    "container:stop::comment": "Stops the production-ready SSR server locally",
+    "container:stop": "wireit",
+    "container:restart::comment": "Restarts the production-ready SSR server locally",
+    "container:restart": "wireit"
   },
-  "private": true,
+  "wireit": {
+    "container:dependencies": {
+      "command": "make install-dependencies",
+      "files": [
+        "./.containerignore",
+        "./dependencies.containerfile",
+        "./install-dependencies.sh",
+        "./makefile",
+        "./package.json"
+      ],
+      "output": [
+        "dist/dependencies_container-digest.txt"
+      ]
+    },
+    "container:lint": {
+      "command": "make check-lint",
+      "dependencies": [
+        "container:dependencies"
+      ],
+      "files": [
+        "./*",
+        "!.angular",
+        "!.wireit",
+        "!dist",
+        "!node_modules",
+        "!test-results"
+      ],
+      "output": [
+        "test-results/lint/container-digest.txt"
+      ]
+    },
+    "container:test": {
+      "command": "make check-test",
+      "dependencies": [
+        "container:dependencies"
+      ],
+      "files": [
+        "./*",
+        "!.angular",
+        "!.wireit",
+        "!dist",
+        "!node_modules",
+        "!test-results"
+      ],
+      "output": [
+        "test-results/unit_test/container-digest.txt"
+      ]
+    },
+    "container:e2e": {
+      "command": "make check-e2e",
+      "dependencies": [
+        "container:dependencies"
+      ],
+      "files": [
+        "./*",
+        "!.angular",
+        "!.wireit",
+        "!dist",
+        "!node_modules",
+        "!test-results"
+      ],
+      "output": [
+        "test-results/e2e/container-digest.txt"
+      ]
+    },
+    "container:build": {
+      "command": "make install",
+      "dependencies": [
+        "container:dependencies"
+      ],
+      "files": [
+        "./*",
+        "!.angular",
+        "!.wireit",
+        "!dist",
+        "!node_modules",
+        "!test-results"
+      ],
+      "output": [
+        "dist/app_container-digest.txt"
+      ]
+    },
+    "container:start": {
+      "command": "make start",
+      "dependencies": [
+        "container:build"
+      ],
+      "files": [
+        "./*",
+        "!.angular",
+        "!.wireit",
+        "!dist",
+        "!node_modules",
+        "!test-results"
+      ],
+      "output": [
+        "dist/leadof-us-dev_container-digest.txt"
+      ]
+    },
+    "container:stop": {
+      "command": "make stop",
+      "files": [
+        "dist/leadof-us-dev_container-digest.txt"
+      ]
+    },
+    "container:restart": {
+      "command": "make restart"
+    },
+    "clean": {
+      "command": "make clean"
+    }
+  },
   "dependencies": {
-    "@angular/animations": "^16.0.0",
-    "@angular/common": "^16.0.0",
-    "@angular/compiler": "^16.0.0",
-    "@angular/core": "^16.0.0",
-    "@angular/forms": "^16.0.0",
-    "@angular/platform-browser": "^16.0.0",
-    "@angular/platform-browser-dynamic": "^16.0.0",
-    "@angular/router": "^16.0.0",
+    "@angular/animations": "^16.0.4",
+    "@angular/common": "^16.0.4",
+    "@angular/core": "^16.0.4",
+    "@angular/forms": "^16.0.4",
+    "@angular/platform-browser": "^16.0.4",
+    "@angular/platform-browser-dynamic": "^16.0.4",
+    "@angular/platform-server": "^16.0.4",
+    "@angular/router": "^16.0.4",
+    "@angular/service-worker": "^16.0.4",
     "@capacitor/app": "5.0.2",
     "@capacitor/core": "5.0.4",
     "@capacitor/haptics": "5.0.2",
     "@capacitor/keyboard": "5.0.2",
     "@capacitor/status-bar": "5.0.2",
-    "@ionic/angular": "^7.0.0",
-    "ionicons": "^7.0.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
+    "@ionic/angular": "^7.0.10",
+    "@ionic/angular-server": "^7.0.10",
+    "@nguniversal/express-engine": "^16.0.2",
+    "express": "^4.15.2",
+    "ionicons": "^7.1.2",
+    "rxjs": "~7.8.1",
+    "tslib": "^2.5.3",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.0.0",
-    "@angular-eslint/builder": "^16.0.0",
-    "@angular-eslint/eslint-plugin": "^16.0.0",
-    "@angular-eslint/eslint-plugin-template": "^16.0.0",
-    "@angular-eslint/schematics": "^16.0.0",
-    "@angular-eslint/template-parser": "^16.0.0",
-    "@angular/cli": "^16.0.0",
-    "@angular/compiler": "^16.0.0",
-    "@angular/compiler-cli": "^16.0.0",
-    "@angular/language-service": "^16.0.0",
+    "@angular-devkit/build-angular": "^16.0.4",
+    "@angular-eslint/builder": "^16.0.3",
+    "@angular-eslint/eslint-plugin": "^16.0.3",
+    "@angular-eslint/eslint-plugin-template": "^16.0.3",
+    "@angular-eslint/schematics": "^16.0.3",
+    "@angular-eslint/template-parser": "^16.0.3",
+    "@angular/cli": "^16.0.4",
+    "@angular/compiler": "^16.0.4",
+    "@angular/compiler-cli": "^16.0.4",
+    "@angular/language-service": "^16.0.4",
     "@capacitor/cli": "5.0.4",
     "@ionic/angular-toolkit": "^9.0.0",
     "@ionic/cli": "^7.1.1",
-    "@playwright/test": "^1.34.3",
-    "@types/jasmine": "~4.3.0",
-    "@types/node": "^12.11.1",
-    "@typescript-eslint/eslint-plugin": "5.3.0",
-    "@typescript-eslint/parser": "5.3.0",
+    "@nguniversal/builders": "^16.0.2",
+    "@playwright/test": "^1.35.1",
+    "@types/express": "^4.17.0",
+    "@types/jasmine": "~4.3.2",
+    "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": "5.59.8",
+    "@typescript-eslint/parser": "5.59.8",
     "chrome-launcher": "^0.15.2",
-    "eslint": "^7.26.0",
-    "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jsdoc": "30.7.6",
-    "eslint-plugin-prefer-arrow": "1.2.2",
+    "eslint": "^8.41.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsdoc": "46.2.0",
+    "eslint-plugin-prefer-arrow": "1.2.3",
     "get-port": "^6.1.2",
-    "jasmine-core": "~4.6.0",
-    "jasmine-spec-reporter": "~5.0.0",
-    "karma": "~6.4.0",
+    "jasmine-core": "~5.0.0",
+    "jasmine-spec-reporter": "~7.0.0",
+    "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~3.0.2",
+    "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "lighthouse": "10.2.0",
-    "ts-node": "^8.3.0",
-    "typescript": "~5.0.2",
-    "wait-on": "^7.0.1"
+    "ts-node": "^10.9.1",
+    "typescript": "~5.0.4",
+    "wait-on": "^7.0.1",
+    "wireit": "^0.9.5"
   }
 }

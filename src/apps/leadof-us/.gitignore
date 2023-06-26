@@ -65,9 +65,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# playwright reports
-playwright-report
+test-results/
 
-# lighthouse reports
-lighthouse-report.html
-performance-report*
+# envirnonment variables
+.env

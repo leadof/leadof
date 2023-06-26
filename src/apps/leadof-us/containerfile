@@ -1,0 +1,140 @@
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
+
+################################################################################
+# Layer target: Smallest image
+################################################################################
+FROM docker.io/redhat/ubi8-micro as smol
+
+################################################################################
+# Layer target: node image
+################################################################################
+FROM ghcr.io/leadof/leadof/node:latest as node
+
+################################################################################
+# Layer target: application dependencies
+################################################################################
+FROM ghcr.io/leadof/leadof/us-dependencies:latest as dependencies
+
+################################################################################
+# Layer target: contains project src
+################################################################################
+FROM node as src
+
+RUN mkdir -p /usr/src/libraries/ \
+  && mkdir -p /usr/src/apps/leadof-us/node_modules/
+
+COPY --from=dependencies /usr/src/libraries/ /usr/src/libraries/
+
+COPY --from=dependencies /usr/src/dependencies/web/node_modules/ /usr/src/apps/leadof-us/node_modules/
+
+COPY . /usr/src/apps/leadof-us/
+
+WORKDIR /usr/src/apps/leadof-us/
+
+# make all shell scripts executable
+RUN chmod +x /usr/src/libraries/shell/executable \
+  && . /usr/src/libraries/shell/executable
+
+VOLUME [ "/usr/src/apps/leadof-us/" ]
+
+################################################################################
+# Layer target: lint the application
+################################################################################
+FROM src as run_lint
+
+RUN mkdir -p /usr/src/test-results/ \
+  && mkdir -p ./test-results/lint/ \
+  && pnpm lint 2>&1 | tee /usr/src/test-results/lint-results.txt
+
+WORKDIR /usr/src/test-results/
+
+VOLUME [ "/usr/src/test-results/" ]
+
+################################################################################
+# Layer target: lint results
+################################################################################
+FROM smol as lint
+
+COPY --from=run_lint /usr/src/test-results/ /usr/src/test-results/
+
+VOLUME [ "/usr/src/test-results/" ]
+
+################################################################################
+# Layer target: node with chrome browser
+################################################################################
+FROM ghcr.io/leadof/leadof/node-chrome:latest as node_chrome
+
+################################################################################
+# Layer target: build the application
+################################################################################
+FROM node_chrome as run_unit_test
+
+COPY --from=src /usr/src/ /usr/src/
+
+WORKDIR /usr/src/apps/leadof-us/
+
+RUN mkdir -p /usr/src/test-results/ \
+  && mkdir -p ./test-results/unit_test/ \
+  && pnpm test \
+  && mv ./test-results/unit_test/* /usr/src/test-results/
+
+WORKDIR /usr/src/test-results/
+
+VOLUME [ "/usr/src/test-results/" ]
+
+################################################################################
+# Layer target: unit test results
+################################################################################
+FROM smol as unit_test
+
+COPY --from=run_unit_test /usr/src/test-results/ /usr/src/test-results/
+
+VOLUME [ "/usr/src/test-results/" ]
+
+################################################################################
+# Layer target: build the application
+################################################################################
+FROM src as run_build
+
+RUN mkdir -p /usr/src/build-results/ \
+  && pnpm build:ssr \
+  && mv ./dist/* /usr/src/build-results/
+
+VOLUME [ "/usr/src/build-results/" ]
+
+################################################################################
+# Layer target: build results
+################################################################################
+FROM smol as build
+
+COPY --from=run_build /usr/src/build-results/ /usr/src/build-results/
+
+WORKDIR /usr/src/build-results/
+
+RUN ls -la
+
+VOLUME [ "/usr/src/build-results/" ]
+
+################################################################################
+# Layer target: prepare a web production image
+################################################################################
+FROM node as web
+
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
+
+ENV PORT=4000
+ENV NODE_ENV=production
+
+COPY --from=build /usr/src/build-results/app/ /usr/src/app/dist/app/
+
+WORKDIR /usr/src/app/
+
+# Server assumes a working directory above "./dist/app/", so
+# pwd is "/usr/src/app/" above "./dist/app/" (browser and server)
+CMD ["node", "/usr/src/app/dist/app/server/main.js"]
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "The leadof.us web application."

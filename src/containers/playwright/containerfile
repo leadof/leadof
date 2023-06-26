@@ -1,0 +1,55 @@
+ARG NPM_VERSION="9.7.2"
+ARG PNPM_VERSION="8.6.5"
+
+ARG NPM_REGISTRY_URL=""
+ARG NPM_REGISTRY_OLD_URL_CONFIG=""
+ARG NPM_REGISTRY_URL_CONFIG=""
+ARG NPM_REGISTRY_AUTH=""
+ARG NPM_REGISTRY_AUTH_TOKEN=""
+
+ARG PLAYWRIGHT_VERSION="1.35.0"
+ARG IMAGE_PLAYWRIGHT_OS="jammy"
+ARG IMAGE_PLAYWRIGHT_TAG="mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-${IMAGE_PLAYWRIGHT_OS}"
+
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
+
+################################################################################
+# Layer target: base for playwright browser automation
+# All tags: https://mcr.microsoft.com/en-us/product/playwright/about
+# IMPORTANT: version must match "@playwright/test" in "./package.json"
+################################################################################
+FROM ${IMAGE_PLAYWRIGHT_TAG} as playwright
+
+ARG NPM_VERSION
+ARG PNPM_VERSION
+ARG NPM_REGISTRY_URL
+ARG NPM_REGISTRY_OLD_URL_CONFIG
+ARG NPM_REGISTRY_URL_CONFIG
+ARG NPM_REGISTRY_AUTH
+ARG NPM_REGISTRY_AUTH_TOKEN
+
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
+
+# Flag as a Continuous Integration server.
+ENV CI=true
+
+# Flag that automation can use to detect if execution is hosted in a container.
+ENV IN_CONTAINER=true
+
+COPY ./configure-npm.sh /usr/local/bin/configure-npm
+
+RUN chmod +x /usr/local/bin/configure-npm \
+  && configure-npm \
+  "${NPM_VERSION}" \
+  "${PNPM_VERSION}" \
+  "${NPM_REGISTRY_URL}" \
+  "${NPM_REGISTRY_OLD_URL_CONFIG}" \
+  "${NPM_REGISTRY_URL_CONFIG}" \
+  "${NPM_REGISTRY_AUTH}" \
+  "${NPM_REGISTRY_AUTH_TOKEN}"
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "Playwright for web browser automation and end-to-end testing"

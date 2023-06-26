@@ -1,0 +1,15 @@
+node_modules
+
+.angular
+coverage
+dist
+playwright-report
+www
+
+*.drawio
+
+# lighthouse performance reports
+lighthouse-report.html
+performance-report*
+
+makefile

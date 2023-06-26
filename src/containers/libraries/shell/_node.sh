@@ -15,6 +15,8 @@ get_node_version() {
   local version=$(node --version 2>&1 || true)
   # remove any trailing whitespace
   version="${version%%*( )}"
+  # remove any 'v'
+  version=$(echo "$version" | sed -r 's/[v]+//g')
 
   echo $version
 }
@@ -28,6 +30,8 @@ get_target_node_version() {
   local version=$(cat ./.nvmrc)
   # remove any trailing whitespace
   version="${version%%*( )}"
+  # remove any 'v'
+  version=$(echo "$version" | sed -r 's/[v]+//g')
 
   echo $version
 }

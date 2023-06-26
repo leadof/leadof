@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const chromeDebugPort = 8041;
+const hostPort = 4200;
+const hostUrl = `http://localhost:${hostPort}`;
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -20,11 +24,21 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env['CI'] ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    [
+      'html',
+      {
+        outputFolder: require('path').join(
+          __dirname,
+          './test-results/e2e/playwright/'
+        ),
+      },
+    ],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:4200/',
+    baseURL: hostUrl,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -39,10 +53,10 @@ export default defineConfig({
         launchOptions: {
           args: [
             '--headless',
-            '--no-sandbox',
-            '--disable-gpu',
-            '--disable-dev-shm-usage',
-            '--remote-debugging-port=8041',
+            // '--no-sandbox',
+            // '--disable-gpu',
+            // '--disable-dev-shm-usage',
+            `--remote-debugging-port=${chromeDebugPort}`,
           ],
         },
       },
@@ -81,8 +95,10 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm start',
-    url: 'http://localhost:4200/',
+    command: `pnpm ng run app:serve-ssr:production --port ${hostPort}`,
+    url: hostUrl,
     reuseExistingServer: !process.env['CI'],
+    stdout: 'pipe',
+    timeout: 120 * 1000,
   },
 });

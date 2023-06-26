@@ -4,6 +4,21 @@
 
 set -e
 
+dotenv() {
+  if [ -f './.env' ]; then
+    unamestr=$(uname)
+    echo "Loading .env environment variables for the system \"${unamestr}\"..."
+
+    if [ "$unamestr" = 'FreeBSD' ] || [ "$unamestr" = 'Darwin' ]; then
+      export $(grep -v '^#' ./.env | xargs -0)
+    else # Linux
+      export $(grep -v '^#' ./.env | xargs -d '\n')
+    fi
+
+    echo "Successfully loaded .env environment variables for the system \"${unamestr}\"..."
+  fi
+}
+
 #######################################
 # Checks if a command is available.
 # Arguments:

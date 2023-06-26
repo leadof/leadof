@@ -14,6 +14,17 @@ prerequisites:
 .PHONY: pre
 pre: prerequisites
 
+.PHONY: install-containers
+install-containers:
+ifdef CI
+	@podman pull ghcr.io/leadof/leadof/libraries:latest
+	@podman pull ghcr.io/leadof/leadof/node:latest
+	@podman pull ghcr.io/leadof/leadof/node-chrome:latest
+	@podman pull ghcr.io/leadof/leadof/playwright:latest
+else
+	@pnpm --recursive --filter "@leadof-containers/*" build
+endif
+
 .PHONY: format
 format:
 	@pnpm format
@@ -29,14 +40,27 @@ check-spelling:
 .PHONY:spellcheck
 spellcheck: check-spelling
 
+.PHONY:check-quick
+check-quick: check-formatting check-spelling
+
 .PHONY: check
-check: check-formatting check-spelling
-	@pnpm --recursive lint
-	@pnpm --recursive test
+check: check-quick install-libraries
+	@cd ./src/apps/leadof-us/ \
+	&& "$(MAKE)" check
 
 .PHONY: install
 install:
 	@pnpm --recursive build
+
+.PHONY: nexus
+nexus:
+	@podman pull docker.io/sonatype/nexus3
+	@podman run \
+		--name nexus \
+		--detach \
+		--publish 8081:8081 \
+		--volume nexus-data:/nexus-data \
+		docker.io/sonatype/nexus3
 
 .PHONY: decision
 decision:
@@ -98,4 +122,5 @@ endif
 
 .PHONY: reset
 reset:
-	@pnpm npkill
+	@pnpm dlx npkill
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" clean

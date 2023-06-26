@@ -1,0 +1,32 @@
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
+
+################################################################################
+# Layer target: node image
+################################################################################
+FROM ghcr.io/leadof/leadof/node:latest as node
+
+################################################################################
+# Layer target: node with chrome browser
+################################################################################
+FROM node as node_chrome
+
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
+
+WORKDIR /tmp/
+
+RUN apt-get update -qq \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends wget ca-certificates \
+  && wget --no-verbose https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends ./google-chrome-stable_current_amd64.deb \
+  && rm -f ./google-chrome-stable_current_amd64.deb \
+  # clean up docker layer
+  # https://docs.docker.com/develop/develop-images/dockerfile_best_practices/#run
+  && rm -rf /var/lib/apt/lists/*
+
+ENV CHROME_BIN=/usr/bin/google-chrome
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "NodeJS and the Google Chrome browser for web browser automation"

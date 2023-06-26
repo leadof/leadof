@@ -2,12 +2,11 @@ node_modules
 
 .angular
 coverage
-playwright-report
+dist
+test-results
 www
 
-# lighthouse performance reports
-lighthouse-report.html
-performance-report*
+*.drawio
 
 # pnpm files
 pnpm-lock.yaml

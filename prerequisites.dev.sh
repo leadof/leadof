@@ -5,10 +5,10 @@
 set -e
 
 # import command functions
-. ./src/libraries/shell/_command.sh
+. ./src/containers/libraries/shell/_command.sh
 
 # import node functions
-. ./src/libraries/shell/_node.sh
+. ./src/containers/libraries/shell/_node.sh
 
 #######################################
 # Initializes node version manager (nvm).

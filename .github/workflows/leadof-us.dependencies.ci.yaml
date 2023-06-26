@@ -1,0 +1,64 @@
+################################################################################
+# Continuous integration for leadof.us web application dependencies.
+################################################################################
+name: apps.leadof-us.dependencies.ci
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # run this build when this file changes
+      - ".github/workflows/leadof-us.dependencies.ci.yaml"
+      # run this build when the source code changes
+      - "src/apps/leadof-us/package.json"
+  pull_request:
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      # run this build when this file changes
+      - ".github/workflows/leadof-us.dependencies.ci.yaml"
+      # run this build when the source code changes
+      - "src/apps/leadof-us/package.json"
+
+  # Enable manual trigger for workflow.
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  PROJECT_PATH: ./src/apps/leadof-us/
+  CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
+  CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
+  PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
+  PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
+
+jobs:
+  integrate:
+    # This name appears in status checks for pull requests and branch protection.
+    name: apps.leadof-us.dependencies.ci
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: executable-shell-scripts
+        uses: ./.github/actions/executable-shell-scripts/
+
+      - name: Make
+        # change to the project directory
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: |
+          printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
+          make deploy-dependencies
+
+      - name: cleanup
+        if: ${{ always() }}
+        run: |
+          rm -f "${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}"

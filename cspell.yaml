@@ -3,13 +3,13 @@ version: "0.2"
 ignorePaths:
   - node_modules/**
   - src/apps/leadof-us/.angular/**
-  - src/apps/leadof-us/coverage/**
+  - src/apps/leadof-us/dist/**
   - src/apps/leadof-us/node_modules/**
-  - src/apps/leadof-us/playwright-report/**
-  - src/apps/leadof-us/www/**
-  - src/apps/leadof-us/lighthouse-report.html
   - src/apps/leadof-us/performance-report*
+  - src/apps/leadof-us/test-results/**
+  - src/apps/leadof-us/www/**
   - "*.ai"
+  - "*.drawio"
   - "*.json"
   - "*.svg"
   - "*.yaml"
@@ -22,18 +22,34 @@ languageSettings:
       - /^\s*```[\s\S]*?^\s*```/gmx
       - /`[\s\S]+`/gmx
 ignoreWords:
+  - autoremove
+  - containerfile
+  - containerignore
+  - czvf
+  - dotenv
   - Durandal
+  - ignorefile
   - MADR
+  - noninteractive
   - Nygard
   - POSIX
   - ericis
   - homescreen
+  - iisnode
   - leadof
   - madr
   - msedge
+  - ngsw
+  - nguniversal
   - nvmrc
+  - opencontainers
   - pnpmrc
+  - shellguide
   - subdir
   - textbox
-  - todos
+  - unamestr
   - viewports
+  - WORKDIR
+words:
+  - smol
+  - todos

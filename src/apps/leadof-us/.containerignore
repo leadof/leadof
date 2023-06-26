@@ -1,0 +1,11 @@
+.angular
+.wireit
+dist
+node_modules
+test-results
+
+*.sh
+
+.env
+containerfile
+makefile

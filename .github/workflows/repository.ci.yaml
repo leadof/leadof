@@ -16,12 +16,16 @@ on:
   # Enable manual trigger for workflow.
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   CI: true
   # Should match ".nvmrc" file.
-  NODE_VERSION: 18.16.0
+  NODE_VERSION: 18.16.1
   # Should match ".pnpm-version" file.
-  PNPM_VERSION: 8.6.0
+  PNPM_VERSION: 8.6.5
 
 jobs:
   integrate:
