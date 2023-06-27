@@ -41,7 +41,7 @@ jobs:
         with:
           container-registry-password: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
 
-      - name: build
+      - name: make
         working-directory: ./src/containers/libraries/
         env:
           PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof

@@ -38,10 +38,10 @@ jobs:
         with:
           container-registry-password: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
 
-      - name: Make
+      - name: make
         run: make ci
 
-      - name: Upload test results
+      - name: upload-test-results
         uses: actions/upload-artifact@v3
         with:
           name: test-results
