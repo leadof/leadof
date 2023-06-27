@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Executes linting checks.
+# Containerizes the source code.
 
 set -e
 
@@ -8,13 +8,13 @@ set -e
 . ../../containers/libraries/shell/_node.sh
 
 #######################################
-# Lints the application.
+# Containerizes the source code.
 # Arguments:
 #   None
 #######################################
-lint() {
-  image_tag="leadof-us/lint:latest"
-  target_name="lint"
+containerize_source() {
+  image_tag="leadof-us/src:latest"
+  target_name="src"
 
   cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
     podman login "ghcr.io" \
@@ -23,7 +23,7 @@ lint() {
 
   podman build \
     --tag "${image_tag}" \
-    --file ./lint.containerfile \
+    --file ./src.containerfile \
     --ignorefile ./.containerignore \
     --network host \
     --target "${target_name}" \
@@ -32,17 +32,11 @@ lint() {
   image_name="${target_name}_results"
 
   echo "Copying output files from container \"${image_name}\"..."
-  # copy output files from container
-  podman run --name ${image_name} --detach ${image_tag} sleep 1000
-  if [ -d "./test-results/${target_name}/" ]; then
-    rm -rf ./test-results/${target_name}/
+  if [ -d "./dist/${target_name}/" ]; then
+    rm -rf ./dist/${target_name}/
   fi
-  mkdir -p ./test-results/${target_name}/
-  podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
-  mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
-  rm -rf ./test-results/${target_name}/test-results/
-  podman rm --force ${image_name}
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
+  mkdir -p ./dist/${target_name}/
+  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/${target_name}/container-digest.txt
   echo "Successfully copied output files from container \"${image_name}\"."
 }
 
@@ -52,7 +46,7 @@ lint() {
 #   None
 #######################################
 main() {
-  lint
+  containerize_source
 }
 
 # env vars must be global to the script

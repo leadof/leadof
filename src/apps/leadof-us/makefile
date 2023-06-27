@@ -1,6 +1,8 @@
 .DEFAULT_GOAL:=all
 
-all: install-dependencies check-lint check-test check-e2e install
+.PHONY: all
+all:
+	@pnpm container:all
 
 .PHONY: prerequisites
 prerequisites:
@@ -10,6 +12,10 @@ prerequisites:
 
 .PHONY: pre
 pre: prerequisites
+
+.PHONY: src
+src:
+	@./install-src.sh
 
 .PHONY: check-lint
 check-lint:

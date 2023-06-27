@@ -23,7 +23,7 @@ install() {
 
   podman build \
     --tag "${image_tag}" \
-    --file ./containerfile \
+    --file ./install.containerfile \
     --ignorefile ./.containerignore \
     --network host \
     --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \

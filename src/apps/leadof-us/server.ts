@@ -52,8 +52,18 @@ function run(): void {
 
   // Start up the Node server
   const server = app();
-  server.listen(port, () => {
+
+  // TODO: server health checks
+  // https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
+  const activeServer = server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+
+  process.on('SIGTERM', () => {
+    console.debug('SIGTERM signal received: closing HTTP server');
+    activeServer.close(() => {
+      console.debug('HTTP server closed');
+    });
   });
 }
 

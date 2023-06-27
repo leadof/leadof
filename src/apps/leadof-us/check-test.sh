@@ -23,7 +23,7 @@ test() {
 
   podman build \
     --tag "${image_tag}" \
-    --file ./containerfile \
+    --file ./test.containerfile \
     --ignorefile ./.containerignore \
     --network host \
     --target "${target_name}" \
