@@ -48,6 +48,8 @@ jobs:
 
       - name: setup-task-execution
         uses: ./.github/actions/setup-task-execution/
+        with:
+          container-registry-password: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
 
       - name: Make
         working-directory: ./src/apps/leadof-us/

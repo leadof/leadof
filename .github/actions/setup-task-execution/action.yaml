@@ -13,6 +13,9 @@ inputs:
     description: "Version of pnpm"
     required: false
     default: "8.6.5"
+  container-registry-password:
+    description: "The password for the container registry"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -53,7 +56,7 @@ runs:
     - name: prerequisites
       env:
         CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
-        CONTAINER_REGISTRY_PASSWORD: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
+        CONTAINER_REGISTRY_PASSWORD: ${{ inputs.container-registry-password }}
       shell: bash
       run: |
         chmod +x ./prerequisites.sh \
