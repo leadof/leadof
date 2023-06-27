@@ -12,8 +12,12 @@ deploy: install
 
 .PHONY: clean
 clean:
-	@rm -rf ./dist/ ./.wireit/*/cache ./node_modules/
+	@rm -rf \
+		./.wireit/*/cache \
+		./dist/
 
 .PHONY: reset
 reset: clean
-	@rm -rf ./.wireit/
+	@rm -rf \
+		./.wireit/ \
+		./node_modules/

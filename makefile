@@ -125,7 +125,10 @@ ifndef title
 endif
 	@gh pr create --fill --assignee "@me" --label documentation --title "docs: $(title)"
 
+.PHONY: clean
+clean:
+	@rm -rf ./test-results/
+
 .PHONY: reset
-reset:
-	@pnpm dlx npkill
-	@cd ./src/apps/leadof-us/ && "$(MAKE)" clean
+reset: clean
+	@rm -rf ./.wireit/ ./node_modules/

@@ -12,7 +12,9 @@
     "prepare": "husky install",
     "container:lint": "wireit",
     "container:spelling": "wireit",
-    "container:check": "wireit"
+    "container:check": "wireit",
+    "clean": "wireit",
+    "reset": "wireit"
   },
   "wireit": {
     "container:lint": {
@@ -48,6 +50,12 @@
         "container:lint",
         "container:spelling"
       ]
+    },
+    "clean": {
+      "command": "make clean"
+    },
+    "reset": {
+      "command": "make reset"
     }
   },
   "devDependencies": {

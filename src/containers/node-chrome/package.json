@@ -8,7 +8,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "wireit",
-    "clean": "wireit"
+    "clean": "wireit",
+    "reset": "wireit"
   },
   "wireit": {
     "build": {
@@ -28,6 +29,9 @@
     },
     "clean": {
       "command": "make clean"
+    },
+    "reset": {
+      "command": "make reset"
     }
   },
   "devDependencies": {

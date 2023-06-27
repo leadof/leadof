@@ -95,19 +95,6 @@ update:
 		@angular/compiler-cli \
 		@angular/language-service
 
-.PHONY: clean
-clean:
-	@podman rm --force leadof-us-start-container || true
-	@rm -rf \
-		./.angular/ \
-		./coverage/ \
-		./dist/ \
-		./node_modules/ \
-		./playwright-report/ \
-		./www/ \
-		./lighthouse-report.html \
-		./performance-report*
-
 .PHONY: install-container
 install-container:
 	@podman build \
@@ -130,3 +117,19 @@ start-container: install-container
 	@podman rm --force leadof-us-$@ || true
 	@podman run --name leadof-us-$@ --detach --publish 4000:4000 leadof/us:latest
 	@podman logs --follow leadof-us-$@
+
+.PHONY: clean
+clean:
+	@podman rm --force leadof-us-start-container || true
+	@rm -rf \
+		 ./.wireit/*/cache \
+		./dist/ \
+		./www/ \
+		./test-results/
+
+.PHONY: reset
+reset: clean
+	@rm -rf \
+		./.angular/ \
+		./.wireit/ \
+		./node_modules/
