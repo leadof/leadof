@@ -2,6 +2,11 @@
 
 .PHONY: all
 all:
+	@pnpm install
+	@pnpm container:all
+
+.PHONY: ci
+ci:
 	@pnpm container:all
 
 .PHONY: prerequisites

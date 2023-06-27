@@ -41,6 +41,12 @@
       "output": [
         "test-results/spelling/container-digest.txt"
       ]
+    },
+    "container:check": {
+      "dependencies": [
+        "container:lint",
+        "container:spelling"
+      ]
     }
   },
   "devDependencies": {

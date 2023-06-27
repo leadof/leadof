@@ -53,7 +53,7 @@ jobs:
 
       - name: Make
         working-directory: ./src/apps/leadof-us/
-        run: make
+        run: make ci
 
       - name: Upload test results
         uses: actions/upload-artifact@v3

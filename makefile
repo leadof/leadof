@@ -4,10 +4,8 @@ all: prerequisites check install
 
 # Continuous integration
 .PHONY: ci
-ci: prerequisites
-	@pnpm install
-	@pnpm container:lint
-	@pnpm container:spelling
+ci:
+	@pnpm container:check
 
 # Prerequisites
 .PHONY: prerequisites
