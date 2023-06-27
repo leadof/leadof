@@ -132,3 +132,11 @@ clean:
 .PHONY: reset
 reset: clean
 	@rm -rf ./.wireit/ ./node_modules/
+
+.PHONY: clean-all
+clean-all:
+	@pnpm --recursive clean
+
+.PHONY: reset-all
+reset-all:
+	@pnpm --recursive reset
