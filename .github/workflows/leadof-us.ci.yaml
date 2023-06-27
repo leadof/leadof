@@ -35,9 +35,6 @@ concurrency:
 
 env:
   CI: true
-  PROJECT_PATH: ./src/apps/leadof-us/
-  CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
-  CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
 
 jobs:
   integrate:
@@ -47,21 +44,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: executable-shell-scripts
-        uses: ./.github/actions/executable-shell-scripts/
+      - name: setup-task-execution
+        uses: ./.github/actions/setup-task-execution/
 
       - name: Make
-        # change to the project directory
-        working-directory: ${{ env.PROJECT_PATH }}
-        run: |
-          printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
-          make
+        working-directory: ./src/apps/leadof-us/
+        run: make
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: ${{ env.PROJECT_PATH }}test-results/
+          path: ./src/apps/leadof-us/test-results/
           if-no-files-found: error

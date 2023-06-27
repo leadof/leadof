@@ -16,11 +16,6 @@ containerize_source() {
   image_tag="leadof-us/src:latest"
   target_name="src"
 
-  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
-    podman login "ghcr.io" \
-      --username "${CONTAINER_REGISTRY_USERNAME}" \
-      --password-stdin
-
   podman build \
     --tag "${image_tag}" \
     --file ./src.containerfile \

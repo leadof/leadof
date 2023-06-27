@@ -16,11 +16,6 @@ test() {
   image_tag="leadof-us/test:latest"
   target_name="unit_test"
 
-  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
-    podman login "ghcr.io" \
-      --username "${CONTAINER_REGISTRY_USERNAME}" \
-      --password-stdin
-
   podman build \
     --tag "${image_tag}" \
     --file ./test.containerfile \

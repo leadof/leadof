@@ -1,4 +1,4 @@
-name: "setup-wireit"
+name: "setup-task-execution"
 description: "Sets up Wireit with specific versions of NodeJS, npm, and pnpm"
 inputs:
   node-version:
@@ -16,6 +16,8 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: actions/checkout@v3
+
     # Setup the environment with a specific version of NodeJS.
     - name: Install node ${{ inputs.node-version }}
       uses: actions/setup-node@v3
@@ -48,3 +50,13 @@ runs:
 
     # Set up GitHub Actions caching for Wireit.
     - uses: google/wireit@setup-github-actions-caching/v1
+
+    # Setup the repository for task execution.
+    - name: prerequisites
+      env:
+        CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
+        CONTAINER_REGISTRY_PASSWORD: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
+      shell: bash
+      run: |
+        chmod +x ./prerequisites.sh \
+        && . ./prerequisites.sh

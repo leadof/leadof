@@ -28,10 +28,6 @@ concurrency:
 
 env:
   CI: true
-  CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
-  CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
-  PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
-  PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
 
 jobs:
   integrate:
@@ -41,23 +37,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: executable-shell-scripts
-        uses: ./.github/actions/executable-shell-scripts/
+      - name: setup-task-execution
+        uses: ./.github/actions/setup-task-execution/
 
       - name: build
         working-directory: ./src/containers/node-chrome/
-        # write the github actions secret to a file
-        # the file allows us to use `podman login --password-stdin`
-        # while it would be possible to:
-        # `echo ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} | podman login --password-stdin`
-        # using a file encourages console logging and history best practices
-        run: |
-          printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
-          make deploy
-
-      - name: cleanup
-        if: ${{ always() }}
-        run: |
-          rm -f "${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}"
+        env:
+          PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
+          PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
+        run: make deploy

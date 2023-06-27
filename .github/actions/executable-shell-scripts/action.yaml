@@ -1,9 +1,0 @@
-name: "executable-shell-scripts"
-description: "Ensures that all *.sh scripts in a directory are executable"
-runs:
-  using: "composite"
-  steps:
-    - shell: bash
-      run: |
-        chmod +x .github/actions/executable-shell-scripts/executable.sh \
-        && . .github/actions/executable-shell-scripts/executable.sh

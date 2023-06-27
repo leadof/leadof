@@ -15,11 +15,6 @@ install() {
   image_tag="leadof/us-dependencies:latest"
   target_name="all_dependencies"
 
-  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
-    podman login "ghcr.io" \
-      --username "${CONTAINER_REGISTRY_USERNAME}" \
-      --password-stdin
-
   podman build \
     --tag "${image_tag}" \
     --file ./dependencies.containerfile \

@@ -22,12 +22,6 @@ concurrency:
 
 env:
   CI: true
-  # Should match ".nvmrc" file.
-  NODE_VERSION: 18.16.1
-  # Should match ".pnpm-version" file.
-  PNPM_VERSION: 8.6.5
-  CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
-  CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
 
 jobs:
   integrate:
@@ -37,22 +31,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: setup-wireit
-        uses: ./.github/actions/setup-wireit/
-
-      - name: executable-shell-scripts
-        uses: ./.github/actions/executable-shell-scripts/
+      - name: setup-task-execution
+        uses: ./.github/actions/setup-task-execution/
 
       - name: Make
-        run: |
-          printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
-          make ci
+        run: make ci
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: ${{ env.PROJECT_PATH }}test-results/
+          path: ./test-results/
           if-no-files-found: error
