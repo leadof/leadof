@@ -34,6 +34,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
+
       - name: setup-task-execution
         uses: ./.github/actions/setup-task-execution/
 
