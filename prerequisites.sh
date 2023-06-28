@@ -84,6 +84,16 @@ main() {
   pnpm_install
 
   auth_gh_container_registry
+
+  if [ ! -d "./test-results/" ]; then
+    mkdir ./test-results/
+  fi
+
+  if [ -f "./test-results/prerequisites.txt" ]; then
+    rm -f ./test-results/prerequisites.txt
+  fi
+
+  echo "Prerequisites installed" >./test-results/prerequisites.txt
 }
 
 dotenv

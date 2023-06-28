@@ -18,3 +18,12 @@ This project is currently shared source, but not licensed for use by others or o
 ### Run the production website locally
 
 `podman run --name leadof-us-dev --detach --publish 4000:4000 ghcr.io/leadof/leadof-us/web:latest`
+
+### Development
+
+1. Clone with the command `gh repo clone leadof/leadof`
+2. Setup prerequisites as well as run all tests and builds with the command `make all` _\*please note that this command may change the version of NodeJS using `nvm`, may change the version of `npm` and will install a specific version of `pnpm`_
+
+Each project has specific tasks defined in the relative "./makefile" and "./package.json" file.
+
+GNU `make` is used to keep task commands simple while NodeJS and `pnpm` are used with "wireit" to define task dependencies and improve task execution performance with support for parallel task execution as well as caching for improved task repetition.

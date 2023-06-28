@@ -49,6 +49,7 @@ ignoreWords:
   - textbox
   - unamestr
   - viewports
+  - wireit
   - WORKDIR
 words:
   - smol

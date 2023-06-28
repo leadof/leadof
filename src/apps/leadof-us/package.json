@@ -8,8 +8,6 @@
   "scripts": {
     "start::comment": "Normal start for front-end Angular application without SSR",
     "start": "ng serve --port 4200",
-    "build::comment": "Normal build for front-end Angular application without SSR",
-    "build": "ng build --progress false --configuration production",
     "watch::comment": "Watched build for front-end Angular application without SSR",
     "watch": "ng build --watch --configuration development",
     "lint::comment": "Linting",
@@ -40,8 +38,12 @@
     "container:e2e": "wireit",
     "container:check::comment": "All containerized checks and testing",
     "container:check": "wireit",
+    "check::comment": "Containerized build; creates a production-ready SSR container.",
+    "check": "wireit",
     "container:build::comment": "Containerized build; creates a production-ready SSR container.",
     "container:build": "wireit",
+    "build::comment": "Containerized build; creates a production-ready SSR container.",
+    "build": "wireit",
     "container:all::comment": "All containerized tasks",
     "container:all": "wireit",
     "container:start::comment": "Starts a production-ready SSR server locally",
@@ -50,8 +52,7 @@
     "container:stop": "wireit",
     "container:restart::comment": "Restarts the production-ready SSR server locally",
     "container:restart": "wireit",
-    "clean": "wireit",
-    "reset": "wireit"
+    "clean": "wireit"
   },
   "wireit": {
     "container:dependencies": {
@@ -142,6 +143,11 @@
         "container:e2e"
       ]
     },
+    "check": {
+      "dependencies": [
+        "container:check"
+      ]
+    },
     "container:build": {
       "command": "make install",
       "dependencies": [
@@ -157,6 +163,11 @@
       ],
       "output": [
         "dist/app_container-digest.txt"
+      ]
+    },
+    "build": {
+      "dependencies": [
+        "container:build"
       ]
     },
     "container:all": {
@@ -193,9 +204,6 @@
     },
     "clean": {
       "command": "make clean"
-    },
-    "reset": {
-      "command": "make reset"
     }
   },
   "dependencies": {

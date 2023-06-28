@@ -14,7 +14,7 @@ FROM ghcr.io/leadof/leadof/node:latest as node
 ################################################################################
 # Layer target: application dependencies
 ################################################################################
-FROM ghcr.io/leadof/leadof/us-dependencies:latest as dependencies
+FROM localhost/leadof-us/dependencies:latest as dependencies
 
 ################################################################################
 # Layer target: contains project src

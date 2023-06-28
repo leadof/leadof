@@ -6,7 +6,7 @@ FROM docker.io/redhat/ubi8-micro as smol
 ################################################################################
 # Layer target: application dependencies
 ################################################################################
-FROM ghcr.io/leadof/leadof/us-dependencies:latest as dependencies
+FROM localhost/leadof-us/dependencies:latest as dependencies
 
 ################################################################################
 # Layer target: base for playwright browser automation

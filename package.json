@@ -10,13 +10,39 @@
     "format": "prettier --write --ignore-path ./.prettierignore ./",
     "lint": "prettier --check --ignore-path ./.prettierignore ./",
     "prepare": "husky install",
+    "prerequisites": "wireit",
+    "build:containers": "wireit",
     "container:lint": "wireit",
     "container:spelling": "wireit",
     "container:check": "wireit",
-    "clean": "wireit",
-    "reset": "wireit"
+    "check:all": "wireit",
+    "build:all": "wireit",
+    "all": "wireit",
+    "clean": "wireit"
   },
   "wireit": {
+    "prerequisites": {
+      "command": "make prerequisites",
+      "files": [
+        "./.npm-version",
+        "./.nvmrc",
+        "./.pnpm-version",
+        "./package.json",
+        "./prerequisites.dev.sh",
+        "./prerequisites.sh"
+      ],
+      "output": [
+        "./test-results/prerequisites.txt"
+      ]
+    },
+    "build:containers": {
+      "dependencies": [
+        "./src/containers/libraries:build",
+        "./src/containers/node:build",
+        "./src/containers/node-chrome:build",
+        "./src/containers/playwright:build"
+      ]
+    },
     "container:lint": {
       "command": "make check-lint",
       "files": [
@@ -51,11 +77,28 @@
         "container:spelling"
       ]
     },
+    "check:all": {
+      "dependencies": [
+        "container:lint",
+        "container:spelling",
+        "./src/apps/leadof-us:check"
+      ]
+    },
+    "build:all": {
+      "dependencies": [
+        "build:containers",
+        "./src/apps/leadof-us:build"
+      ]
+    },
+    "all": {
+      "dependencies": [
+        "prerequisites",
+        "check:all",
+        "build:all"
+      ]
+    },
     "clean": {
       "command": "make clean"
-    },
-    "reset": {
-      "command": "make reset"
     }
   },
   "devDependencies": {

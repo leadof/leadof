@@ -1,6 +1,8 @@
 .DEFAULT_GOAL:=ci
 
-all: prerequisites check install
+.PHONY: all
+all: prerequisites
+	@pnpm all
 
 # Continuous integration
 .PHONY: ci
@@ -10,7 +12,8 @@ ci:
 # Prerequisites
 .PHONY: prerequisites
 prerequisites:
-	@./prerequisites.sh
+	@chmod +x ./prerequisites.sh \
+	&& ./prerequisites.sh
 
 .PHONY: pre
 pre: prerequisites
@@ -42,16 +45,15 @@ check-lint:
 check-spelling:
 	@./check-spelling.sh
 
-.PHONY:spellcheck
+.PHONY: spellcheck
 spellcheck: check-spelling
 
-.PHONY:check-quick
+.PHONY: check-quick
 check-quick: check-formatting check-spelling
 
 .PHONY: check
 check: check-quick install-containers
-	@cd ./src/apps/leadof-us/ \
-	&& "$(MAKE)" check
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" $@
 
 .PHONY: install
 install:
@@ -132,11 +134,16 @@ clean:
 .PHONY: reset
 reset: clean
 	@rm -rf ./.wireit/ ./node_modules/
+	@podman rmi --force localhost/leadof/lint:latest || true
+	@podman rmi --force localhost/leadof/spelling:latest || true
 
 .PHONY: clean-all
-clean-all:
-	@pnpm --recursive clean
+clean-all: clean
+	@cd ./src/containers/ && "$(MAKE)" clean
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" clean
 
 .PHONY: reset-all
-reset-all:
-	@pnpm --recursive reset
+reset-all: clean-all reset
+	@cd ./src/containers/ && "$(MAKE)" reset
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" reset
+	@podman system prune --force

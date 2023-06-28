@@ -1,3 +1,7 @@
+ARG NODE_VERSION="18.16.1"
+ARG IMAGE_NODE_OS="bullseye-slim"
+ARG IMAGE_NODE_TAG="docker.io/library/node:${NODE_VERSION}-${IMAGE_NODE_OS}"
+
 ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
 ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
 
@@ -38,7 +42,7 @@ VOLUME [ "/usr/src/build-results/" ]
 ################################################################################
 # Layer target: prepare a web production image
 ################################################################################
-FROM node as web
+FROM ${IMAGE_NODE_TAG} as web
 
 ARG PUBLISHED_SOURCE_URL
 ARG PUBLISHED_DOCUMENTATION_URL
@@ -46,7 +50,12 @@ ARG PUBLISHED_DOCUMENTATION_URL
 ENV PORT=4000
 ENV NODE_ENV=production
 
-RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
+# update package sources
+# install dumb-init
+# upgrade all packages (patch)
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends dumb-init \
+  && apt-get upgrade -y
 
 USER node
 

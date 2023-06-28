@@ -133,3 +133,10 @@ reset: clean
 		./.angular/ \
 		./.wireit/ \
 		./node_modules/
+	@podman rmi --force localhost/leadof-us/dependencies:latest || true
+	@podman rmi --force localhost/leadof-us/src:latest || true
+	@podman rmi --force localhost/leadof-us/e2e:latest || true
+	@podman rmi --force localhost/leadof-us/lint:latest || true
+	@podman rmi --force localhost/leadof-us/test:latest || true
+	@podman rmi --force localhost/leadof-us/web:latest || true
+	@podman rmi --force ghcr.io/leadof/leadof-us/web:latest || true

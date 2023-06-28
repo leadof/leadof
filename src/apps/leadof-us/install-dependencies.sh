@@ -12,7 +12,7 @@ set -e
 #   None
 #######################################
 install() {
-  image_tag="leadof/us-dependencies:latest"
+  image_tag="leadof-us/dependencies:latest"
   target_name="all_dependencies"
 
   podman build \
@@ -24,10 +24,6 @@ install() {
     --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
     --target ${target_name} \
     .
-
-  dist_tag="ghcr.io/leadof/${image_tag}"
-
-  podman tag "${image_tag}" "${dist_tag}"
 
   echo "Generating distribution files..."
   if [ -d "./dist/" ]; then
