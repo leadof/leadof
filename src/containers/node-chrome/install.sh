@@ -15,11 +15,6 @@ install() {
   image_tag="leadof/node-chrome:latest"
   target_name="node_chrome"
 
-  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
-    podman login "ghcr.io" \
-      --username "${CONTAINER_REGISTRY_USERNAME}" \
-      --password-stdin
-
   podman build \
     --tag "${image_tag}" \
     --file ./containerfile \

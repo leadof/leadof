@@ -8,8 +8,6 @@
   "scripts": {
     "start::comment": "Normal start for front-end Angular application without SSR",
     "start": "ng serve --port 4200",
-    "build::comment": "Normal build for front-end Angular application without SSR",
-    "build": "ng build --progress false --configuration production",
     "watch::comment": "Watched build for front-end Angular application without SSR",
     "watch": "ng build --watch --configuration development",
     "lint::comment": "Linting",
@@ -30,20 +28,31 @@
     "prerender": "ng run app:prerender:production",
     "container:dependencies::comment": "Containerized build of system dependencies only",
     "container:dependencies": "wireit",
+    "container:src::comment": "Containerized source code",
+    "container:src": "wireit",
     "container:lint::comment": "Containerized linting",
     "container:lint": "wireit",
     "container:test::comment": "Containerized unit testing",
     "container:test": "wireit",
     "container:e2e::comment": "Containerized end-to-end testing",
     "container:e2e": "wireit",
+    "container:check::comment": "All containerized checks and testing",
+    "container:check": "wireit",
+    "check::comment": "Containerized build; creates a production-ready SSR container.",
+    "check": "wireit",
     "container:build::comment": "Containerized build; creates a production-ready SSR container.",
     "container:build": "wireit",
+    "build::comment": "Containerized build; creates a production-ready SSR container.",
+    "build": "wireit",
+    "container:all::comment": "All containerized tasks",
+    "container:all": "wireit",
     "container:start::comment": "Starts a production-ready SSR server locally",
     "container:start": "wireit",
     "container:stop::comment": "Stops the production-ready SSR server locally",
     "container:stop": "wireit",
     "container:restart::comment": "Restarts the production-ready SSR server locally",
-    "container:restart": "wireit"
+    "container:restart": "wireit",
+    "clean": "wireit"
   },
   "wireit": {
     "container:dependencies": {
@@ -54,15 +63,26 @@
         "./install-dependencies.sh",
         "./makefile",
         "./package.json"
+      ]
+    },
+    "container:src": {
+      "command": "make src",
+      "dependencies": [
+        "container:dependencies"
       ],
-      "output": [
-        "dist/dependencies_container-digest.txt"
+      "files": [
+        "./*",
+        "!.angular",
+        "!.wireit",
+        "!dist",
+        "!node_modules",
+        "!test-results"
       ]
     },
     "container:lint": {
       "command": "make check-lint",
       "dependencies": [
-        "container:dependencies"
+        "container:src"
       ],
       "files": [
         "./*",
@@ -79,7 +99,7 @@
     "container:test": {
       "command": "make check-test",
       "dependencies": [
-        "container:dependencies"
+        "container:src"
       ],
       "files": [
         "./*",
@@ -110,10 +130,22 @@
         "test-results/e2e/container-digest.txt"
       ]
     },
+    "container:check": {
+      "dependencies": [
+        "container:lint",
+        "container:test",
+        "container:e2e"
+      ]
+    },
+    "check": {
+      "dependencies": [
+        "container:check"
+      ]
+    },
     "container:build": {
       "command": "make install",
       "dependencies": [
-        "container:dependencies"
+        "container:src"
       ],
       "files": [
         "./*",
@@ -125,6 +157,17 @@
       ],
       "output": [
         "dist/app_container-digest.txt"
+      ]
+    },
+    "build": {
+      "dependencies": [
+        "container:build"
+      ]
+    },
+    "container:all": {
+      "dependencies": [
+        "container:check",
+        "container:build"
       ]
     },
     "container:start": {

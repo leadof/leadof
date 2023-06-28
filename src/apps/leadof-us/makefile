@@ -1,6 +1,13 @@
 .DEFAULT_GOAL:=all
 
-all: install-dependencies check-lint check-test check-e2e install
+.PHONY: all
+all:
+	@pnpm install
+	@pnpm container:all
+
+.PHONY: ci
+ci:
+	@pnpm container:all
 
 .PHONY: prerequisites
 prerequisites:
@@ -10,6 +17,10 @@ prerequisites:
 
 .PHONY: pre
 pre: prerequisites
+
+.PHONY: src
+src:
+	@./install-src.sh
 
 .PHONY: check-lint
 check-lint:
@@ -84,19 +95,6 @@ update:
 		@angular/compiler-cli \
 		@angular/language-service
 
-.PHONY: clean
-clean:
-	@podman rm --force leadof-us-start-container || true
-	@rm -rf \
-		./.angular/ \
-		./coverage/ \
-		./dist/ \
-		./node_modules/ \
-		./playwright-report/ \
-		./www/ \
-		./lighthouse-report.html \
-		./performance-report*
-
 .PHONY: install-container
 install-container:
 	@podman build \
@@ -119,3 +117,26 @@ start-container: install-container
 	@podman rm --force leadof-us-$@ || true
 	@podman run --name leadof-us-$@ --detach --publish 4000:4000 leadof/us:latest
 	@podman logs --follow leadof-us-$@
+
+.PHONY: clean
+clean:
+	@podman rm --force leadof-us-start-container || true
+	@rm -rf \
+		 ./.wireit/*/cache \
+		./dist/ \
+		./www/ \
+		./test-results/
+
+.PHONY: reset
+reset: clean
+	@rm -rf \
+		./.angular/ \
+		./.wireit/ \
+		./node_modules/
+	@podman rmi --force localhost/leadof-us/dependencies:latest || true
+	@podman rmi --force localhost/leadof-us/src:latest || true
+	@podman rmi --force localhost/leadof-us/e2e:latest || true
+	@podman rmi --force localhost/leadof-us/lint:latest || true
+	@podman rmi --force localhost/leadof-us/test:latest || true
+	@podman rmi --force localhost/leadof-us/web:latest || true
+	@podman rmi --force ghcr.io/leadof/leadof-us/web:latest || true

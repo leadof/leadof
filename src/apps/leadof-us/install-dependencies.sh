@@ -12,13 +12,8 @@ set -e
 #   None
 #######################################
 install() {
-  image_tag="leadof/us-dependencies:latest"
+  image_tag="leadof-us/dependencies:latest"
   target_name="all_dependencies"
-
-  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
-    podman login "ghcr.io" \
-      --username "${CONTAINER_REGISTRY_USERNAME}" \
-      --password-stdin
 
   podman build \
     --tag "${image_tag}" \
@@ -29,10 +24,6 @@ install() {
     --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
     --target ${target_name} \
     .
-
-  dist_tag="ghcr.io/leadof/${image_tag}"
-
-  podman tag "${image_tag}" "${dist_tag}"
 
   echo "Generating distribution files..."
   if [ -d "./dist/" ]; then

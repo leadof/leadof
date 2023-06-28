@@ -16,14 +16,9 @@ lint() {
   image_tag="leadof-us/lint:latest"
   target_name="lint"
 
-  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
-    podman login "ghcr.io" \
-      --username "${CONTAINER_REGISTRY_USERNAME}" \
-      --password-stdin
-
   podman build \
     --tag "${image_tag}" \
-    --file ./containerfile \
+    --file ./lint.containerfile \
     --ignorefile ./.containerignore \
     --network host \
     --target "${target_name}" \

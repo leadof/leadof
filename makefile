@@ -1,15 +1,19 @@
-.DEFAULT_GOAL:=all
+.DEFAULT_GOAL:=ci
 
-all: prerequisites check install
+.PHONY: all
+all: prerequisites
+	@pnpm all
 
 # Continuous integration
 .PHONY: ci
-ci: prerequisites check-formatting check-spelling
+ci:
+	@pnpm container:check
 
 # Prerequisites
 .PHONY: prerequisites
 prerequisites:
-	@./prerequisites.sh
+	@chmod +x ./prerequisites.sh \
+	&& ./prerequisites.sh
 
 .PHONY: pre
 pre: prerequisites
@@ -33,20 +37,23 @@ format:
 check-formatting:
 	@./check-formatting.sh
 
+.PHONY: check-lint
+check-lint:
+	@./check-lint.sh
+
 .PHONY: check-spelling
 check-spelling:
 	@./check-spelling.sh
 
-.PHONY:spellcheck
+.PHONY: spellcheck
 spellcheck: check-spelling
 
-.PHONY:check-quick
+.PHONY: check-quick
 check-quick: check-formatting check-spelling
 
 .PHONY: check
-check: check-quick install-libraries
-	@cd ./src/apps/leadof-us/ \
-	&& "$(MAKE)" check
+check: check-quick install-containers
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" $@
 
 .PHONY: install
 install:
@@ -74,7 +81,7 @@ endif
 
 .PHONY: create-leadof-us
 create-leadof-us:
-	@echo 'N' | pnpm ionic start leadof-us blank \
+	@echo 'N' | pnpm dlx @ionic/cli@7.1.1 start leadof-us blank \
 		--type=angular-standalone \
 		--no-deps \
 		--no-git \
@@ -120,7 +127,23 @@ ifndef title
 endif
 	@gh pr create --fill --assignee "@me" --label documentation --title "docs: $(title)"
 
+.PHONY: clean
+clean:
+	@rm -rf ./test-results/
+
 .PHONY: reset
-reset:
-	@pnpm dlx npkill
+reset: clean
+	@rm -rf ./.wireit/ ./node_modules/
+	@podman rmi --force localhost/leadof/lint:latest || true
+	@podman rmi --force localhost/leadof/spelling:latest || true
+
+.PHONY: clean-all
+clean-all: clean
+	@cd ./src/containers/ && "$(MAKE)" clean
 	@cd ./src/apps/leadof-us/ && "$(MAKE)" clean
+
+.PHONY: reset-all
+reset-all: clean-all reset
+	@cd ./src/containers/ && "$(MAKE)" reset
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" reset
+	@podman system prune --force

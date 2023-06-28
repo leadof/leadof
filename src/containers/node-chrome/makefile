@@ -12,8 +12,14 @@ deploy: install
 
 .PHONY: clean
 clean:
-	@rm -rf ./dist/ ./.wireit/*/cache ./node_modules/
+	@rm -rf \
+		./.wireit/*/cache \
+		./dist/
 
 .PHONY: reset
 reset: clean
-	@rm -rf ./.wireit/
+	@rm -rf \
+		./.wireit/ \
+		./node_modules/
+	@podman rmi --force localhost/leadof/node-chrome:latest || true
+	@podman rmi --force ghcr.io/leadof/leadof/node-chrome:latest || true

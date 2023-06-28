@@ -4,6 +4,11 @@
 
 set -e
 
+#######################################
+# Loads environment variables from a .env file.
+# Arguments:
+#   None
+#######################################
 dotenv() {
   if [ -f './.env' ]; then
     unamestr=$(uname)
@@ -17,6 +22,20 @@ dotenv() {
 
     echo "Successfully loaded .env environment variables for the system \"${unamestr}\"..."
   fi
+}
+
+#######################################
+# Marks all scripts as executable.
+# Arguments:
+#   None
+#######################################
+mark_scripts_executable() {
+  echo 'Granting execute permissions to all scripts in the repository...'
+
+  find . -type f -path '*.sh' -not -path './node_modules/*' -exec chmod +x {} \;
+  find . -type f -path '*.sh' -not -path './node_modules/*' -exec echo "Granted execute to:" {} \;
+
+  echo 'Successfully granted execute permissions to all scripts in the repository.'
 }
 
 #######################################

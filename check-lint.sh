@@ -1,24 +1,24 @@
 #!/bin/sh
 #
-# Executes end-to-end tests.
+# Executes linting checks.
 
 set -e
 
-. ../../containers/libraries/shell/_command.sh
-. ../../containers/libraries/shell/_node.sh
+. ./src/containers/libraries/shell/_command.sh
+. ./src/containers/libraries/shell/_node.sh
 
 #######################################
-# Runs end-to-end tests.
+# Lints the application.
 # Arguments:
 #   None
 #######################################
-check_e2e() {
-  image_tag="leadof-us/e2e:latest"
-  target_name="e2e"
+lint() {
+  image_tag="leadof/lint:latest"
+  target_name="lint"
 
   podman build \
     --tag "${image_tag}" \
-    --file ./check-e2e.containerfile \
+    --file ./containerfile \
     --ignorefile ./.containerignore \
     --network host \
     --target "${target_name}" \
@@ -47,7 +47,7 @@ check_e2e() {
 #   None
 #######################################
 main() {
-  check_e2e
+  lint
 }
 
 # env vars must be global to the script

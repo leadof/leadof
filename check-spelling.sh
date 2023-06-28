@@ -1,31 +1,44 @@
 #!/bin/sh
 #
-# Checks the project for spelling errors.
+# Checks spelling for the application.
 
 set -e
 
+. ./src/containers/libraries/shell/_command.sh
+. ./src/containers/libraries/shell/_node.sh
+
 #######################################
-# Checks spelling.
+# Checks spelling for the application.
 # Arguments:
 #   None
 #######################################
-checkSpelling() {
-  echo ''
-  echo 'Checking spelling...'
+check_spelling() {
+  image_tag="leadof/spelling:latest"
+  target_name="spelling"
 
-  set +e
-  check_spelling_output=$(pnpm spellcheck 2>&1)
-  check_spelling_exit_code=$?
-  set -e
+  podman build \
+    --tag "${image_tag}" \
+    --file ./containerfile \
+    --ignorefile ./.containerignore \
+    --network host \
+    --target "${target_name}" \
+    .
 
-  if [ "$check_spelling_exit_code" = "0" ]; then
-    echo 'Successfully checked spelling. All good!'
-  else
-    echo "$check_spelling_output" 1>&2
-    echo '' 1>&2
-    echo 'Checking spelling failed.' 1>&2
-    exit 1
+  image_name="${target_name}_results"
+
+  echo "Copying output files from container \"${image_name}\"..."
+  # copy output files from container
+  podman run --name ${image_name} --detach ${image_tag} sleep 1000
+  if [ -d "./test-results/${target_name}/" ]; then
+    rm -rf ./test-results/${target_name}/
   fi
+  mkdir -p ./test-results/${target_name}/
+  podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
+  mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
+  rm -rf ./test-results/${target_name}/test-results/
+  podman rm --force ${image_name}
+  podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
+  echo "Successfully copied output files from container \"${image_name}\"."
 }
 
 #######################################
@@ -34,7 +47,10 @@ checkSpelling() {
 #   None
 #######################################
 main() {
-  checkSpelling
+  check_spelling
 }
+
+# env vars must be global to the script
+dotenv
 
 main

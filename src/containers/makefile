@@ -8,3 +8,17 @@ install:
 	@cd ./node/ && "$(MAKE)" $@
 	@cd ./node-chrome/ && "$(MAKE)" $@
 	@cd ./playwright/ && "$(MAKE)" $@
+
+.PHONY: clean
+clean:
+	@cd ./libraries/ && "$(MAKE)" $@
+	@cd ./node/ && "$(MAKE)" $@
+	@cd ./node-chrome/ && "$(MAKE)" $@
+	@cd ./playwright/ && "$(MAKE)" $@
+
+.PHONY: reset
+reset:
+	@cd ./libraries/ && "$(MAKE)" $@
+	@cd ./node/ && "$(MAKE)" $@
+	@cd ./node-chrome/ && "$(MAKE)" $@
+	@cd ./playwright/ && "$(MAKE)" $@

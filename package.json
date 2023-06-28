@@ -9,10 +9,99 @@
     "spellcheck": "cspell --config ./cspell.yaml --color **",
     "format": "prettier --write --ignore-path ./.prettierignore ./",
     "lint": "prettier --check --ignore-path ./.prettierignore ./",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prerequisites": "wireit",
+    "build:containers": "wireit",
+    "container:lint": "wireit",
+    "container:spelling": "wireit",
+    "container:check": "wireit",
+    "check:all": "wireit",
+    "build:all": "wireit",
+    "all": "wireit",
+    "clean": "wireit"
+  },
+  "wireit": {
+    "prerequisites": {
+      "command": "make prerequisites",
+      "files": [
+        "./.npm-version",
+        "./.nvmrc",
+        "./.pnpm-version",
+        "./package.json",
+        "./prerequisites.dev.sh",
+        "./prerequisites.sh"
+      ],
+      "output": [
+        "./test-results/prerequisites.txt"
+      ]
+    },
+    "build:containers": {
+      "dependencies": [
+        "./src/containers/libraries:build",
+        "./src/containers/node:build",
+        "./src/containers/node-chrome:build",
+        "./src/containers/playwright:build"
+      ]
+    },
+    "container:lint": {
+      "command": "make check-lint",
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
+      ],
+      "output": [
+        "test-results/lint/container-digest.txt"
+      ]
+    },
+    "container:spelling": {
+      "command": "make check-spelling",
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
+      ],
+      "output": [
+        "test-results/spelling/container-digest.txt"
+      ]
+    },
+    "container:check": {
+      "dependencies": [
+        "container:lint",
+        "container:spelling"
+      ]
+    },
+    "check:all": {
+      "dependencies": [
+        "container:lint",
+        "container:spelling",
+        "./src/apps/leadof-us:check"
+      ]
+    },
+    "build:all": {
+      "dependencies": [
+        "build:containers",
+        "./src/apps/leadof-us:build"
+      ]
+    },
+    "all": {
+      "dependencies": [
+        "prerequisites",
+        "check:all",
+        "build:all"
+      ]
+    },
+    "clean": {
+      "command": "make clean"
+    }
   },
   "devDependencies": {
-    "@ionic/cli": "^7.1.1",
     "cspell": "^6.31.1",
     "husky": "^8.0.3",
     "madr": "^3.0.0",

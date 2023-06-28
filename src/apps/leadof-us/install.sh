@@ -16,14 +16,9 @@ install() {
   image_tag="leadof-us/web:latest"
   target_name="web"
 
-  cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
-    podman login "ghcr.io" \
-      --username "${CONTAINER_REGISTRY_USERNAME}" \
-      --password-stdin
-
   podman build \
     --tag "${image_tag}" \
-    --file ./containerfile \
+    --file ./install.containerfile \
     --ignorefile ./.containerignore \
     --network host \
     --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \
