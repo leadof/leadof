@@ -63,9 +63,6 @@
         "./install-dependencies.sh",
         "./makefile",
         "./package.json"
-      ],
-      "output": [
-        "dist/dependencies_container-digest.txt"
       ]
     },
     "container:src": {
@@ -80,9 +77,6 @@
         "!dist",
         "!node_modules",
         "!test-results"
-      ],
-      "output": [
-        "dist/src/container-digest.txt"
       ]
     },
     "container:lint": {
