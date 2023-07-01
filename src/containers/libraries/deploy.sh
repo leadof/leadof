@@ -2,7 +2,10 @@
 #
 # Deploys the container.
 
+# fail if anything errors
 set -e
+# fail if a function call is missing an argument
+set -u
 
 . ../../containers/libraries/shell/_command.sh
 

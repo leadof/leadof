@@ -2,7 +2,10 @@
 #
 # Stops the web application.
 
+# fail if anything errors
 set -e
+# fail if a function call is missing an argument
+set -u
 
 #######################################
 # Stops the application container.

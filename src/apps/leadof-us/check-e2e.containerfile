@@ -46,7 +46,7 @@ RUN mkdir -p /usr/src/test-results/ \
   && mkdir -p ./test-results/e2e/ \
   && pnpm playwright test \
   && mv ./test-results/e2e/lighthouse.html /usr/src/test-results/ \
-  && mv ./test-results/e2e/playwright/index.html /usr/src/test-results/playwright.html
+  && mv ./test-results/e2e/playwright-reports/index.html /usr/src/test-results/playwright.html
 
 WORKDIR /usr/src/test-results/
 

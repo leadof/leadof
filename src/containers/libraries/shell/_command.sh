@@ -2,7 +2,10 @@
 #
 # Function library for commands.
 
+# fail if anything errors
 set -e
+# fail if a function call is missing an argument
+set -u
 
 #######################################
 # Loads environment variables from a .env file.

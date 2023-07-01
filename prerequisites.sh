@@ -2,7 +2,10 @@
 #
 # Initializes the project for use.
 
+# fail if anything errors
 set -e
+# fail if a function call is missing an argument
+set -u
 
 # import command functions
 . ./src/containers/libraries/shell/_command.sh
