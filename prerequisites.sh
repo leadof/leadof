@@ -21,7 +21,11 @@ set -u
 #   None
 #######################################
 dev_prerequisites() {
-  if [ x"$CI" = "x" ]; then
+  set +u
+  is_ci="${CI}"
+  set -u
+
+  if [ x"$is_ci" = "x" ]; then
     echo ''
     echo 'Initializing project for development...'
     . ./prerequisites.dev.sh
@@ -52,15 +56,21 @@ auth_gh_container_registry() {
     echo ''
     echo "Authenticating to the GitHub container registry \"${gh_container_registry}\"..."
 
-    if [ x"${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}" != "x" ]; then
-      cat ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH} |
+    set +u
+    container_registry_username="${CONTAINER_REGISTRY_USERNAME}"
+    container_registry_password="${CONTAINER_REGISTRY_PASSWORD}"
+    container_registry_password_file_path="${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}"
+    set -u
+
+    if [ x"${container_registry_password_file_path}" != "x" ]; then
+      cat ${container_registry_password_file_path} |
         podman login "ghcr.io" \
-          --username "${CONTAINER_REGISTRY_USERNAME}" \
+          --username "${container_registry_username}" \
           --password-stdin
-    elif [ x"${CONTAINER_REGISTRY_PASSWORD}" != "x" ]; then
-      echo ${CONTAINER_REGISTRY_PASSWORD} |
+    elif [ x"${container_registry_password}" != "x" ]; then
+      echo ${container_registry_password} |
         podman login "ghcr.io" \
-          --username "${CONTAINER_REGISTRY_USERNAME}" \
+          --username "${container_registry_username}" \
           --password-stdin
     else
       echo 'FAILED to read the container password from environment variables:' 1>&2
