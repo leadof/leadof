@@ -1,7 +1,7 @@
 .DEFAULT_GOAL:=ci
 
 .PHONY: all
-all: prerequisites
+all:
 	@pnpm all
 
 # Continuous integration

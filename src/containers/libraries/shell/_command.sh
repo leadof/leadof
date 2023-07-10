@@ -2,11 +2,6 @@
 #
 # Function library for commands.
 
-# fail if anything errors
-set -e
-# fail if a function call is missing an argument
-set -u
-
 #######################################
 # Loads environment variables from a .env file.
 # Arguments:
@@ -23,7 +18,7 @@ dotenv() {
       export $(grep -v '^#' ./.env | xargs -d '\n')
     fi
 
-    echo "Successfully loaded .env environment variables for the system \"${unamestr}\"..."
+    echo "Successfully loaded .env environment variables for the system \"${unamestr}\"."
   fi
 }
 

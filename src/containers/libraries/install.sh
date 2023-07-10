@@ -37,7 +37,7 @@ install() {
   if [ -d "./dist/" ]; then
     rm -rf ./dist/
   fi
-  mkdir -p ./dist/
+  mkdir --parents ./dist/
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/container-digest.txt
   echo "Successfully generated distribution files."
 }

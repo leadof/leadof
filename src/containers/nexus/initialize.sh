@@ -138,6 +138,8 @@ main() {
     exit 1
   fi
 
+  cd ./src/main/groovy/com/leadof/nexus/admin/
+
   security_config_json="{\"admin\":{\"password\":\"${NEXUS_ADMIN_PASSWORD}\"},\"dev\":{\"username\":\"${NEXUS_DEV_USERNAME}\",\"password\":\"${NEXUS_DEV_PASSWORD}\"}}"
 
   upload_and_execute_script_once \

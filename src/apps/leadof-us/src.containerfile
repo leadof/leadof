@@ -21,8 +21,8 @@ FROM localhost/leadof-us/dependencies:latest as dependencies
 ################################################################################
 FROM node as src
 
-RUN mkdir -p /usr/src/libraries/ \
-  && mkdir -p /usr/src/apps/leadof-us/node_modules/
+RUN mkdir --parents /usr/src/libraries/ \
+  && mkdir --parents /usr/src/apps/leadof-us/node_modules/
 
 COPY --from=dependencies /usr/src/libraries/ /usr/src/libraries/
 

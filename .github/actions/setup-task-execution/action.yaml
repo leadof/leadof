@@ -8,11 +8,11 @@ inputs:
   npm-version:
     description: "Version of npm"
     required: false
-    default: "9.7.2"
+    default: "9.8.0"
   pnpm-version:
     description: "Version of pnpm"
     required: false
-    default: "8.6.5"
+    default: "8.6.6"
   container-registry-password:
     description: "The password for the container registry"
     required: true

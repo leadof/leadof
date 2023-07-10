@@ -8,6 +8,8 @@
 @Grab('com.sun.xml.bind:jaxb-impl:2.2.7')
 @Grab('com.sun.mail:javax.mail:1.5.6')
 
+@Grab('org.apache.groovy:groovy-cli-picocli:4.0.13')
+
 @Grab('info.picocli:picocli-groovy:4.2.0')
 
 @Grab('javax.activation:activation:1.1.1')
@@ -24,12 +26,13 @@
 
 @Grab('org.slf4j:slf4j-simple:2.0.7')
 
-@Grab('org.sonatype.nexus:nexus-rest-client:3.9.0-01')
-@Grab('org.sonatype.nexus:nexus-rest-jackson2:3.9.0-01')
-@Grab('org.sonatype.nexus:nexus-script:3.9.0-01')
+@Grab('org.sonatype.nexus:nexus-rest-client:3.57.0-01')
+@Grab('org.sonatype.nexus:nexus-rest-jackson2:3.57.0-01')
+@Grab('org.sonatype.nexus:nexus-script:3.57.0-01')
 
 @GrabExclude('org.codehaus.groovy:groovy-all')
 
+// WARN: change to `systemClassLoader=false` when running `./mvnw install` or `make install-java`
 @GrabConfig(systemClassLoader=true)
 
 import javax.ws.rs.NotFoundException
@@ -75,9 +78,12 @@ String name = options.n ?: file.name
 
 // Look to see if a script with this name already exists so we can update if necessary
 boolean newScript = true
+
 try {
   scripts.read(name)
+
   newScript = false
+
   println "Existing Script named '$name' will be updated"
 }
 catch (NotFoundException e) {
@@ -85,6 +91,7 @@ catch (NotFoundException e) {
 }
 
 def script = new ScriptXO(name, file.text, 'groovy')
+
 if (newScript) {
   scripts.add(script)
 }

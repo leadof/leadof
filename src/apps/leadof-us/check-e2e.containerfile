@@ -20,8 +20,8 @@ FROM ghcr.io/leadof/leadof/playwright:latest as playwright
 ################################################################################
 FROM playwright as playwright_src
 
-RUN mkdir -p /usr/src/libraries/ \
-  && mkdir -p /usr/src/apps/leadof-us/node_modules/
+RUN mkdir --parents /usr/src/libraries/ \
+  && mkdir --parents /usr/src/apps/leadof-us/node_modules/
 
 COPY --from=dependencies /usr/src/libraries/ /usr/src/libraries/
 
@@ -42,8 +42,8 @@ VOLUME [ "/usr/src/apps/leadof-us/" ]
 ################################################################################
 FROM playwright_src as run_e2e
 
-RUN mkdir -p /usr/src/test-results/ \
-  && mkdir -p ./test-results/e2e/ \
+RUN mkdir --parents /usr/src/test-results/ \
+  && mkdir --parents ./test-results/e2e/ \
   && pnpm playwright test \
   && mv ./test-results/e2e/lighthouse.html /usr/src/test-results/ \
   && mv ./test-results/e2e/playwright-reports/index.html /usr/src/test-results/playwright.html

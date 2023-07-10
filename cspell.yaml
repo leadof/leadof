@@ -10,7 +10,9 @@ ignorePaths:
   - src/apps/leadof-us/www/**
   - "*.ai"
   - "*.drawio"
+  - "*.groovy"
   - "*.json"
+  - "*.properties"
   - "*.svg"
   - "*.yaml"
   - makefile
@@ -45,6 +47,7 @@ ignoreWords:
   - opencontainers
   - pnpmrc
   - shellguide
+  - sonatype
   - subdir
   - textbox
   - unamestr

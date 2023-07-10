@@ -33,7 +33,7 @@ containerize_source() {
   if [ -d "./dist/${target_name}/" ]; then
     rm -rf ./dist/${target_name}/
   fi
-  mkdir -p ./dist/${target_name}/
+  mkdir --parents ./dist/${target_name}/
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/${target_name}/container-digest.txt
   echo "Successfully copied output files from container \"${image_name}\"."
 }

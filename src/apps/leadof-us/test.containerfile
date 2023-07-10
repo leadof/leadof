@@ -25,8 +25,8 @@ COPY --from=src /usr/src/ /usr/src/
 
 WORKDIR /usr/src/apps/leadof-us/
 
-RUN mkdir -p /usr/src/test-results/ \
-  && mkdir -p ./test-results/unit_test/ \
+RUN mkdir --parents /usr/src/test-results/ \
+  && mkdir --parents ./test-results/unit_test/ \
   && pnpm test \
   && mv ./test-results/unit_test/* /usr/src/test-results/
 

@@ -35,7 +35,7 @@ lint() {
   if [ -d "./test-results/${target_name}/" ]; then
     rm -rf ./test-results/${target_name}/
   fi
-  mkdir -p ./test-results/${target_name}/
+  mkdir --parents ./test-results/${target_name}/
   podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
   mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
   rm -rf ./test-results/${target_name}/test-results/

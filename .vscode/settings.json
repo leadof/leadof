@@ -34,5 +34,8 @@
   },
   "[properties]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
   }
 }

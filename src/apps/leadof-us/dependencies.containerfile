@@ -21,7 +21,7 @@ FROM ghcr.io/leadof/leadof/node:latest as node
 ################################################################################
 FROM node as dependencies
 
-RUN mkdir -p /usr/src/dependencies/
+RUN mkdir --parents /usr/src/dependencies/
 
 # application package (not the root)
 COPY ./package.json /usr/src/dependencies/
@@ -45,7 +45,7 @@ FROM ghcr.io/leadof/leadof/playwright:latest as playwright
 ################################################################################
 FROM playwright as playwright_dependencies
 
-RUN mkdir -p /usr/src/dependencies/
+RUN mkdir --parents /usr/src/dependencies/
 
 COPY --from=dependencies /usr/src/dependencies/ /usr/src/dependencies/
 
@@ -67,9 +67,9 @@ FROM smol as all_dependencies
 ARG PUBLISHED_SOURCE_URL
 ARG PUBLISHED_DOCUMENTATION_URL
 
-RUN mkdir -p /usr/src/libraries/ \
-  && mkdir -p /usr/src/dependencies/web/ \
-  && mkdir -p /usr/src/dependencies/playwright/
+RUN mkdir --parents /usr/src/libraries/ \
+  && mkdir --parents /usr/src/dependencies/web/ \
+  && mkdir --parents /usr/src/dependencies/playwright/
 
 COPY --from=libraries /usr/src/libraries/ /usr/src/libraries/
 

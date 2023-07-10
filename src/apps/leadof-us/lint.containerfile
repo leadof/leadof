@@ -16,8 +16,8 @@ FROM localhost/leadof-us/src:latest as src
 ################################################################################
 FROM src as run_lint
 
-RUN mkdir -p /usr/src/test-results/ \
-  && mkdir -p ./test-results/lint/ \
+RUN mkdir --parents /usr/src/test-results/ \
+  && mkdir --parents ./test-results/lint/ \
   && pnpm lint 2>&1 | tee /usr/src/test-results/lint-results.txt
 
 WORKDIR /usr/src/test-results/

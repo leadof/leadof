@@ -5,6 +5,7 @@ all: install
 .PHONY: install
 install:
 	@cd ./libraries/ && "$(MAKE)" $@
+	@cd ./nexus/ && "$(MAKE)" $@
 	@cd ./node/ && "$(MAKE)" $@
 	@cd ./node-chrome/ && "$(MAKE)" $@
 	@cd ./playwright/ && "$(MAKE)" $@
@@ -12,6 +13,7 @@ install:
 .PHONY: clean
 clean:
 	@cd ./libraries/ && "$(MAKE)" $@
+	@cd ./nexus/ && "$(MAKE)" $@
 	@cd ./node/ && "$(MAKE)" $@
 	@cd ./node-chrome/ && "$(MAKE)" $@
 	@cd ./playwright/ && "$(MAKE)" $@
@@ -19,6 +21,7 @@ clean:
 .PHONY: reset
 reset:
 	@cd ./libraries/ && "$(MAKE)" $@
+	@cd ./nexus/ && "$(MAKE)" $@
 	@cd ./node/ && "$(MAKE)" $@
 	@cd ./node-chrome/ && "$(MAKE)" $@
 	@cd ./playwright/ && "$(MAKE)" $@

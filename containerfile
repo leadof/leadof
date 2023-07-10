@@ -21,14 +21,14 @@ FROM ghcr.io/leadof/leadof/node:latest as node
 ################################################################################
 FROM node as dependencies
 
-RUN mkdir -p /usr/src/project/dependencies/
+RUN mkdir --parents /usr/src/project/dependencies/
 
 # application package (not the root)
-COPY ./package.json /usr/src/project/dependencies/
+COPY ./package.json ./pnpm-lock.yaml /usr/src/project/dependencies/
 
 WORKDIR /usr/src/project/dependencies/
 
-RUN pnpm install \
+RUN pnpm --recursive install --frozen-lockfile \
   && rm -f ./package.json ./pnpm-lock.yaml
 
 VOLUME [ "/usr/src/project/dependencies/" ]
@@ -38,8 +38,8 @@ VOLUME [ "/usr/src/project/dependencies/" ]
 ################################################################################
 FROM node as src
 
-RUN mkdir -p /usr/src/libraries/ \
-  && mkdir -p /usr/src/project/node_modules/
+RUN mkdir --parents /usr/src/libraries/ \
+  && mkdir --parents /usr/src/project/node_modules/
 
 COPY --from=libraries /usr/src/libraries/ /usr/src/libraries/
 
@@ -60,8 +60,8 @@ VOLUME [ "/usr/src/project/" ]
 ################################################################################
 FROM src as run_lint
 
-RUN mkdir -p /usr/src/test-results/ \
-  && mkdir -p ./test-results/lint/ \
+RUN mkdir --parents /usr/src/test-results/ \
+  && mkdir --parents ./test-results/lint/ \
   && pnpm lint 2>&1 | tee /usr/src/test-results/lint-results.txt
 
 WORKDIR /usr/src/test-results/
@@ -82,8 +82,8 @@ VOLUME [ "/usr/src/test-results/" ]
 ################################################################################
 FROM src as run_spelling
 
-RUN mkdir -p /usr/src/test-results/ \
-  && mkdir -p ./test-results/spelling/ \
+RUN mkdir --parents /usr/src/test-results/ \
+  && mkdir --parents ./test-results/spelling/ \
   && pnpm spellcheck 2>&1 | tee /usr/src/test-results/spelling-results.txt
 
 WORKDIR /usr/src/test-results/

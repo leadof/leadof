@@ -20,7 +20,7 @@ FROM localhost/leadof-us/src:latest as src
 ################################################################################
 FROM src as run_build
 
-RUN mkdir -p /usr/src/build-results/ \
+RUN mkdir --parents /usr/src/build-results/ \
   && pnpm build:ssr \
   && mv ./dist/* /usr/src/build-results/
 

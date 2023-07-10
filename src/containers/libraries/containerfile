@@ -6,8 +6,8 @@ FROM docker.io/alpine:3.14
 ARG PUBLISHED_SOURCE_URL
 ARG PUBLISHED_DOCUMENTATION_URL
 
-RUN mkdir -p /usr/src/libraries/ \
-  && mkdir -p /usr/src/dist/
+RUN mkdir --parents /usr/src/libraries/ \
+  && mkdir --parents /usr/src/dist/
 
 COPY . /usr/src/libraries/
 
