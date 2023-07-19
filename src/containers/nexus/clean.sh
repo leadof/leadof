@@ -18,10 +18,19 @@ clean_nexus() {
   # init container should always be cleaned up, but make sure it is
   podman rm --force init-nexus-groovy || true
 
-  echo ''
-  echo 'Removing Nexus server...'
-  podman rm --force ${nexus_container_name} || true
-  echo 'Successfully removed Nexus server.'
+  set +u
+  is_reset="${RESET_NEXUS}"
+  set -u
+
+  if [ x"$is_reset" = "x" ]; then
+    echo ''
+    echo 'Skipping Nexus clean. To clean Nexus, include the environment variable \"RESET_NEXUS\".'
+  else
+    echo ''
+    echo 'Removing Nexus server...'
+    podman rm --force ${nexus_container_name} || true
+    echo 'Successfully removed Nexus server.'
+  fi
 }
 
 #######################################

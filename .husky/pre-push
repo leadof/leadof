@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-pnpm spellcheck
-pnpm lint
+pnpm local:spelling
+pnpm local:lint

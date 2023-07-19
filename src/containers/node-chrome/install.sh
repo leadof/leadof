@@ -15,20 +15,31 @@ set -u
 #   None
 #######################################
 install() {
-  image_tag="leadof/node-chrome:latest"
   target_name="node_chrome"
-
-  podman build \
-    --tag "${image_tag}" \
-    --file ./containerfile \
-    --ignorefile ./.containerignore \
-    --network host \
-    --target ${target_name} \
-    .
-
+  image_tag="leadof/node-chrome:latest"
   dist_tag="ghcr.io/leadof/${image_tag}"
 
-  podman tag "${image_tag}" "${dist_tag}"
+  set +u
+  is_ci="${CI}"
+  set -u
+
+  if [ x"$is_ci" = "x" ]; then
+    podman build \
+      --tag "${image_tag}" \
+      --file ./containerfile \
+      --ignorefile ./.containerignore \
+      --network host \
+      --target ${target_name} \
+      .
+
+    podman tag "${image_tag}" "${dist_tag}"
+  else
+    echo ''
+    echo "CI detected. Skipping image build and pulling \"${dist_tag}\"..."
+    podman pull $dist_tag
+    podman tag "${dist_tag}" "localhost/${image_tag}"
+    echo "Successfully pulled \"${dist_tag}\"."
+  fi
 
   echo "Generating distribution files..."
   if [ -d "./dist/" ]; then

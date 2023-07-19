@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Executes linting checks.
+# Builds a "lint" container image.
 
 # fail if anything errors
 set -e
@@ -8,40 +8,32 @@ set -e
 set -u
 
 . ./src/containers/libraries/shell/_command.sh
-. ./src/containers/libraries/shell/_node.sh
+. ./src/containers/libraries/shell/_podman.sh
 
 #######################################
-# Lints the application.
+# Builds a "lint" container image.
 # Arguments:
 #   None
 #######################################
-lint() {
-  image_tag="leadof/lint:latest"
+build_image() {
   target_name="lint"
+  image_tag="leadof/${target_name}:latest"
+  image_name="${target_name}_results"
 
   podman build \
     --tag "${image_tag}" \
-    --file ./containerfile \
+    --file ./check-lint.containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --target "${target_name}" \
     .
 
-  image_name="${target_name}_results"
+  copy_files_to_host \
+    $image_tag \
+    $image_name \
+    "/usr/src/lint/" \
+    "./test-results/"
 
-  echo "Copying output files from container \"${image_name}\"..."
-  # copy output files from container
-  podman run --name ${image_name} --detach ${image_tag} sleep 1000
-  if [ -d "./test-results/${target_name}/" ]; then
-    rm -rf ./test-results/${target_name}/
-  fi
-  mkdir --parents ./test-results/${target_name}/
-  podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
-  mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
-  rm -rf ./test-results/${target_name}/test-results/
-  podman rm --force ${image_name}
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
-  echo "Successfully copied output files from container \"${image_name}\"."
+  echo $(get_image_digest $image_tag) >./test-results/${target_name}/container-digest.txt
 }
 
 #######################################
@@ -50,7 +42,7 @@ lint() {
 #   None
 #######################################
 main() {
-  lint
+  build_image
 }
 
 # env vars must be global to the script

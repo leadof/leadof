@@ -1,4 +1,6 @@
 .angular
+.containers
+.wireit
 coverage
 dist
 node_modules

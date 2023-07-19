@@ -12,7 +12,7 @@ inputs:
   pnpm-version:
     description: "Version of pnpm"
     required: false
-    default: "8.6.6"
+    default: "8.6.9"
   container-registry-password:
     description: "The password for the container registry"
     required: true

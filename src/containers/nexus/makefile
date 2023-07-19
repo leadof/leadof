@@ -37,5 +37,4 @@ reset-java:
 
 .PHONY: reset
 reset: clean reset-java
-	@podman rmi --force localhost/leadof/nexus:latest || true
-	@podman volume rm --force nexus-data || true
+	@./reset.sh

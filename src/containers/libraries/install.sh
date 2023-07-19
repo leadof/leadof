@@ -19,19 +19,30 @@ install() {
   echo 'Installing libraries...'
 
   image_tag="leadof/libraries:latest"
-
-  podman build \
-    --tag ${image_tag} \
-    --file ./containerfile \
-    --ignorefile ./.containerignore \
-    --network host \
-    --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \
-    --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
-    .
-
   dist_tag="ghcr.io/leadof/${image_tag}"
 
-  podman tag "${image_tag}" "${dist_tag}"
+  set +u
+  is_ci="${CI}"
+  set -u
+
+  if [ x"$is_ci" = "x" ]; then
+    podman build \
+      --tag ${image_tag} \
+      --file ./containerfile \
+      --ignorefile ./.containerignore \
+      --network host \
+      --build-arg PUBLISHED_SOURCE_URL="${PUBLISHED_SOURCE_URL}" \
+      --build-arg PUBLISHED_DOCUMENTATION_URL="${PUBLISHED_DOCUMENTATION_URL}" \
+      .
+
+    podman tag "${image_tag}" "${dist_tag}"
+  else
+    echo ''
+    echo "CI detected. Skipping image build and pulling \"${dist_tag}\"..."
+    podman pull $dist_tag
+    podman tag "${dist_tag}" "localhost/${image_tag}"
+    echo "Successfully pulled \"${dist_tag}\"."
+  fi
 
   echo "Generating distribution files..."
   if [ -d "./dist/" ]; then

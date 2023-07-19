@@ -82,7 +82,7 @@
     "container:lint": {
       "command": "make check-lint",
       "dependencies": [
-        "container:src"
+        "../../../:container:src"
       ],
       "files": [
         "./*",
@@ -99,7 +99,7 @@
     "container:test": {
       "command": "make check-test",
       "dependencies": [
-        "container:src"
+        "../../../:container:src"
       ],
       "files": [
         "./*",

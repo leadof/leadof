@@ -18,24 +18,21 @@ prerequisites:
 .PHONY: pre
 pre: prerequisites
 
+.PHONY: install-dependencies
+install-dependencies:
+	@./install-dependencies.sh
+
+.PHONY: install-src
+install-src:
+	@./install-src.sh
+
 .PHONY: install-containers
 install-containers:
-ifdef CI
-	@podman pull ghcr.io/leadof/leadof/libraries:latest
-	@podman pull ghcr.io/leadof/leadof/node:latest
-	@podman pull ghcr.io/leadof/leadof/node-chrome:latest
-	@podman pull ghcr.io/leadof/leadof/playwright:latest
-else
-	@pnpm --recursive --filter "@leadof-containers/*" build
-endif
+	@pnpm build:containers
 
 .PHONY: format
 format:
-	@pnpm format
-
-.PHONY: check-formatting
-check-formatting:
-	@./check-formatting.sh
+	@pnpm local:format
 
 .PHONY: check-lint
 check-lint:
@@ -45,11 +42,11 @@ check-lint:
 check-spelling:
 	@./check-spelling.sh
 
-.PHONY: spellcheck
-spellcheck: check-spelling
+.PHONY: spelling
+spelling: check-spelling
 
 .PHONY: check-quick
-check-quick: check-formatting check-spelling
+check-quick: check-lint check-spelling
 
 .PHONY: check
 check: check-quick install-containers
@@ -147,3 +144,4 @@ reset-all: clean-all reset
 	@cd ./src/containers/ && "$(MAKE)" reset
 	@cd ./src/apps/leadof-us/ && "$(MAKE)" reset
 	@podman system prune --force
+	@podman volume prune --force

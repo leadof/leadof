@@ -16,15 +16,14 @@ set -u
 #   None
 #######################################
 test() {
-  image_tag="leadof-us/test:latest"
   target_name="unit_test"
+  image_tag="leadof-us/test:latest"
 
   podman build \
     --tag "${image_tag}" \
-    --file ./test.containerfile \
+    --file ./check-test.containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --target "${target_name}" \
     .
 
   image_name="${target_name}_results"
@@ -36,9 +35,7 @@ test() {
     rm -rf ./test-results/${target_name}/
   fi
   mkdir --parents ./test-results/${target_name}/
-  podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
-  mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
-  rm -rf ./test-results/${target_name}/test-results/
+  podman cp ${image_name}:. ./test-results/
   podman rm --force ${image_name}
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
   echo "Successfully copied output files from container \"${image_name}\"."

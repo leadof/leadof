@@ -1,0 +1,33 @@
+{
+  "name": "@leadof-containers/smol",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "wireit",
+    "clean": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "command": "make",
+      "files": [
+        "*.sh",
+        "./.containerignore",
+        "./containerfile",
+        "./makefile"
+      ],
+      "output": [
+        "dist/*"
+      ]
+    },
+    "clean": {
+      "command": "make clean"
+    }
+  },
+  "devDependencies": {
+    "wireit": "^0.9.5"
+  }
+}

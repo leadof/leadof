@@ -6,22 +6,25 @@
   "author": "Eric Swanson",
   "license": "UNLICENSED",
   "scripts": {
-    "spellcheck": "cspell --config ./cspell.yaml --color **",
-    "format": "prettier --write --ignore-path ./.prettierignore ./",
-    "lint": "prettier --check --ignore-path ./.prettierignore ./",
     "prepare": "husky install",
-    "prerequisites": "wireit",
-    "build:containers": "wireit",
-    "container:lint": "wireit",
+    "local:prerequisites": "wireit",
+    "local:spelling": "cspell --config ./cspell.yaml --color **",
+    "local:format": "prettier --write --ignore-path ./.prettierignore ./",
+    "local:lint": "prettier --check --ignore-path ./.prettierignore ./",
+    "local:lint:changes": "pretty-quick --staged",
+    "container:dependencies": "wireit",
+    "container:src": "wireit",
     "container:spelling": "wireit",
+    "container:lint": "wireit",
     "container:check": "wireit",
+    "build:containers": "wireit",
     "check:all": "wireit",
     "build:all": "wireit",
     "all": "wireit",
     "clean": "wireit"
   },
   "wireit": {
-    "prerequisites": {
+    "local:prerequisites": {
       "command": "make prerequisites",
       "files": [
         "./.npm-version",
@@ -35,19 +38,64 @@
         "./test-results/prerequisites.txt"
       ]
     },
+    "container:dependencies": {
+      "command": "make install-dependencies",
+      "dependencies": [
+        "./src/containers/node:build"
+      ],
+      "files": [
+        "**/package.json",
+        "./pnpm-lock.yaml",
+        "./pnpm-workspace.yaml",
+        "./install-dependencies.containerfile",
+        "./install-dependencies.sh"
+      ],
+      "output": [
+        ".containers/pnpm-store/",
+        "dist/dependencies_container-digest.txt"
+      ]
+    },
+    "container:src": {
+      "command": "make install-src",
+      "dependencies": [
+        "container:dependencies",
+        "./src/containers/libraries:build",
+        "./src/containers/node:build"
+      ],
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results",
+        "!**/*.containerfile",
+        "install-src.containerfile"
+      ],
+      "output": [
+        "dist/src_container-digest.txt"
+      ]
+    },
     "build:containers": {
       "dependencies": [
         "./src/containers/libraries:build",
         "./src/containers/node:build",
         "./src/containers/node-chrome:build",
-        "./src/containers/playwright:build"
+        "./src/containers/playwright:build",
+        "./src/containers/smol:build"
       ]
     },
     "container:lint": {
       "command": "make check-lint",
+      "dependencies": [
+        "container:src",
+        "./src/containers/smol:build"
+      ],
       "files": [
         "./*",
         "!**/.angular",
+        "!**/.containers",
         "!**/.wireit",
         "!**/dist",
         "!**/node_modules",
@@ -59,9 +107,14 @@
     },
     "container:spelling": {
       "command": "make check-spelling",
+      "dependencies": [
+        "container:src",
+        "./src/containers/smol:build"
+      ],
       "files": [
         "./*",
         "!**/.angular",
+        "!**/.containers",
         "!**/.wireit",
         "!**/dist",
         "!**/node_modules",
@@ -79,8 +132,7 @@
     },
     "check:all": {
       "dependencies": [
-        "container:lint",
-        "container:spelling",
+        "container:check",
         "./src/apps/leadof-us:check"
       ]
     },

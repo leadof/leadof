@@ -94,7 +94,8 @@ main() {
 
   dev_prerequisites
 
-  pnpm_install
+  # pnpm_install
+  . ./dependencies.sh
 
   auth_gh_container_registry
 
