@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "husky install",
     "local:prerequisites": "wireit",
-    "local:spelling": "cspell --config ./cspell.yaml --color **",
+    "local:spelling": "cspell --config ./cspell.yaml --no-color **",
     "local:format": "prettier --write --ignore-path ./.prettierignore ./",
     "local:lint": "prettier --check --ignore-path ./.prettierignore ./",
     "local:lint:changes": "pretty-quick --staged",
@@ -51,8 +51,7 @@
         "./install-dependencies.sh"
       ],
       "output": [
-        ".containers/pnpm-store/",
-        "dist/dependencies_container-digest.txt"
+        "dist/dependencies-container_digest.txt"
       ]
     },
     "container:src": {
@@ -70,11 +69,16 @@
         "!**/dist",
         "!**/node_modules",
         "!**/test-results",
+        "!**/.containerignore",
         "!**/*.containerfile",
+        "!**/*.drawio",
+        "!./src/docs/",
+        "!./src/gh/",
+        "!./src/media/",
         "install-src.containerfile"
       ],
       "output": [
-        "dist/src_container-digest.txt"
+        "dist/src-container_digest.txt"
       ]
     },
     "build:containers": {
@@ -102,7 +106,7 @@
         "!**/test-results"
       ],
       "output": [
-        "test-results/lint/container-digest.txt"
+        "dist/lint-container_digest.txt"
       ]
     },
     "container:spelling": {
@@ -121,7 +125,7 @@
         "!**/test-results"
       ],
       "output": [
-        "test-results/spelling/container-digest.txt"
+        "dist/spelling-container_digest.txt"
       ]
     },
     "container:check": {

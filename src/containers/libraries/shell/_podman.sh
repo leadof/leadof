@@ -4,7 +4,7 @@
 
 copy_files_to_host() {
   image_tag="$1"
-  image_name="tmp_copy__$2"
+  image_name="leadof-tmp_copy__$2"
   container_path="$3"
   host_path="$4"
   timeout="${5:-3000}"

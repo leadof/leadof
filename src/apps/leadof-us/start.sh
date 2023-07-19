@@ -21,7 +21,7 @@ start() {
     --publish 4000:4000 \
     leadof-us/web:latest
 
-  podman container inspect "${container_name}" --format "{{.Id}}::{{.ImageDigest}}" >./dist/${container_name}_container-digest.txt
+  podman container inspect "${container_name}" --format "{{.Id}}::{{.ImageDigest}}" >./dist/${container_name}-container_digest.txt
 
   echo ''
   echo 'Successfully started.'

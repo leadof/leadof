@@ -38,7 +38,7 @@ install() {
     rm -rf ./dist/
   fi
   mkdir --parents ./dist/
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/app_container-digest.txt
+  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/app-container_digest.txt
   echo "Successfully generated distribution files."
 }
 

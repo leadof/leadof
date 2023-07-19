@@ -36,7 +36,7 @@ build_image() {
     rm -rf ./dist/
   fi
   mkdir --parents ./dist/
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/src_container-digest.txt
+  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/src-container_digest.txt
   echo "Successfully generated distribution files."
 }
 

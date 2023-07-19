@@ -18,7 +18,6 @@ set -u
 build_image() {
   target_name="lint"
   image_tag="leadof/${target_name}:latest"
-  image_name="${target_name}_results"
 
   podman build \
     --tag "${image_tag}" \
@@ -29,11 +28,11 @@ build_image() {
 
   copy_files_to_host \
     $image_tag \
-    $image_name \
+    $target_name \
     "/usr/src/lint/" \
     "./test-results/"
 
-  echo $(get_image_digest $image_tag) >./test-results/${target_name}/container-digest.txt
+  echo $(get_image_digest $image_tag) >./dist/${target_name}-container_digest.txt
 }
 
 #######################################

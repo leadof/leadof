@@ -156,7 +156,7 @@
         "!test-results"
       ],
       "output": [
-        "dist/app_container-digest.txt"
+        "dist/app-container_digest.txt"
       ]
     },
     "build": {
@@ -184,13 +184,13 @@
         "!test-results"
       ],
       "output": [
-        "dist/leadof-us-dev_container-digest.txt"
+        "dist/leadof-us-dev-container_digest.txt"
       ]
     },
     "container:stop": {
       "command": "make stop",
       "files": [
-        "dist/leadof-us-dev_container-digest.txt"
+        "dist/leadof-us-dev-container_digest.txt"
       ]
     },
     "container:restart": {

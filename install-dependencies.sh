@@ -16,7 +16,6 @@ set -u
 #######################################
 build_image() {
   image_tag="leadof/dependencies:latest"
-  image_name="leadof-dependencies"
 
   # create if not exists
   if [ ! -d "./.containers/pnpm-store/" ]; then
@@ -38,7 +37,7 @@ build_image() {
     rm -rf ./dist/
   fi
   mkdir --parents ./dist/
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/dependencies_container-digest.txt
+  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/dependencies-container_digest.txt
   echo "Successfully generated distribution files."
 
   if [ -d "./.containers/tmp/pnpm-store/" ]; then
@@ -50,7 +49,7 @@ build_image() {
 
   copy_files_to_host \
     $image_tag \
-    $image_name \
+    "dependencies" \
     "/usr/src/.containers/pnpm-store/" \
     "./.containers/tmp/"
 
@@ -59,6 +58,8 @@ build_image() {
   rsync -a --delete ./.containers/tmp/pnpm-store/ ./.containers/pnpm-store/
   rm -rf ./.containers/tmp/pnpm-store/ >/dev/null &
   echo 'Successfully synchronized container files with local host cache.'
+
+  echo $(get_image_digest $image_tag) >./dist/dependencies-container_digest.txt
 }
 
 #######################################

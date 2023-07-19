@@ -127,6 +127,9 @@ endif
 .PHONY: clean
 clean:
 	@rm -rf ./test-results/
+	@podman rm --force tmp_copy__leadof-dependencies_results || true
+	@podman rm --force tmp_copy__lint_results || true
+	@podman rm --force tmp_copy__spelling_results || true
 
 .PHONY: reset
 reset: clean

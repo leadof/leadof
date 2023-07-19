@@ -8,5 +8,6 @@ test-results
 www
 
 *.drawio
+*.containerfile
 
 makefile
