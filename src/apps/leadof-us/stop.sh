@@ -17,7 +17,7 @@ stop_container() {
 
   podman rm --force ${container_name}
 
-  rm -f ./dist/${container_name}-container_digest.txt
+  rm --force ./dist/${container_name}-container_digest.txt
 }
 
 #######################################

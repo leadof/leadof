@@ -10,11 +10,11 @@ FROM node as src
 RUN mkdir --parents /usr/src/libraries/ \
   && mkdir --parents /usr/src/leadof/node_modules/
 
-COPY --from=libraries /usr/src/libraries/ /usr/src/libraries/
+COPY --from=libraries --chown=node:node /usr/src/libraries/ /usr/src/libraries/
 
-COPY --from=dependencies /usr/src/ /usr/src/leadof/
+COPY --from=dependencies --chown=node:node /usr/src/ /usr/src/leadof/
 
-COPY . /usr/src/leadof/
+COPY --chown=node:node . /usr/src/leadof/
 
 WORKDIR /usr/src/leadof/
 

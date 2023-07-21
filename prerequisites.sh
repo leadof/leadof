@@ -104,7 +104,7 @@ main() {
   fi
 
   if [ -f "./test-results/prerequisites.txt" ]; then
-    rm -f ./test-results/prerequisites.txt
+    rm --force ./test-results/prerequisites.txt
   fi
 
   echo "Prerequisites installed" >./test-results/prerequisites.txt

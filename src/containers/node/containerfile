@@ -43,7 +43,12 @@ RUN chmod +x /usr/local/bin/configure-npm \
   "${NPM_REGISTRY_URL}" \
   "${NPM_REGISTRY_OLD_URL_CONFIG}" \
   "${NPM_REGISTRY_URL_CONFIG}" \
-  "${NPM_REGISTRY_AUTH}"
+  "${NPM_REGISTRY_AUTH}" \
+  && chown --recursive node:node /usr/src/
+
+USER node
+
+RUN npm config get registry
 
 LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
 LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}

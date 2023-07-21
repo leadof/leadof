@@ -7,7 +7,6 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
-. ./src/containers/libraries/shell/_command.sh
 . ./src/containers/libraries/shell/_podman.sh
 
 #######################################
@@ -43,8 +42,5 @@ build_image() {
 main() {
   build_image
 }
-
-# env vars must be global to the script
-dotenv
 
 main

@@ -5,40 +5,44 @@ FROM localhost/leadof/node:latest as node
 ################################################################################
 FROM node as dependencies
 
-WORKDIR /usr/src/
+USER node
+
+RUN mkdir --parents /usr/src/leadof/
+
+WORKDIR /usr/src/leadof/
 
 RUN mkdir --parents /usr/src/.containers/pnpm-store/
 
 # CONTAINER packages
-COPY ./src/containers/libraries/package.json /usr/src/containers/libraries/
-# COPY ./src/containers/nexus/package.json /usr/src/containers/nexus/
-COPY ./src/containers/node/package.json /usr/src/containers/node/
-COPY ./src/containers/node-chrome/package.json /usr/src/containers/node-chrome/
-COPY ./src/containers/playwright/package.json /usr/src/containers/playwright/
+COPY --chown=node:node ./src/containers/libraries/package.json /usr/src/leadof/src/containers/libraries/
+# COPY --chown=node:node ./src/containers/nexus/package.json /usr/src/leadof/src/containers/nexus/
+COPY --chown=node:node ./src/containers/node/package.json /usr/src/leadof/src/containers/node/
+COPY --chown=node:node ./src/containers/node-chrome/package.json /usr/src/leadof/src/containers/node-chrome/
+COPY --chown=node:node ./src/containers/playwright/package.json /usr/src/leadof/src/containers/playwright/
 
 # ROOT package
-COPY ./package.json ./pnpm-lock.yaml ./pnpm-workspace.yaml /usr/src/
+COPY --chown=node:node ./package.json ./pnpm-lock.yaml ./pnpm-workspace.yaml /usr/src/leadof/
 
 # APPS packages
-COPY ./src/apps/leadof-us/package.json /usr/src/apps/leadof-us/
+COPY --chown=node:node ./src/apps/leadof-us/package.json /usr/src/leadof/src/apps/leadof-us/
 
 # CACHED dependencies
-COPY ./.containers/pnpm-store/ /usr/src/.containers/pnpm-store/
+COPY --chown=node:node ./.containers/pnpm-store/ /usr/src/leadof/.containers/pnpm-store/
 
 # set pnpm store location
 # ensure the pnpm store directory exists
 # install (all) dependencies
 # cleanup source files and only store dependencies
 #   *ensures `COPY` won't override updated source files
-RUN pnpm config set store-dir ./.containers/pnpm-store/ \
-  && mkdir -p $(pnpm store path) \
-  && pnpm --recursive install --frozen-lockfile \
-  && rm -f \
+RUN pnpm config set store-dir /usr/src/leadof/.containers/pnpm-store/ \
+  && mkdir --parents $(pnpm store path) \
+  && pnpm --recursive install --frozen-lockfile --reporter=append-only \
+  && rm --force \
   ./package.json \
   ./pnpm-lock.yaml \
   ./pnpm-workspace.yaml \
-  ./apps/leadof-us/package.json \
-  ./containers/libraries/package.json \
-  ./containers/node/package.json \
-  ./containers/node-chrome/package.json \
-  ./containers/playwright/package.json
+  ./src/apps/leadof-us/package.json \
+  ./src/containers/libraries/package.json \
+  ./src/containers/node/package.json \
+  ./src/containers/node-chrome/package.json \
+  ./src/containers/playwright/package.json

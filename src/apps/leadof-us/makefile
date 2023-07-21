@@ -121,7 +121,7 @@ start-container: install-container
 .PHONY: clean
 clean:
 	@podman rm --force leadof-us-start-container || true
-	@rm -rf \
+	@rm --recursive --force \
 		 ./.wireit/*/cache \
 		./dist/ \
 		./www/ \
@@ -129,7 +129,7 @@ clean:
 
 .PHONY: reset
 reset: clean
-	@rm -rf \
+	@rm --recursive --force \
 		./.angular/ \
 		./.wireit/ \
 		./node_modules/

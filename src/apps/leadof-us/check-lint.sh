@@ -7,17 +7,16 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
-. ../../containers/libraries/shell/_command.sh
-. ../../containers/libraries/shell/_node.sh
+. ../../containers/libraries/shell/_podman.sh
 
 #######################################
 # Lints the application.
 # Arguments:
 #   None
 #######################################
-lint() {
+build_image() {
   target_name="lint"
-  image_tag="leadof-us/lint:latest"
+  image_tag="leadof-us/${target_name}:latest"
 
   podman build \
     --tag "${image_tag}" \
@@ -26,19 +25,13 @@ lint() {
     --network host \
     .
 
-  image_name="${target_name}_results"
+  copy_files_to_host \
+    $image_tag \
+    $target_name \
+    "/usr/src/lint/" \
+    "./test-results/"
 
-  echo "Copying output files from container \"${image_name}\"..."
-  # copy output files from container
-  podman run --name ${image_name} --detach ${image_tag} sleep 1000
-  if [ -d "./test-results/${target_name}/" ]; then
-    rm -rf ./test-results/${target_name}/
-  fi
-  mkdir --parents ./test-results/${target_name}/
-  podman cp ${image_name}:. ./test-results/
-  podman rm --force ${image_name}
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
-  echo "Successfully copied output files from container \"${image_name}\"."
+  echo $(get_image_digest $image_tag) >./dist/${target_name}-container_digest.txt
 }
 
 #######################################
@@ -47,10 +40,7 @@ lint() {
 #   None
 #######################################
 main() {
-  lint
+  build_image
 }
-
-# env vars must be global to the script
-dotenv
 
 main

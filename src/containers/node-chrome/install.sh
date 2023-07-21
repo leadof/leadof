@@ -43,7 +43,7 @@ install() {
 
   echo "Generating distribution files..."
   if [ -d "./dist/" ]; then
-    rm -rf ./dist/
+    rm --recursive --force ./dist/
   fi
   mkdir --parents ./dist/
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/container-digest.txt

@@ -85,7 +85,7 @@ create-leadof-us:
 		--capacitor
 	@mv ./leadof-us/ ./src/apps/leadof-us/
 	@cd ./src/apps/leadof-us/ \
-	&& rm -f ./package-lock.json \
+	&& rm --force ./package-lock.json \
 	&& pnpm install \
 	&& pnpm add -D @ionic/cli
 
@@ -126,14 +126,14 @@ endif
 
 .PHONY: clean
 clean:
-	@rm -rf ./test-results/
+	@rm --recursive --force ./test-results/
 	@podman rm --force tmp_copy__leadof-dependencies_results || true
 	@podman rm --force tmp_copy__lint_results || true
 	@podman rm --force tmp_copy__spelling_results || true
 
 .PHONY: reset
 reset: clean
-	@rm -rf ./.wireit/ ./node_modules/
+	@rm --recursive --force ./.wireit/ ./node_modules/
 	@podman rmi --force localhost/leadof/lint:latest || true
 	@podman rmi --force localhost/leadof/spelling:latest || true
 

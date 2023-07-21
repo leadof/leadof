@@ -12,13 +12,13 @@ deploy: install
 
 .PHONY: clean
 clean:
-	@rm -rf \
+	@rm --recursive --force \
 		./.wireit/*/cache \
 		./dist/
 
 .PHONY: reset
 reset: clean
-	@rm -rf \
+	@rm --recursive --force \
 		./.wireit/ \
 		./node_modules/
 	@podman rmi --force localhost/leadof/node-chrome:latest || true

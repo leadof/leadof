@@ -29,7 +29,7 @@ COPY ./package.json /usr/src/dependencies/
 WORKDIR /usr/src/dependencies/
 
 RUN pnpm install \
-  && rm -f ./package.json ./pnpm-lock.yaml
+  && rm --force ./package.json ./pnpm-lock.yaml
 
 VOLUME [ "/usr/src/dependencies/" ]
 
@@ -55,7 +55,7 @@ WORKDIR /usr/src/dependencies/
 
 RUN pnpm install \
   && pnpm playwright install \
-  && rm -f ./package.json ./pnpm-lock.yaml
+  && rm --force ./package.json ./pnpm-lock.yaml
 
 VOLUME [ "/usr/src/dependencies/" ]
 

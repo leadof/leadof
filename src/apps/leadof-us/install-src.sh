@@ -31,7 +31,7 @@ containerize_source() {
 
   echo "Copying output files from container \"${image_name}\"..."
   if [ -d "./dist/${target_name}/" ]; then
-    rm -rf ./dist/${target_name}/
+    rm --recursive --force ./dist/${target_name}/
   fi
   mkdir --parents ./dist/${target_name}/
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/${target_name}/container-digest.txt

@@ -32,7 +32,7 @@ test() {
   # copy output files from container
   podman run --name ${image_name} --detach ${image_tag} sleep 1000
   if [ -d "./test-results/${target_name}/" ]; then
-    rm -rf ./test-results/${target_name}/
+    rm --recursive --force ./test-results/${target_name}/
   fi
   mkdir --parents ./test-results/${target_name}/
   podman cp ${image_name}:. ./test-results/

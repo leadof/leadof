@@ -33,12 +33,12 @@ check_e2e() {
   # copy output files from container
   podman run --name ${image_name} --detach ${image_tag} sleep 1000
   if [ -d "./test-results/${target_name}/" ]; then
-    rm -rf ./test-results/${target_name}/
+    rm --recursive --force ./test-results/${target_name}/
   fi
   mkdir --parents ./test-results/${target_name}/
   podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
   mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
-  rm -rf ./test-results/${target_name}/test-results/
+  rm --recursive --force ./test-results/${target_name}/test-results/
   podman rm --force ${image_name}
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
   echo "Successfully copied output files from container \"${image_name}\"."

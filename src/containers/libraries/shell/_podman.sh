@@ -7,7 +7,7 @@ copy_files_to_host() {
   image_name="leadof-tmp_copy__$2"
   container_path="$3"
   host_path="$4"
-  timeout="${5:-3000}"
+  timeout="${5:-12000}"
 
   echo ''
   echo "Copying output files from image \"${image_tag}\"..."
@@ -27,7 +27,7 @@ copy_files_to_host() {
   if [ -d $host_path ]; then
     echo 'WARNING: target directory for copying container files already exists.'
     echo "  Removing \"$host_path\"..."
-    rm -rf $host_path
+    rm --recursive --force $host_path
     echo "  Successfully removed \"$host_path\"."
   fi
 

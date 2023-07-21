@@ -10,8 +10,8 @@
     "start": "ng serve --port 4200",
     "watch::comment": "Watched build for front-end Angular application without SSR",
     "watch": "ng build --watch --configuration development",
-    "lint::comment": "Linting",
-    "lint": "ng lint",
+    "local:lint::comment": "Linting",
+    "local:lint": "ng lint",
     "test::comment": "Unit tests",
     "test": "ng test --code-coverage true --progress false --watch false",
     "e2e::comment": "End-to-end tests",
@@ -82,18 +82,20 @@
     "container:lint": {
       "command": "make check-lint",
       "dependencies": [
-        "../../../:container:src"
+        "../../../:container:src",
+        "../../containers/smol:build"
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
       ],
       "output": [
-        "test-results/lint/container-digest.txt"
+        "dist/lint-container_digest.txt"
       ]
     },
     "container:test": {

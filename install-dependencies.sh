@@ -34,14 +34,14 @@ build_image() {
 
   echo "Generating distribution files..."
   if [ -d "./dist/" ]; then
-    rm -rf ./dist/
+    rm --recursive --force ./dist/
   fi
   mkdir --parents ./dist/
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/dependencies-container_digest.txt
+  echo $(get_image_digest $image_tag) >./dist/dependencies-container_digest.txt
   echo "Successfully generated distribution files."
 
   if [ -d "./.containers/tmp/pnpm-store/" ]; then
-    rm -rf ./.containers/tmp/pnpm-store/
+    rm --recursive --force ./.containers/tmp/pnpm-store/
   fi
 
   mkdir --parents ./.containers/tmp/pnpm-store/
@@ -50,16 +50,14 @@ build_image() {
   copy_files_to_host \
     $image_tag \
     "dependencies" \
-    "/usr/src/.containers/pnpm-store/" \
+    "/usr/src/leadof/.containers/pnpm-store/" \
     "./.containers/tmp/"
 
   echo ''
   echo 'Synchronizing container files with local host cache...'
-  rsync -a --delete ./.containers/tmp/pnpm-store/ ./.containers/pnpm-store/
-  rm -rf ./.containers/tmp/pnpm-store/ >/dev/null &
+  rsync --archive --delete ./.containers/tmp/pnpm-store/ ./.containers/pnpm-store/
+  rm --recursive --force ./.containers/tmp/pnpm-store/ >/dev/null &
   echo 'Successfully synchronized container files with local host cache.'
-
-  echo $(get_image_digest $image_tag) >./dist/dependencies-container_digest.txt
 }
 
 #######################################
