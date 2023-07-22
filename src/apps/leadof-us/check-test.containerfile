@@ -7,22 +7,20 @@ FROM localhost/leadof/node-chrome:latest as node_chrome
 ################################################################################
 FROM node_chrome as run_unit_test
 
-COPY --from=src /usr/src/leadof/ /usr/src/
+COPY --from=src --chown=node:node /usr/src/leadof/ /usr/src/leadof/
 
-WORKDIR /usr/src/apps/leadof-us/
+WORKDIR /usr/src/leadof/src/apps/leadof-us/
 
 RUN mkdir --parents ./test-results/unit_test/ \
   && pnpm test
 
-WORKDIR /usr/src/apps/leadof-us/test-results/unit_test/
-
-VOLUME [ "/usr/src/apps/leadof-us/test-results/unit_test/" ]
+WORKDIR /usr/src/leadof/src/apps/leadof-us/test-results/unit_test/
 
 ################################################################################
 # Layer target: unit test results
 ################################################################################
-FROM smol as unit_test
+FROM smol
 
-COPY --from=run_unit_test /usr/src/apps/leadof-us/test-results/unit_test/ /usr/src/apps/leadof-us/test-results/unit_test/
+COPY --from=run_unit_test /usr/src/leadof/src/apps/leadof-us/test-results/unit_test/ /usr/src/unit_test/
 
-VOLUME [ "/usr/src/apps/leadof-us/test-results/unit_test/" ]
+VOLUME [ "/usr/src/unit_test/" ]

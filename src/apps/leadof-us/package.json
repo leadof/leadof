@@ -101,18 +101,20 @@
     "container:test": {
       "command": "make check-test",
       "dependencies": [
-        "../../../:container:src"
+        "../../../:container:src",
+        "../../containers/smol:build"
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
       ],
       "output": [
-        "test-results/unit_test/container-digest.txt"
+        "dist/unit_test-container_digest.txt"
       ]
     },
     "container:e2e": {
