@@ -25,6 +25,13 @@ install() {
   set -u
 
   if [ x"$is_ci" = "x" ]; then
+    if [ -f "./.containers/node-image.tar" ]; then
+      echo ''
+      echo 'Loading cached container image...'
+      podman load --input "./.containers/node-image.tar"
+      echo 'Successfully loaded cached container image.'
+    fi
+
     podman build \
       --tag "${image_tag}" \
       --file ./containerfile \
@@ -43,6 +50,19 @@ install() {
       .
 
     podman tag "${image_tag}" "${dist_tag}"
+
+    # remember image
+    echo ''
+    echo 'Saving cached image...'
+    if [ -f "./.containers/node-image.tar" ]; then
+      rm --force "./.containers/node-image.tar"
+      echo 'Removed previously cached image.'
+    fi
+    if [ ! -d "./.containers/" ]; then
+      mkdir "./.containers/"
+    fi
+    podman save --output ./.containers/node-image.tar $image_tag
+    echo 'Successfully saved cached image.'
   else
     echo ''
     echo "CI detected. Skipping image build and pulling \"${dist_tag}\"..."
@@ -52,10 +72,9 @@ install() {
   fi
 
   echo "Generating distribution files..."
-  if [ -d "./dist/" ]; then
-    rm --recursive --force ./dist/
+  if [ ! -d "./dist/" ]; then
+    mkdir "./dist/"
   fi
-  mkdir --parents ./dist/
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/container-digest.txt
   echo "Successfully generated distribution files."
 }

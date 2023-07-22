@@ -35,7 +35,7 @@
         "./prerequisites.sh"
       ],
       "output": [
-        "./test-results/prerequisites.txt"
+        "./dist/prerequisites.txt"
       ]
     },
     "container:dependencies": {
@@ -51,6 +51,7 @@
         "./install-dependencies.sh"
       ],
       "output": [
+        "dist/dependencies-image.tar",
         "dist/dependencies-container_digest.txt"
       ]
     },

@@ -17,13 +17,16 @@ set -u
 build_image() {
   image_tag="leadof/dependencies:latest"
 
-  # create if not exists
-  if [ ! -d "./.containers/pnpm-store/" ]; then
-    mkdir --parents ./.containers/pnpm-store/
+  if [ -f "./.containers/dependencies-image.tar" ]; then
+    echo ''
+    echo 'Loading cached container image...'
+    podman load --input ./.containers/dependencies-image.tar
+    echo 'Successfully loaded cached container image.'
   fi
 
   echo ''
   echo 'Building container image...'
+  echo '  Loading context may take several seconds ...'
   podman build \
     --tag $image_tag \
     --network host \
@@ -33,31 +36,25 @@ build_image() {
   echo 'Successfully built container image.'
 
   echo "Generating distribution files..."
-  if [ -d "./dist/" ]; then
-    rm --recursive --force ./dist/
+  if [ ! -d "./dist/" ]; then
+    mkdir "./dist/"
   fi
-  mkdir --parents ./dist/
   echo $(get_image_digest $image_tag) >./dist/dependencies-container_digest.txt
   echo "Successfully generated distribution files."
 
-  if [ -d "./.containers/tmp/pnpm-store/" ]; then
-    rm --recursive --force ./.containers/tmp/pnpm-store/
-  fi
-
-  mkdir --parents ./.containers/tmp/pnpm-store/
-  mkdir --parents ./.containers/pnpm-store/
-
-  copy_files_to_host \
-    $image_tag \
-    "dependencies" \
-    "/usr/src/leadof/.containers/pnpm-store/" \
-    "./.containers/tmp/"
-
+  # remember image
   echo ''
-  echo 'Synchronizing container files with local host cache...'
-  rsync --archive --delete ./.containers/tmp/pnpm-store/ ./.containers/pnpm-store/
-  rm --recursive --force ./.containers/tmp/pnpm-store/ >/dev/null &
-  echo 'Successfully synchronized container files with local host cache.'
+  echo 'Saving cached image...'
+  if [ -f "./.containers/dependencies-image.tar" ]; then
+    rm --force "./.containers/dependencies-image.tar"
+    echo 'Removed previously cached image.'
+  fi
+  if [ ! -d "./.containers/" ]; then
+    mkdir "./.containers/"
+  fi
+  podman save --output ./.containers/dependencies-image.tar $image_tag
+  echo 'Successfully saved cached image.'
+
 }
 
 #######################################

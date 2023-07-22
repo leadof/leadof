@@ -19,6 +19,7 @@ clean:
 .PHONY: reset
 reset: clean
 	@rm --recursive --force \
+		./.containers/ \
 		./.wireit/ \
 		./node_modules/
 	@podman rmi --force localhost/leadof/node:latest || true

@@ -12,7 +12,7 @@ RUN mkdir --parents /usr/src/libraries/ \
 
 COPY --from=libraries --chown=node:node /usr/src/libraries/ /usr/src/libraries/
 
-COPY --from=dependencies --chown=node:node /usr/src/ /usr/src/leadof/
+COPY --from=dependencies --chown=node:node /usr/src/leadof/ /usr/src/leadof/
 
 COPY --chown=node:node . /usr/src/leadof/
 

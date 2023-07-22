@@ -7,6 +7,7 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
+. ./src/containers/libraries/shell/_command.sh
 . ./src/containers/libraries/shell/_podman.sh
 
 #######################################
@@ -35,12 +36,49 @@ build_image() {
 }
 
 #######################################
+# Checks formatting.
+# Arguments:
+#   None
+#######################################
+check_formatting() {
+  echo ''
+  echo 'Running formatting checks...'
+
+  mkdir --parents ./test-results/lint/
+
+  set +e
+  cmd_output=$(pnpm local:lint 2>&1)
+  cmd_exit_code=$?
+  set -e
+
+  # always log output
+  echo $cmd_output | tee ./test-results/lint/lint-results.txt
+
+  if [ $cmd_exit_code != 0 ]; then
+    printf $cmd_output 1>&2
+    exit 1
+  fi
+
+  echo 'Successfully ran formatting checks.'
+}
+
+#######################################
 # Script entry point.
 # Arguments:
 #   None
 #######################################
 main() {
-  build_image
+  set +u
+  is_in_container="${IN_CONTAINER}"
+  set -u
+
+  if [ x"$is_in_container" = "x" ]; then
+    build_image
+  else
+    check_formatting
+  fi
 }
+
+dotenv
 
 main

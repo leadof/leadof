@@ -94,20 +94,19 @@ main() {
 
   dev_prerequisites
 
-  # pnpm_install
-  . ./dependencies.sh
+  pnpm_install
 
   auth_gh_container_registry
 
-  if [ ! -d "./test-results/" ]; then
-    mkdir ./test-results/
+  if [ ! -d "./dist/" ]; then
+    mkdir "./dist/"
   fi
 
-  if [ -f "./test-results/prerequisites.txt" ]; then
-    rm --force ./test-results/prerequisites.txt
+  if [ -f "./dist/prerequisites.txt" ]; then
+    rm --force ./dist/prerequisites.txt
   fi
 
-  echo "Prerequisites installed" >./test-results/prerequisites.txt
+  echo "Prerequisites installed" >./dist/prerequisites.txt
 }
 
 dotenv

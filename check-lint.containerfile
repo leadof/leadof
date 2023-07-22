@@ -6,8 +6,7 @@ FROM localhost/leadof/src:latest as src
 ################################################################################
 FROM src as run_lint
 
-RUN mkdir --parents ./test-results/lint/ \
-  && pnpm local:lint 2>&1 | tee ./test-results/lint/lint-results.txt
+RUN . ./check-lint.sh
 
 WORKDIR /usr/src/leadof/test-results/lint/
 

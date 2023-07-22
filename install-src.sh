@@ -16,13 +16,9 @@ build_image() {
   image_tag="leadof/src:latest"
   image_name="leadof-src"
 
-  # create if not exists
-  if [ ! -d "./.containers/pnpm-store/" ]; then
-    mkdir --parents ./.containers/pnpm-store/
-  fi
-
   echo ''
   echo 'Building container image...'
+  echo '  Loading context may take several seconds ...'
   podman build \
     --tag $image_tag \
     --network host \

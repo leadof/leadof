@@ -52,6 +52,15 @@ runs:
     # Set up GitHub Actions caching for Wireit.
     - uses: google/wireit@setup-github-actions-caching/v1
 
+    - name: Cache .containers
+      id: cache-containers
+      uses: actions/cache@v3
+      with:
+        path: |
+          .containers
+          **/.containers
+        key: ${{ runner.os }}-containers
+
     # Setup the repository for task execution.
     - name: prerequisites
       env:

@@ -6,8 +6,7 @@ FROM localhost/leadof/src:latest as src
 ################################################################################
 FROM src as run_spelling
 
-RUN mkdir --parents /usr/src/leadof/test-results/spelling/ \
-  && pnpm local:spelling 2>&1 | tee /usr/src/leadof/test-results/spelling/spelling-results.txt
+RUN . ./check-spelling.sh
 
 WORKDIR /usr/src/leadof/test-results/spelling/
 

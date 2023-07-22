@@ -76,18 +76,26 @@ ifndef name
 endif
 	@cp "./src/docs/decisions/adr-template.md" "./src/docs/decisions/$(n)-$(name).md"
 
-.PHONY: create-leadof-us
-create-leadof-us:
-	@echo 'N' | pnpm dlx @ionic/cli@7.1.1 start leadof-us blank \
-		--type=angular-standalone \
-		--no-deps \
-		--no-git \
-		--capacitor
-	@mv ./leadof-us/ ./src/apps/leadof-us/
-	@cd ./src/apps/leadof-us/ \
-	&& rm --force ./package-lock.json \
-	&& pnpm install \
-	&& pnpm add -D @ionic/cli
+# ARCHIVE 2023-07-22: kept for posterity
+# .PHONY: create-leadof-us
+# create-leadof-us:
+# 	@echo 'N' | pnpm dlx @ionic/cli@7.1.1 start leadof-us blank \
+# 		--type=angular-standalone \
+# 		--no-deps \
+# 		--no-git \
+# 		--capacitor
+# 	@mv ./leadof-us/ ./src/apps/leadof-us/
+# 	@cd ./src/apps/leadof-us/ \
+# 	&& rm --force ./package-lock.json \
+# 	&& pnpm install \
+# 	&& pnpm add -D @ionic/cli
+
+.PHONY: upgrade
+upgrade:
+	@pnpm update \
+		--color \
+		--interactive \
+		--recursive
 
 .PHONY: pr
 pr:
@@ -126,14 +134,14 @@ endif
 
 .PHONY: clean
 clean:
-	@rm --recursive --force ./test-results/
+	@rm --recursive --force ./dist/ ./test-results/
 	@podman rm --force tmp_copy__leadof-dependencies_results || true
 	@podman rm --force tmp_copy__lint_results || true
 	@podman rm --force tmp_copy__spelling_results || true
 
 .PHONY: reset
 reset: clean
-	@rm --recursive --force ./.wireit/ ./node_modules/
+	@rm --recursive --force ./.containers/ ./.wireit/ ./node_modules/
 	@podman rmi --force localhost/leadof/lint:latest || true
 	@podman rmi --force localhost/leadof/spelling:latest || true
 
