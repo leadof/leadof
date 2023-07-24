@@ -9,6 +9,7 @@ set -u
 
 . ../libraries/shell/_command.sh
 . ../libraries/shell/_node.sh
+. ../libraries/shell/_podman.sh
 
 #######################################
 # Installs the application.
@@ -73,9 +74,9 @@ install() {
 
   echo "Generating distribution files..."
   if [ ! -d "./dist/" ]; then
-    mkdir "./dist/"
+    mkdir ./dist/
   fi
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/container-digest.txt
+  echo $(get_image_digest $image_tag) >./dist/container_digest.txt
   echo "Successfully generated distribution files."
 }
 

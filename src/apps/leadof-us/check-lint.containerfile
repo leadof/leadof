@@ -6,10 +6,11 @@ FROM localhost/leadof/src:latest as src
 ################################################################################
 FROM src as run_lint
 
+USER node
+
 WORKDIR /usr/src/leadof/src/apps/leadof-us/
 
-RUN mkdir --parents ./test-results/lint/ \
-  && pnpm local:lint 2>&1 | tee ./test-results/lint/lint-results.txt
+RUN . ./check-lint.sh
 
 WORKDIR /usr/src/leadof/src/apps/leadof-us/test-results/lint/
 

@@ -9,6 +9,7 @@ set -u
 
 . ../../containers/libraries/shell/_command.sh
 . ../../containers/libraries/shell/_node.sh
+. ../../containers/libraries/shell/_podman.sh
 
 #######################################
 # Installs the application.
@@ -34,11 +35,10 @@ install() {
   podman tag "${image_tag}" "${dist_tag}"
 
   echo "Generating distribution files..."
-  if [ -d "./dist/" ]; then
-    rm --recursive --force ./dist/
+  if [ ! -d "./dist/" ]; then
+    mkdir ./dist/
   fi
-  mkdir --parents ./dist/
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/app-container_digest.txt
+  echo $(get_image_digest $image_tag) >./dist/app-container_digest.txt
   echo "Successfully generated distribution files."
 }
 

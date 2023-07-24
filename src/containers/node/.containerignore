@@ -1,14 +1,15 @@
-.containers
-.wireit
-dist
-node_modules
+**/.containers
+**/.wireit
+**/dist
+**/node_modules
 
-.env
-.npm-version
-.nvmrc
-.pnpm-version
-containerfile
+**/.env
+**/.npm-version
+**/.nvmrc
+**/.pnpm-version
+**/containerfile
+**/makefile
+**/package.json
+
 deploy.sh
 install.sh
-makefile
-package.json

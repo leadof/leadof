@@ -12,8 +12,8 @@
     "watch": "ng build --watch --configuration development",
     "local:lint::comment": "Linting",
     "local:lint": "ng lint",
-    "test::comment": "Unit tests",
-    "test": "ng test --code-coverage true --progress false --watch false",
+    "local:test::comment": "Unit tests",
+    "local:test": "ng test --code-coverage true --progress false --watch false",
     "e2e::comment": "End-to-end tests",
     "e2e": "playwright test",
     "e2e:debug::comment": "Debugging end-to-end tests with a headed browser",
@@ -102,7 +102,8 @@
       "command": "make check-test",
       "dependencies": [
         "../../../:container:src",
-        "../../containers/smol:build"
+        "../../containers/smol:build",
+        "../../containers/node-chrome:build"
       ],
       "files": [
         "./*",
@@ -131,7 +132,7 @@
         "!test-results"
       ],
       "output": [
-        "test-results/e2e/container-digest.txt"
+        "dist/e2e-container-digest.txt"
       ]
     },
     "container:check": {

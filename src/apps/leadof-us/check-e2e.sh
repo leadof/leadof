@@ -40,8 +40,14 @@ check_e2e() {
   mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
   rm --recursive --force ./test-results/${target_name}/test-results/
   podman rm --force ${image_name}
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./test-results/${target_name}/container-digest.txt
   echo "Successfully copied output files from container \"${image_name}\"."
+
+  echo "Generating distribution files..."
+  if [ ! -d "./dist/" ]; then
+    mkdir ./dist/
+  fi
+  echo $(get_image_digest $image_tag) >./dist/${target_name}-container_digest.txt
+  echo "Successfully generated distribution files."
 }
 
 #######################################

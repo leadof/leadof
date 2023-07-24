@@ -1,11 +1,12 @@
-.containers
-.wireit
-dist
-node_modules
+**/.containers
+**/.wireit
+**/dist
+**/node_modules
 
-.env
-containerfile
+**/.env
+**/containerfile
+**/makefile
+**/package.json
+
 deploy.sh
 install.sh
-makefile
-package.json

@@ -18,10 +18,10 @@ WORKDIR /tmp/
 
 USER root
 
-RUN apt-get update -qq \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends wget ca-certificates \
+RUN apt-get update --quiet \
+  && DEBIAN_FRONTEND=noninteractive apt-get install --quiet --yes --no-install-recommends wget ca-certificates \
   && wget --no-verbose https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -qqy --no-install-recommends ./google-chrome-stable_current_amd64.deb \
+  && DEBIAN_FRONTEND=noninteractive apt-get install --quiet --yes --no-install-recommends ./google-chrome-stable_current_amd64.deb \
   && rm --force ./google-chrome-stable_current_amd64.deb \
   # clean up docker layer
   # https://docs.docker.com/develop/develop-images/dockerfile_best_practices/#run

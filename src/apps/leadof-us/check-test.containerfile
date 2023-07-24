@@ -11,8 +11,7 @@ COPY --from=src --chown=node:node /usr/src/leadof/ /usr/src/leadof/
 
 WORKDIR /usr/src/leadof/src/apps/leadof-us/
 
-RUN mkdir --parents ./test-results/unit_test/ \
-  && pnpm test
+RUN . ./check-test.sh
 
 WORKDIR /usr/src/leadof/src/apps/leadof-us/test-results/unit_test/
 

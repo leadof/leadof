@@ -32,6 +32,9 @@ build_image() {
     "/usr/src/lint/" \
     "./test-results/"
 
+  if [ ! -d "./dist/" ]; then
+    mkdir ./dist/
+  fi
   echo $(get_image_digest $image_tag) >./dist/${target_name}-container_digest.txt
 }
 

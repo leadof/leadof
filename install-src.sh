@@ -7,6 +7,8 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
+. ./src/containers/libraries/shell/_podman.sh
+
 #######################################
 # Builds a "src" container image.
 # Arguments:
@@ -28,11 +30,10 @@ build_image() {
   echo 'Successfully built container image.'
 
   echo "Generating distribution files..."
-  if [ -d "./dist/" ]; then
-    rm --recursive --force ./dist/
+  if [ ! -d "./dist/" ]; then
+    mkdir ./dist/
   fi
-  mkdir --parents ./dist/
-  podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/src-container_digest.txt
+  echo $(get_image_digest $image_tag) >./dist/src-container_digest.txt
   echo "Successfully generated distribution files."
 }
 

@@ -53,9 +53,12 @@ ENV NODE_ENV=production
 # update package sources
 # install dumb-init
 # upgrade all packages (patch)
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends dumb-init \
-  && apt-get upgrade -y
+RUN apt-get update --quiet \
+  && DEBIAN_FRONTEND=noninteractive apt-get install --quiet --yes --no-install-recommends dumb-init \
+  && DEBIAN_FRONTEND=noninteractive apt-get upgrade --quiet --yes \
+  # clean up docker layer
+  # https://docs.docker.com/develop/develop-images/dockerfile_best_practices/#run
+  && rm --recursive --force /var/lib/apt/lists/*
 
 USER node
 
