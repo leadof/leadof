@@ -15,9 +15,12 @@ set -u
 setup_nexus() {
   nexus_url="$1"
 
+  image_tag="docker.io/library/groovy:4.0.13-jdk17-jammy"
+
   echo ''
   echo 'Pulling Java Groovy container image...'
-  podman pull docker.io/library/groovy:4.0.12-jdk17-jammy
+  podman pull $image_tag
+  podman tag $image_tag groovy
   echo 'Successfully pulled Java Groovy container image.'
 
   echo ''
@@ -35,7 +38,7 @@ setup_nexus() {
     --env NEXUS_ADMIN_PASSWORD=${NEXUS_ADMIN_PASSWORD} \
     --env NEXUS_DEV_USERNAME=${NEXUS_DEV_USERNAME} \
     --env NEXUS_DEV_PASSWORD=${NEXUS_DEV_PASSWORD} \
-    docker.io/library/groovy:4.0.12-jdk17-jammy \
+    groovy \
     /usr/src/nexus/initialize.sh "${nexus_url}"
 
   echo ''

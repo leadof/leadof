@@ -21,4 +21,6 @@ FROM smol
 
 COPY --from=run_lint /usr/src/leadof/src/apps/leadof-us/test-results/lint/ /usr/src/lint/
 
+WORKDIR /usr/src/lint/
+
 VOLUME [ "/usr/src/lint/" ]

@@ -1,10 +1,7 @@
 ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
 ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
 
-################################################################################
-# Layer target: node image
-################################################################################
-FROM ghcr.io/leadof/leadof/node:latest as node
+FROM localhost/leadof/node:latest as node
 
 ################################################################################
 # Layer target: node with chrome browser

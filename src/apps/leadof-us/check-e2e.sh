@@ -8,46 +8,61 @@ set -e
 set -u
 
 . ../../containers/libraries/shell/_command.sh
-. ../../containers/libraries/shell/_node.sh
+. ../../containers/libraries/shell/_podman.sh
 
 #######################################
 # Runs end-to-end tests.
 # Arguments:
 #   None
 #######################################
-check_e2e() {
-  image_tag="leadof-us/e2e:latest"
+build_image() {
   target_name="e2e"
+  image_tag="leadof-us/e2e:latest"
 
   podman build \
     --tag "${image_tag}" \
     --file ./check-e2e.containerfile \
     --ignorefile ./.containerignore \
     --network host \
-    --target "${target_name}" \
     .
 
-  image_name="${target_name}_results"
+  copy_files_to_host \
+    $image_tag \
+    $target_name \
+    "/usr/src/e2e/" \
+    "./test-results/"
 
-  echo "Copying output files from container \"${image_name}\"..."
-  # copy output files from container
-  podman run --name ${image_name} --detach ${image_tag} sleep 1000
-  if [ -d "./test-results/${target_name}/" ]; then
-    rm --recursive --force ./test-results/${target_name}/
-  fi
-  mkdir --parents ./test-results/${target_name}/
-  podman cp ${image_name}:/usr/src/test-results/ ./test-results/${target_name}/
-  mv ./test-results/${target_name}/test-results/* ./test-results/${target_name}/
-  rm --recursive --force ./test-results/${target_name}/test-results/
-  podman rm --force ${image_name}
-  echo "Successfully copied output files from container \"${image_name}\"."
-
-  echo "Generating distribution files..."
   if [ ! -d "./dist/" ]; then
     mkdir ./dist/
   fi
   echo $(get_image_digest $image_tag) >./dist/${target_name}-container_digest.txt
-  echo "Successfully generated distribution files."
+}
+
+#######################################
+# Checks end-to-end tests.
+# Arguments:
+#   None
+#######################################
+check_e2e() {
+  echo ''
+  echo 'Running end-to-end tests...'
+
+  mkdir --parents ./test-results/e2e/
+
+  set +e
+  cmd_output=$(pnpm local:e2e 2>&1)
+  cmd_exit_code=$?
+  set -e
+
+  # always log output
+  echo $cmd_output | tee ./test-results/e2e/e2e-results.txt
+
+  if [ $cmd_exit_code != 0 ]; then
+    printf $cmd_output 1>&2
+    exit 1
+  fi
+
+  echo 'Successfully ran end-to-end tests.'
 }
 
 #######################################
@@ -56,10 +71,17 @@ check_e2e() {
 #   None
 #######################################
 main() {
-  check_e2e
+  set +u
+  is_in_container="${IN_CONTAINER}"
+  set -u
+
+  if [ x"$is_in_container" = "x" ]; then
+    build_image
+  else
+    check_e2e
+  fi
 }
 
-# env vars must be global to the script
 dotenv
 
 main

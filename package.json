@@ -11,7 +11,7 @@
     "local:spelling": "cspell --config ./cspell.yaml --no-color **",
     "local:format": "prettier --write --ignore-path ./.prettierignore ./",
     "local:lint": "prettier --check --ignore-path ./.prettierignore ./",
-    "local:lint:changes": "pretty-quick --staged",
+    "local:lint:changes": "lint-staged",
     "container:dependencies": "wireit",
     "container:src": "wireit",
     "container:spelling": "wireit",
@@ -41,6 +41,7 @@
     "container:dependencies": {
       "command": "make install-dependencies",
       "dependencies": [
+        "./src/containers/libraries:build",
         "./src/containers/node:build"
       ],
       "files": [
@@ -159,11 +160,11 @@
     }
   },
   "devDependencies": {
-    "cspell": "^6.31.1",
+    "cspell": "^6.31.2",
     "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "madr": "^3.0.0",
-    "prettier": "^2.8.8",
-    "pretty-quick": "^3.1.3",
-    "wireit": "^0.9.5"
+    "prettier": "^3.0.0",
+    "wireit": "^0.10.0"
   }
 }

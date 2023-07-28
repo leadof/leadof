@@ -24,16 +24,22 @@ COPY --chown=node:node ./package.json ./pnpm-lock.yaml ./pnpm-workspace.yaml /us
 # APPS packages
 COPY --chown=node:node ./src/apps/leadof-us/package.json /usr/src/leadof/src/apps/leadof-us/
 
-# install (all) dependencies
+# recursively install (all) dependencies
 # cleanup source files and only store dependencies
-#   *ensures `COPY` won't override updated source files
+#   cleanup ensures `COPY` won't override updated source files
 RUN pnpm --recursive install --frozen-lockfile --reporter=append-only \
   && rm --force \
-  ./package.json \
   ./pnpm-lock.yaml \
   ./pnpm-workspace.yaml \
-  ./src/apps/leadof-us/package.json \
-  ./src/containers/libraries/package.json \
-  ./src/containers/node/package.json \
-  ./src/containers/node-chrome/package.json \
-  ./src/containers/playwright/package.json
+  && find -type f -name 'package.json' -not -path "./node_modules/*" -delete
+
+################################################################################
+# Layer target: dependency results
+################################################################################
+FROM smol
+
+COPY --from=dependencies /usr/src/leadof/ /usr/src/dependencies/
+
+WORKDIR /usr/src/dependencies/
+
+VOLUME [ "/usr/src/dependencies/" ]

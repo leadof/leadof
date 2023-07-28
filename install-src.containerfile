@@ -14,7 +14,7 @@ RUN mkdir --parents /usr/src/libraries/ \
 
 COPY --from=libraries --chown=node:node /usr/src/libraries/ /usr/src/libraries/
 
-COPY --from=dependencies --chown=node:node --chmod=0755 /usr/src/leadof/ /usr/src/leadof/
+COPY --from=dependencies --chown=node:node --chmod=0755 /usr/src/dependencies/ /usr/src/leadof/
 
 COPY --chown=node:node . /usr/src/leadof/
 

@@ -22,4 +22,6 @@ FROM smol
 
 COPY --from=run_unit_test /usr/src/leadof/src/apps/leadof-us/test-results/unit_test/ /usr/src/unit_test/
 
+WORKDIR /usr/src/unit_test/
+
 VOLUME [ "/usr/src/unit_test/" ]

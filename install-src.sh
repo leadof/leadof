@@ -15,8 +15,10 @@ set -u
 #   None
 #######################################
 build_image() {
-  image_tag="leadof/src:latest"
-  image_name="leadof-src"
+  image_name="src"
+  image_tag="leadof/${image_name}:latest"
+
+  load_cached_image $image_name
 
   echo ''
   echo 'Building container image...'
@@ -29,12 +31,7 @@ build_image() {
     .
   echo 'Successfully built container image.'
 
-  echo "Generating distribution files..."
-  if [ ! -d "./dist/" ]; then
-    mkdir ./dist/
-  fi
-  echo $(get_image_digest $image_tag) >./dist/src-container_digest.txt
-  echo "Successfully generated distribution files."
+  cache_image $image_name $image_tag
 }
 
 #######################################

@@ -17,4 +17,6 @@ FROM smol
 
 COPY --from=run_spelling /usr/src/leadof/test-results/spelling/ /usr/src/spelling/
 
+WORKDIR /usr/src/spelling/
+
 VOLUME [ "/usr/src/spelling/" ]

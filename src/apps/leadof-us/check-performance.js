@@ -35,7 +35,7 @@ waitOn(waitOnOptions, function (err) {
   }
 
   const lighthouseProcess = exec(
-    `pnpm lighthouse ${url} --chrome-flags="--headless" --output=html --output-path=./performance-report.html --save-assets --disable-full-page-screenshot=false`
+    `pnpm lighthouse ${url} --chrome-flags="--headless" --output=html --output-path=./performance-report.html --save-assets --disable-full-page-screenshot=false`,
   );
 
   lighthouseProcess.stdout.pipe(process.stdout);

@@ -27,3 +27,17 @@ This project is currently shared source, but not licensed for use by others or o
 Each project has specific tasks defined in the relative "./makefile" and "./package.json" file.
 
 GNU `make` is used to keep task commands simple while NodeJS and `pnpm` are used with "wireit" to define task dependencies and improve task execution performance with support for parallel task execution as well as caching for improved task repetition.
+
+## Versions
+
+Locally, versions of `node`, `npm` and `pnpm` will be checked with the command `make prerequisites` or `make pre`.
+
+-   Node should use `nvm` and is specified in the root ".nvmrc" file. Search for the version number in other files.
+-   The `npm` command version is specified in the root ".npm-version" file. Search for the version number in other files.
+-   The `pnpm` command version is specified in the root ".pnpm-version" file. Search for the version number in other files.
+-   Nexus version under "./src/containers/nexus/containerfile"
+-   Groovy and JDK versions under "./src/containers/nexus/start.sh"
+-   Playwright version under "./src/containers/playwright/containerfile". This version should match each application's version
+-   Alpine version under "./src/containers/smol/containerfile"
+-   Chrome version should be "latest" and should not require updating under "./src/containers/node-chrome/containerfile"
+-   All NodeJS dependencies can be managed with `make update` at the root and `make update-latest` to bump version ranges

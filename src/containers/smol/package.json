@@ -28,6 +28,6 @@
     }
   },
   "devDependencies": {
-    "wireit": "^0.9.5"
+    "wireit": "^0.10.0"
   }
 }

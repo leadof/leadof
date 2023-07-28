@@ -15,14 +15,10 @@ set -u
 #   None
 #######################################
 build_image() {
-  image_tag="leadof/dependencies:latest"
+  image_name="dependencies"
+  image_tag="leadof/${image_name}:latest"
 
-  if [ -f "./.containers/dependencies-image.tar" ]; then
-    echo ''
-    echo 'Loading cached container image...'
-    podman load --input ./.containers/dependencies-image.tar
-    echo 'Successfully loaded cached container image.'
-  fi
+  load_cached_image $image_name
 
   echo ''
   echo 'Building container image...'
@@ -30,31 +26,12 @@ build_image() {
   podman build \
     --tag $image_tag \
     --network host \
-    --file ./install-dependencies.containerfile \
+    --file ./install-${image_name}.containerfile \
     --ignorefile ./.containerignore \
     .
   echo 'Successfully built container image.'
 
-  echo "Generating distribution files..."
-  if [ ! -d "./dist/" ]; then
-    mkdir "./dist/"
-  fi
-  echo $(get_image_digest $image_tag) >./dist/dependencies-container_digest.txt
-  echo "Successfully generated distribution files."
-
-  # remember image
-  echo ''
-  echo 'Saving cached image...'
-  if [ -f "./.containers/dependencies-image.tar" ]; then
-    rm --force "./.containers/dependencies-image.tar"
-    echo 'Removed previously cached image.'
-  fi
-  if [ ! -d "./.containers/" ]; then
-    mkdir "./.containers/"
-  fi
-  podman save --output ./.containers/dependencies-image.tar $image_tag
-  echo 'Successfully saved cached image.'
-
+  cache_image $image_name $image_tag
 }
 
 #######################################

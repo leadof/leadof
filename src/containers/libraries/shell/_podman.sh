@@ -48,3 +48,38 @@ get_image_digest() {
   local digest=$(podman image inspect "${image_tag}" --format "{{.Digest}}")
   echo "$digest"
 }
+
+cache_image() {
+  image_name="$1"
+  image_tag="$2"
+
+  echo "Generating distribution files..."
+  if [ ! -d "./dist/" ]; then
+    mkdir "./dist/"
+  fi
+  echo $(get_image_digest $image_tag) >./dist/${image_name}-container_digest.txt
+  echo "Successfully generated \"${image_name}\" distribution files."
+
+  echo ''
+  echo "Saving cached image \"${image_name}\"..."
+  if [ -f "./.containers/${image_name}-image.tar" ]; then
+    rm --force "./.containers/${image_name}-image.tar"
+    echo "Removed previously cached image \"${image_name}\"."
+  fi
+  if [ ! -d "./.containers/" ]; then
+    mkdir "./.containers/"
+  fi
+  podman save --output ./.containers/${image_name}-image.tar $image_tag &
+  echo "Successfully saved cached image \"${image_name}\"."
+}
+
+load_cached_image() {
+  image_name="$1"
+
+  if [ -f "./.containers/${image_name}-image.tar" ]; then
+    echo ''
+    echo "Loading cached container image \"${image_name}\"..."
+    podman load --input ./.containers/${image_name}-image.tar
+    echo "Successfully loaded cached container image \"${image_name}\"."
+  fi
+}

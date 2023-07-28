@@ -90,12 +90,23 @@ endif
 # 	&& pnpm install \
 # 	&& pnpm add -D @ionic/cli
 
-.PHONY: upgrade
-upgrade:
+.PHONY: update
+update:
 	@pnpm update \
 		--color \
 		--interactive \
 		--recursive
+
+.PHONY: upgrade
+upgrade: update
+
+.PHONY: update-latest
+update-latest:
+	@pnpm update \
+		--color \
+		--interactive \
+		--recursive \
+		--latest
 
 .PHONY: pr
 pr:

@@ -1,4 +1,4 @@
-ARG NODE_VERSION="18.16.1"
+ARG NODE_VERSION="18.17.0"
 ARG IMAGE_NODE_OS="bullseye-slim"
 ARG IMAGE_NODE_TAG="docker.io/library/node:${NODE_VERSION}-${IMAGE_NODE_OS}"
 
