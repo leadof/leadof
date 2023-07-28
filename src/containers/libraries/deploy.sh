@@ -18,7 +18,10 @@ deploy() {
   image_tag="leadof/libraries:latest"
   dist_tag="ghcr.io/leadof/${image_tag}"
 
+  echo ''
+  echo 'Deploying container...'
   podman push "${dist_tag}"
+  echo 'Successfully deployed container.'
 }
 
 #######################################

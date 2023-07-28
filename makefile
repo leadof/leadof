@@ -1,13 +1,8 @@
-.DEFAULT_GOAL:=ci
+.DEFAULT_GOAL:=all
 
 .PHONY: all
 all:
-	@pnpm all
-
-# Continuous integration
-.PHONY: ci
-ci:
-	@pnpm container:check
+	@pnpm container:all
 
 # Prerequisites
 .PHONY: prerequisites

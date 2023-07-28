@@ -16,6 +16,8 @@
     "local:test": "ng test --code-coverage true --progress false --watch false",
     "local:e2e::comment": "End-to-end tests",
     "local:e2e": "playwright test",
+    "local:build::comment": "Build both the front-end and SSR versions of this application",
+    "local:build": "ng build --progress false --configuration production && ng run app:server:production",
     "e2e:debug::comment": "Debugging end-to-end tests with a headed browser",
     "e2e:debug": "playwright test --project chromium --headed",
     "dev:ssr::comment": "Development server for SSR",
@@ -145,31 +147,22 @@
         "container:e2e"
       ]
     },
-    "check": {
-      "dependencies": [
-        "container:check"
-      ]
-    },
     "container:build": {
       "command": "make install",
       "dependencies": [
-        "container:src"
+        "../../../:container:src"
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
       ],
       "output": [
-        "dist/app-container_digest.txt"
-      ]
-    },
-    "build": {
-      "dependencies": [
-        "container:build"
+        "dist/web-container_digest.txt"
       ]
     },
     "container:all": {
@@ -185,21 +178,19 @@
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/dist",
+        "!**/node_modules",
+        "!**/test-results"
       ],
       "output": [
         "dist/leadof-us-dev-container_digest.txt"
       ]
     },
     "container:stop": {
-      "command": "make stop",
-      "files": [
-        "dist/leadof-us-dev-container_digest.txt"
-      ]
+      "command": "make stop"
     },
     "container:restart": {
       "command": "make restart"

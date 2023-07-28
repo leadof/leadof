@@ -28,13 +28,13 @@ install() {
     --target ${target_name} \
     .
 
-  echo "Generating distribution files..."
+  echo 'Generating distribution files...'
   if [ -d "./dist/" ]; then
     rm --recursive --force ./dist/
   fi
   mkdir --parents ./dist/
   podman image inspect "${image_tag}" --format "{{.Digest}}" >./dist/dependencies-container_digest.txt
-  echo "Successfully generated distribution files."
+  echo 'Successfully generated distribution files.'
 }
 
 #######################################

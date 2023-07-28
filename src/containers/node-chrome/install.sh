@@ -42,12 +42,12 @@ install() {
     echo "Successfully pulled \"${dist_tag}\"."
   fi
 
-  echo "Generating distribution files..."
+  echo 'Generating distribution files...'
   if [ ! -d "./dist/" ]; then
     mkdir ./dist/
   fi
   echo $(get_image_digest $image_tag) >./dist/container_digest.txt
-  echo "Successfully generated distribution files."
+  echo 'Successfully generated distribution files.'
 }
 
 #######################################

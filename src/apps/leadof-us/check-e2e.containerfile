@@ -11,8 +11,10 @@ COPY --from=src /usr/src/leadof/ /usr/src/leadof/
 
 WORKDIR /usr/src/leadof/src/apps/leadof-us/
 
-RUN pnpm playwright install \
-  && . ./check-e2e.sh
+# create a separate layer for the playwright install
+RUN pnpm playwright install
+
+RUN . ./check-e2e.sh
 
 WORKDIR /usr/src/leadof/src/apps/leadof-us/test-results/e2e/
 

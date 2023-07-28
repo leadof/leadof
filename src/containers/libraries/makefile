@@ -7,7 +7,7 @@ install:
 	@./install.sh
 
 .PHONY: deploy
-deploy: install
+deploy:
 	@./deploy.sh
 
 .PHONY: clean

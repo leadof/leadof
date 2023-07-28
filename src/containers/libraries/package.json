@@ -6,17 +6,35 @@
   "author": "",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "wireit",
+    "container:build": "wireit",
+    "container:deploy": "wireit",
     "clean": "wireit"
   },
   "wireit": {
-    "build": {
+    "container:build": {
       "command": "make",
       "files": [
         "./shell/*",
         "*.sh",
         "./containerfile",
-        "./makefile"
+        "./makefile",
+        "./package.json"
+      ],
+      "output": [
+        "dist/*"
+      ]
+    },
+    "container:deploy": {
+      "command": "make deploy",
+      "dependencies": [
+        "container:build"
+      ],
+      "files": [
+        "./shell/*",
+        "*.sh",
+        "./containerfile",
+        "./makefile",
+        "./package.json"
       ],
       "output": [
         "dist/*"

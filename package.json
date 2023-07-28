@@ -14,14 +14,12 @@
     "local:lint:changes": "lint-staged",
     "container:dependencies": "wireit",
     "container:src": "wireit",
-    "container:spelling": "wireit",
-    "container:lint": "wireit",
-    "container:check": "wireit",
-    "build:containers": "wireit",
-    "check:all": "wireit",
-    "build:all": "wireit",
-    "all": "wireit",
-    "clean": "wireit"
+    "container:check:formatting": "wireit",
+    "container:check:spelling": "wireit",
+    "container:check:repository": "wireit",
+    "container:check:all": "wireit",
+    "container:build:all": "wireit",
+    "clean:all": "wireit"
   },
   "wireit": {
     "local:prerequisites": {
@@ -41,6 +39,7 @@
     "container:dependencies": {
       "command": "make install-dependencies",
       "dependencies": [
+        "local:prerequisites",
         "./src/containers/libraries:build",
         "./src/containers/node:build"
       ],
@@ -83,16 +82,7 @@
         "dist/src-container_digest.txt"
       ]
     },
-    "build:containers": {
-      "dependencies": [
-        "./src/containers/libraries:build",
-        "./src/containers/node:build",
-        "./src/containers/node-chrome:build",
-        "./src/containers/playwright:build",
-        "./src/containers/smol:build"
-      ]
-    },
-    "container:lint": {
+    "container:check:formatting": {
       "command": "make check-lint",
       "dependencies": [
         "container:src",
@@ -111,7 +101,7 @@
         "dist/lint-container_digest.txt"
       ]
     },
-    "container:spelling": {
+    "container:check:spelling": {
       "command": "make check-spelling",
       "dependencies": [
         "container:src",
@@ -130,32 +120,36 @@
         "dist/spelling-container_digest.txt"
       ]
     },
-    "container:check": {
+    "container:check:repository": {
       "dependencies": [
-        "container:lint",
-        "container:spelling"
+        "container:check:formatting",
+        "container:check:spelling"
       ]
     },
-    "check:all": {
+    "container:check:all": {
       "dependencies": [
-        "container:check",
-        "./src/apps/leadof-us:check"
+        "container:check:repository",
+        "./src/apps/leadof-us:container:check"
       ]
     },
-    "build:all": {
+    "container:build:all": {
       "dependencies": [
-        "build:containers",
-        "./src/apps/leadof-us:build"
+        "local:prerequisites",
+        "./src/containers/libraries:container:build",
+        "./src/containers/node:build",
+        "./src/containers/node-chrome:build",
+        "./src/containers/playwright:build",
+        "./src/containers/smol:build",
+        "./src/apps/leadof-us:container:build"
       ]
     },
-    "all": {
+    "container:all": {
       "dependencies": [
-        "prerequisites",
-        "check:all",
-        "build:all"
+        "container:check:all",
+        "container:build:all"
       ]
     },
-    "clean": {
+    "clean:all": {
       "command": "make clean"
     }
   },
@@ -165,6 +159,7 @@
     "lint-staged": "^13.2.3",
     "madr": "^3.0.0",
     "prettier": "^3.0.0",
+    "pretty-quick": "^3.1.3",
     "wireit": "^0.10.0"
   }
 }

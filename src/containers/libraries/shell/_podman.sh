@@ -53,7 +53,7 @@ cache_image() {
   image_name="$1"
   image_tag="$2"
 
-  echo "Generating distribution files..."
+  echo 'Generating distribution files...'
   if [ ! -d "./dist/" ]; then
     mkdir "./dist/"
   fi

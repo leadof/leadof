@@ -19,50 +19,47 @@ inputs:
 runs:
   using: "composite"
   steps:
-    # Setup the environment with a specific version of NodeJS.
-    - name: Install node ${{ inputs.node-version }}
+    - name: install-node ${{ inputs.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node-version }}
 
-    # Setup the environment with a specific version of `pnpm`.
-    - name: Install pnpm ${{ inputs.pnpm-version }}
+    - name: install-pnpm ${{ inputs.pnpm-version }}
+      id: install-pnpm
       uses: pnpm/action-setup@v2
-      id: pnpm-install
       with:
         version: ${{ inputs.pnpm-version }}
         run_install: false
 
-    # Determine where `pnpm` will store files in order to cache them.
-    - name: Get pnpm store directory
-      id: pnpm-cache
+    - name: cache-pnpm-get-store-path
+      id: cache-pnpm-get-store-path
       shell: bash
       run: |
         echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-    # Setup the `pnpm` cache.
-    - name: Setup pnpm cache
+    - name: cache-
+      id: cache-pnpm
       uses: actions/cache@v3
       with:
-        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        path: ${{ steps.cache-pnpm-get-store-path.outputs.STORE_PATH }}
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-pnpm-store-
 
-    # Set up GitHub Actions caching for Wireit.
-    - uses: google/wireit@setup-github-actions-caching/v1
+    - name: cache-wireit
+      id: cache-wireit
+      uses: google/wireit@setup-github-actions-caching/v1
 
-    - name: Cache .containers
+    - name: cache-containers
       id: cache-containers
       uses: actions/cache@v3
       with:
         path: "**/.containers"
         key: ${{ runner.os }}-containers
 
-    # Setup the repository for task execution.
-    - name: prerequisites
+    - name: local-prerequisites
       env:
         CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
         CONTAINER_REGISTRY_PASSWORD: ${{ inputs.container-registry-password }}
       shell: bash
-      run: make prerequisites
+      run: pnpm local:prerequisites

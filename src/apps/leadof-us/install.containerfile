@@ -5,39 +5,20 @@ ARG IMAGE_NODE_TAG="docker.io/library/node:${NODE_VERSION}-${IMAGE_NODE_OS}"
 ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
 ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
 
-################################################################################
-# Layer target: Smallest image
-################################################################################
-FROM docker.io/redhat/ubi8-micro as smol
+FROM localhost/leadof/src:latest as src
 
 ################################################################################
-# Layer target: contains project src
-################################################################################
-FROM localhost/leadof-us/src:latest as src
-
-################################################################################
-# Layer target: build the application
+# Layer target: lint the application
 ################################################################################
 FROM src as run_build
 
-RUN mkdir --parents /usr/src/build-results/ \
-  && pnpm build:ssr \
-  && mv ./dist/* /usr/src/build-results/
+USER node
 
-VOLUME [ "/usr/src/build-results/" ]
+WORKDIR /usr/src/leadof/src/apps/leadof-us/
 
-################################################################################
-# Layer target: build results
-################################################################################
-FROM smol as build
+RUN . ./install.sh
 
-COPY --from=run_build /usr/src/build-results/ /usr/src/build-results/
-
-WORKDIR /usr/src/build-results/
-
-RUN ls -la
-
-VOLUME [ "/usr/src/build-results/" ]
+WORKDIR /usr/src/leadof/src/apps/leadof-us/task-results/install
 
 ################################################################################
 # Layer target: prepare a web production image
@@ -62,7 +43,7 @@ RUN apt-get update --quiet \
 
 USER node
 
-COPY --chown=node:node --from=build /usr/src/build-results/app/ /usr/src/app/dist/app/
+COPY --chown=node:node --from=run_build /usr/src/leadof/src/apps/leadof-us/task-results/install/dist/app/ /usr/src/app/dist/app/
 
 WORKDIR /usr/src/app/
 
