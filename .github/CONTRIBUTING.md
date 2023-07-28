@@ -41,3 +41,11 @@ Locally, versions of `node`, `npm` and `pnpm` will be checked with the command `
 -   Alpine version under "./src/containers/smol/containerfile"
 -   Chrome version should be "latest" and should not require updating under "./src/containers/node-chrome/containerfile"
 -   All NodeJS dependencies can be managed with `make update` at the root and `make update-latest` to bump version ranges
+
+## Troubleshooting
+
+-   Known BUG 🐛: [Angular SSR outputs "selector error" warnings](https://github.com/ionic-team/ionic-cli/issues/4774)
+
+## Technical History notes
+
+-   ["pretty-quick"](https://github.com/azz/pretty-quick/) was replaced with ["lint-staged"](https://github.com/okonet/lint-staged) because of a [dependency incompatibility](https://github.com/azz/pretty-quick/issues/164) introduced with "prettier@3.0.0" and a reliance on very limited code support
