@@ -1,4 +1,7 @@
+const path = require("path");
+
 const container = require("../../libraries/node/container");
+const env = require("../../libraries/node/env");
 const host = require("../../libraries/node/host");
 const log = require("../../libraries/node/log");
 
@@ -24,12 +27,12 @@ const main = async () => {
     environmentVariableOptions,
   );
 
-  // Always build this image.
-  const skipBuildAndPull = false;
+  // Only skip if CI.
+  const skipBuildAndPull = env.isContinuousIntegrationMode();
 
   await container.build(
     __filename,
-    "libraries",
+    "node-chrome",
     buildArguments,
     skipBuildAndPull,
   );

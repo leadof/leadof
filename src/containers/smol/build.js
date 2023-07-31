@@ -27,12 +27,7 @@ const main = async () => {
   // Always build this image.
   const skipBuildAndPull = false;
 
-  await container.build(
-    __filename,
-    "libraries",
-    buildArguments,
-    skipBuildAndPull,
-  );
+  await container.build(__filename, "smol", buildArguments, skipBuildAndPull);
 };
 
 (async () => {

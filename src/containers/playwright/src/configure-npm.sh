@@ -14,7 +14,7 @@ set_npm_registry() {
 
   echo ''
   echo "Configuring npm registry to \"${url}\"..."
-  npm config set registry "${url}"
+  npm config --global set registry "${url}"
 
   if [ x"${old_url_prefix}" != "x" ]; then
     npm config delete "${old_url_prefix}:_auth"
@@ -22,11 +22,11 @@ set_npm_registry() {
   fi
 
   if [ x"${auth}" != "x" ]; then
-    npm config set "${url_prefix}:_auth" "${auth}"
+    npm config --global set "${url_prefix}:_auth" "${auth}"
   fi
 
   if [ x"${auth_token}" != "x" ]; then
-    npm config set "${url_prefix}:_authToken" "${auth_token}"
+    npm config --global set "${url_prefix}:_authToken" "${auth_token}"
   fi
 
   echo "Successfully configured npm registry to \"${url}\"."
@@ -41,7 +41,7 @@ main() {
   registry_auth="${6:-}"
   registry_auth_token="${7:-}"
 
-  npm config set fund false --global
+  npm config --global set fund false --global
   echo 'Disabled npm fund messages.'
 
   if [ x"${registry_url}" != "x" ]; then

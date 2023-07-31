@@ -7,23 +7,47 @@
   "author": "",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "wireit",
+    "container:build": "wireit",
+    "container:deploy": "wireit",
     "clean": "wireit"
   },
   "wireit": {
-    "build": {
-      "command": "make",
+    "container:build": {
+      "command": "node ./build",
       "dependencies": [
-        "../node:build"
+        "../node:container:build",
+        "../../libraries/node:build"
       ],
       "files": [
-        "*.sh",
-        "./.containerignore",
-        "./containerfile",
-        "./makefile"
+        "../../../.nvmrc",
+        "../../../.npm-version",
+        "../../../.pnpm-version",
+        "./src/*",
+        "./build.js",
+        "./makefile",
+        "./package.json"
       ],
       "output": [
-        "dist/*"
+        "task-output/build.js/*"
+      ]
+    },
+    "container:deploy": {
+      "command": "node ./deploy",
+      "dependencies": [
+        "../../libraries/node:build",
+        "container:build"
+      ],
+      "files": [
+        "../../../.nvmrc",
+        "../../../.npm-version",
+        "../../../.pnpm-version",
+        "./src/*",
+        "./build.js",
+        "./makefile",
+        "./package.json"
+      ],
+      "output": [
+        "task-output/deploy.js/*"
       ]
     },
     "clean": {

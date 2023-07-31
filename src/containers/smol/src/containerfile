@@ -1,0 +1,18 @@
+ARG ALPINE_VERSION="3.14"
+ARG BASE_IMAGE_TAG="docker.io/alpine:${ALPINE_VERSION}"
+
+ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
+ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
+
+FROM ${BASE_IMAGE_TAG}
+
+ARG PUBLISHED_SOURCE_URL
+ARG PUBLISHED_DOCUMENTATION_URL
+
+RUN mkdir --parents /usr/src/
+
+WORKDIR /usr/src/
+
+LABEL org.opencontainers.image.documentation ${PUBLISHED_DOCUMENTATION_URL}
+LABEL org.opencontainers.image.source ${PUBLISHED_SOURCE_URL}
+LABEL org.opencontainers.image.description "The smallest container for distributing files."

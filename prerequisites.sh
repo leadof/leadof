@@ -8,10 +8,10 @@ set -e
 set -u
 
 # import command functions
-. ./src/containers/libraries/shell/_command.sh
+. ./src/containers/libraries/src/shell/_command.sh
 
 # import node functions
-. ./src/containers/libraries/shell/_node.sh
+. ./src/containers/libraries/src/shell/_node.sh
 
 #######################################
 # Initializes for development.

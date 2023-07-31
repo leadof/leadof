@@ -1,5 +1,9 @@
+const hasKey = (key) => {
+  return key in process.env;
+};
+
 const assertRequired = (key) => {
-  if (!key in process.env) {
+  if (!hasKey(key)) {
     throw new Error(`Missing required environment variable "${key}"`);
   }
 };
@@ -26,5 +30,6 @@ module.exports = {
   get,
   getAsBoolean,
   getRequired,
+  hasKey,
   isContinuousIntegrationMode,
 };

@@ -6,10 +6,6 @@ all: install
 install:
 	@pnpm container:build
 
-.PHONY: deploy
-deploy:
-	@pnpm container:deploy
-
 .PHONY: clean
 clean:
 	@rm --recursive --force \

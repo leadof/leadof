@@ -7,8 +7,8 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
-. ./src/containers/libraries/shell/_command.sh
-. ./src/containers/libraries/shell/_podman.sh
+. ./src/containers/libraries/src/shell/_command.sh
+. ./src/containers/libraries/src/shell/_podman.sh
 
 #######################################
 # Builds a "lint" container image.

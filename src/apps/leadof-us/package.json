@@ -85,7 +85,7 @@
       "command": "make check-lint",
       "dependencies": [
         "../../../:container:src",
-        "../../containers/smol:build"
+        "../../containers/smol:container:build"
       ],
       "files": [
         "./*",
@@ -104,8 +104,8 @@
       "command": "make check-test",
       "dependencies": [
         "../../../:container:src",
-        "../../containers/smol:build",
-        "../../containers/node-chrome:build"
+        "../../containers/smol:container:build",
+        "../../containers/node-chrome:container:build"
       ],
       "files": [
         "./*",
@@ -124,8 +124,8 @@
       "command": "make check-e2e",
       "dependencies": [
         "../../../:container:src",
-        "../../containers/smol:build",
-        "../../containers/playwright:build"
+        "../../containers/smol:container:build",
+        "../../containers/playwright:container:build"
       ],
       "files": [
         "./*",

@@ -5,7 +5,7 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
-. ../libraries/shell/_command.sh
+. ../libraries/src/shell/_command.sh
 
 #######################################
 # Installs a Nexus server.

@@ -77,7 +77,12 @@ const main = async () => {
   // Only skip if CI.
   const skipBuildAndPull = env.isContinuousIntegrationMode();
 
-  await container.build(__filename, "node", buildArguments, skipBuildAndPull);
+  await container.build(
+    __filename,
+    "playwright",
+    buildArguments,
+    skipBuildAndPull,
+  );
 };
 
 (async () => {

@@ -7,9 +7,11 @@ const main = async () => {
 
   host.loadDotenv();
 
-  log.info("Initiated deploy.");
+  log.info(
+    "Initiated deploy. This may take several minutes depending on the network upload speed.",
+  );
 
-  await container.deploy(__filename, "libraries");
+  await container.deploy(__filename, "playwright");
 };
 
 (async () => {

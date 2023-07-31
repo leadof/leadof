@@ -65,14 +65,19 @@ const createImageDistributionFile = async (scriptFilePath, imageTag) => {
   });
 };
 
-const build = async (scriptFilePath, imageName, buildArguments) => {
+const build = async (
+  scriptFilePath,
+  imageName,
+  buildArguments,
+  skipBuildAndPull,
+) => {
   log.debug("");
   log.debug("Building...");
 
   const imageTag = `leadof/${imageName}:latest`;
   const deployTag = `ghcr.io/leadof/${imageTag}`;
 
-  if (env.isContinuousIntegrationMode()) {
+  if (skipBuildAndPull) {
     log.debug(
       "Context of running in Continuous Integration mode was detected.",
     );
@@ -124,9 +129,19 @@ const environmentVariablesToBuildArguments = (options) => {
   const buildArguments = {};
 
   options.forEach((option) => {
-    buildArguments[option.key] = option.isRequired
-      ? env.getRequired(option.key)
-      : env.get(option.key);
+    if (option.isRequired) {
+      buildArguments[option.key] = env.getRequired(option.key);
+      return;
+    }
+
+    if (env.hasKey(option.key)) {
+      buildArguments[option.key] = env.get(option.key);
+      return;
+    }
+
+    log.debug("Skipping build argument for missing environment variable", {
+      env: option.key,
+    });
   });
 
   return buildArguments;

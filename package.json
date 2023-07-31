@@ -40,8 +40,8 @@
       "command": "make install-dependencies",
       "dependencies": [
         "local:prerequisites",
-        "./src/containers/libraries:build",
-        "./src/containers/node:build"
+        "./src/containers/libraries:container:build",
+        "./src/containers/node:container:build"
       ],
       "files": [
         "**/package.json",
@@ -59,8 +59,8 @@
       "command": "make install-src",
       "dependencies": [
         "container:dependencies",
-        "./src/containers/libraries:build",
-        "./src/containers/node:build"
+        "./src/containers/libraries:container:build",
+        "./src/containers/node:container:build"
       ],
       "files": [
         "./*",
@@ -86,7 +86,7 @@
       "command": "make check-lint",
       "dependencies": [
         "container:src",
-        "./src/containers/smol:build"
+        "./src/containers/smol:container:build"
       ],
       "files": [
         "./*",
@@ -105,7 +105,7 @@
       "command": "make check-spelling",
       "dependencies": [
         "container:src",
-        "./src/containers/smol:build"
+        "./src/containers/smol:container:build"
       ],
       "files": [
         "./*",
@@ -136,11 +136,11 @@
       "dependencies": [
         "local:prerequisites",
         "./src/containers/libraries:container:build",
-        "./src/containers/node:build",
-        "./src/containers/node-chrome:build",
-        "./src/containers/playwright:build",
-        "./src/containers/smol:build",
-        "./src/apps/leadof-us:container:build"
+        "./src/containers/node:container:build",
+        "./src/containers/node-chrome:container:build",
+        "./src/containers/playwright:container:build",
+        "./src/containers/smol:container:build",
+        "./src/apps/leadof-us:container:container:build"
       ]
     },
     "container:all": {

@@ -4,17 +4,13 @@ all: install
 
 .PHONY: install
 install:
-	@./install.sh
-
-.PHONY: deploy
-deploy: install
-	@./deploy.sh
+	@pnpm container:build
 
 .PHONY: clean
 clean:
 	@rm --recursive --force \
 		./.wireit/*/cache \
-		./dist/
+		./task-output/
 
 .PHONY: reset
 reset: clean

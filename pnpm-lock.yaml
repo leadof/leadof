@@ -243,12 +243,18 @@ importers:
 
   src/containers/playwright:
     devDependencies:
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
       wireit:
         specifier: ^0.10.0
         version: 0.10.0
 
   src/containers/smol:
     devDependencies:
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
       wireit:
         specifier: ^0.10.0
         version: 0.10.0

@@ -7,7 +7,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "container:build": "wireit",
-    "container:deploy": "wireit",
     "clean": "wireit"
   },
   "wireit": {
@@ -24,22 +23,6 @@
       ],
       "output": [
         "task-output/build.js/*"
-      ]
-    },
-    "container:deploy": {
-      "command": "node ./deploy",
-      "dependencies": [
-        "../../libraries/node:build",
-        "container:build"
-      ],
-      "files": [
-        "./src/*",
-        "./deploy.js",
-        "./makefile",
-        "./package.json"
-      ],
-      "output": [
-        "task-output/deploy.js/*"
       ]
     },
     "clean": {

@@ -11,7 +11,7 @@ const main = async () => {
     "Initiated deploy. This may take several minutes depending on the network upload speed.",
   );
 
-  await container.deploy(__filename, "node");
+  await container.deploy(__filename, "node-chrome");
 };
 
 (async () => {

@@ -7,7 +7,7 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
-. ./src/containers/libraries/shell/_podman.sh
+. ./src/containers/libraries/src/shell/_podman.sh
 
 #######################################
 # Builds a dependencies container image.
