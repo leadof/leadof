@@ -12,32 +12,30 @@
   },
   "wireit": {
     "container:build": {
-      "command": "make",
+      "command": "node ./build",
       "files": [
-        "./shell/*",
-        "*.sh",
-        "./containerfile",
+        "./src/*",
+        "./build.js",
         "./makefile",
         "./package.json"
       ],
       "output": [
-        "dist/*"
+        "task-output/build.js/*"
       ]
     },
     "container:deploy": {
-      "command": "make deploy",
+      "command": "node ./deploy",
       "dependencies": [
         "container:build"
       ],
       "files": [
-        "./shell/*",
-        "*.sh",
-        "./containerfile",
+        "./src/*",
+        "./deploy.js",
         "./makefile",
         "./package.json"
       ],
       "output": [
-        "dist/*"
+        "task-output/deploy.js/*"
       ]
     },
     "clean": {
@@ -45,6 +43,7 @@
     }
   },
   "devDependencies": {
+    "dotenv": "^16.3.1",
     "wireit": "^0.10.0"
   }
 }

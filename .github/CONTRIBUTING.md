@@ -42,6 +42,10 @@ Locally, versions of `node`, `npm` and `pnpm` will be checked with the command `
 -   Chrome version should be "latest" and should not require updating under "./src/containers/node-chrome/containerfile"
 -   All NodeJS dependencies can be managed with `make update` at the root and `make update-latest` to bump version ranges
 
+## Conventions
+
+-   `clean` and `reset` commands always use shell script commands rather than NodeJS scripts. Since `pnpm` and "wireit" both rely on "node_modules" and ".wireit" directories, there could be issues with cleaning and removing those directories and files during execution.
+
 ## Troubleshooting
 
 -   Known BUG 🐛: [Angular SSR outputs "selector error" warnings](https://github.com/ionic-team/ionic-cli/issues/4774)
