@@ -155,6 +155,18 @@ const build = async (options) => {
   return await runCommand(commandArguments);
 };
 
+const save = async (imageTag, archiveFilePath) => {
+  const commandArguments = ["save", "--output", archiveFilePath, imageTag];
+
+  return await runCommand(commandArguments);
+};
+
+const load = async (archiveFilePath) => {
+  const commandArguments = ["load", "--input", archiveFilePath];
+
+  return await runCommand(commandArguments);
+};
+
 module.exports = {
   build,
   default: runCommand,
@@ -162,8 +174,10 @@ module.exports = {
   getImages,
   getImageDigest,
   getVersion,
+  load,
   pull,
   push,
   run: runCommand,
+  save,
   tag,
 };

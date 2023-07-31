@@ -9,7 +9,7 @@ const main = async () => {
 
   log.info("Initiated deploy.");
 
-  await container.deploy(__filename, "libraries");
+  await container.deploy(__filename, "node");
 };
 
 (async () => {

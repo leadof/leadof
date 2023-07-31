@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 
 const pathExists = async (hostPath) => {
   try {
-    await fs.promises.access(hostPath, fs.constants.F_OK);
+    fs.accessSync(hostPath, fs.constants.F_OK);
     return true;
   } catch (e) {
     return false;
@@ -34,6 +34,10 @@ const deletePath = async (hostPath) => {
   return fs.promises.unlink(hostPath);
 };
 
+const readFile = async (hostPath) => {
+  return fs.promises.readFile(hostPath, { encoding: "utf-8" });
+};
+
 const writeFile = async (hostPath, content) => {
   return fs.promises.writeFile(hostPath, content, { encoding: "utf-8" });
 };
@@ -50,5 +54,6 @@ module.exports = {
   getRelativePath,
   getRelativeToRootPath,
   loadDotenv,
+  readFile,
   writeFile,
 };

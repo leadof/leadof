@@ -4,8 +4,20 @@
   "description": "Node library for LeadOf projects",
   "author": "Eric Swanson",
   "license": "UNLICENSED",
+  "scripts": {
+    "build": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "files": [
+        "*.js",
+        "package.json"
+      ]
+    }
+  },
   "devDependencies": {
     "dotenv": "^16.3.1",
-    "winston": "^3.10.0"
+    "winston": "^3.10.0",
+    "wireit": "^0.10.0"
   }
 }
