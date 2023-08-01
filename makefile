@@ -15,7 +15,7 @@ pre: prerequisites
 
 .PHONY: install-dependencies
 install-dependencies:
-	@./install-dependencies.sh
+	@pnpm container:dependencies
 
 .PHONY: install-src
 install-src:

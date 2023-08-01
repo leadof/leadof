@@ -1,4 +1,5 @@
 FROM localhost/leadof/node:latest as node
+FROM localhost/leadof/smol:latest as smol
 
 ################################################################################
 # Layer target: project dependencies
@@ -11,18 +12,11 @@ RUN mkdir --parents /usr/src/leadof/
 
 WORKDIR /usr/src/leadof/
 
-# CONTAINER packages
-COPY --chown=node:node ./src/containers/libraries/package.json /usr/src/leadof/src/containers/libraries/
-# COPY --chown=node:node ./src/containers/nexus/package.json /usr/src/leadof/src/containers/nexus/
-COPY --chown=node:node ./src/containers/node/package.json /usr/src/leadof/src/containers/node/
-COPY --chown=node:node ./src/containers/node-chrome/package.json /usr/src/leadof/src/containers/node-chrome/
-COPY --chown=node:node ./src/containers/playwright/package.json /usr/src/leadof/src/containers/playwright/
+# Copy related pnpm files.
+COPY --chown=node:node ./pnpm-lock.yaml ./pnpm-workspace.yaml /usr/src/leadof/
 
-# ROOT package
-COPY --chown=node:node ./package.json ./pnpm-lock.yaml ./pnpm-workspace.yaml /usr/src/leadof/
-
-# APPS packages
-COPY --chown=node:node ./src/apps/leadof-us/package.json /usr/src/leadof/src/apps/leadof-us/
+# Copy all package files.
+COPY --chown=node:node ./task-output/parse-dependencies.js/packages/ /usr/src/leadof/
 
 # recursively install (all) dependencies
 # cleanup source files and only store dependencies

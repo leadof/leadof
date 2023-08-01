@@ -12,6 +12,7 @@
     "local:format": "prettier --write --ignore-path ./.prettierignore ./",
     "local:lint": "prettier --check --ignore-path ./.prettierignore ./",
     "local:lint:changes": "lint-staged",
+    "local:parse:dependencies": "wireit",
     "container:dependencies": "wireit",
     "container:src": "wireit",
     "container:check:formatting": "wireit",
@@ -37,23 +38,37 @@
         "./dist/prerequisites.txt"
       ]
     },
-    "container:dependencies": {
-      "command": "make install-dependencies",
+    "local:parse:dependencies": {
+      "command": "node ./parse-dependencies.js",
       "dependencies": [
-        "local:prerequisites",
-        "./src/containers/libraries:container:build",
-        "./src/containers/node:container:build"
+        "local:prerequisites"
       ],
       "files": [
         "**/package.json",
+        "./parse-dependencies.js"
+      ],
+      "output": [
+        "task-output/parse-dependencies.js/*"
+      ]
+    },
+    "container:dependencies": {
+      "command": "node ./install-dependencies.js",
+      "dependencies": [
+        "local:prerequisites",
+        "local:parse:dependencies",
+        "./src/containers/libraries:container:build",
+        "./src/containers/node:container:build",
+        "./src/containers/smol:container:build"
+      ],
+      "files": [
+        "./task-output/parse-dependencies.js/*",
         "./pnpm-lock.yaml",
         "./pnpm-workspace.yaml",
         "./install-dependencies.containerfile",
-        "./install-dependencies.sh"
+        "./install-dependencies.js"
       ],
       "output": [
-        "dist/dependencies-image.tar",
-        "dist/dependencies-container_digest.txt"
+        "task-output/install-dependencies.js/*"
       ]
     },
     "container:src": {
@@ -156,6 +171,7 @@
   },
   "devDependencies": {
     "cspell": "^6.31.2",
+    "glob": "^10.3.3",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "madr": "^3.0.0",

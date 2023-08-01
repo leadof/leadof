@@ -14,7 +14,9 @@ const log = (level, message, metadata) => {
   }
 
   const winstonMetadata = Array.isArray(metadata)
-    ? metadata.length === 1
+    ? metadata.length === 0
+      ? {}
+      : metadata.length === 1
       ? metadata[0]
       : { argv: metadata }
     : metadata;
@@ -29,11 +31,10 @@ const error = (message, ...args) => log("error", message, args);
 
 const registerLoggerSingleton = (scriptFilePath) => {
   const scriptRelativeFilePath = host.getRelativeToRootPath(scriptFilePath);
-  const scriptName = path.basename(scriptFilePath);
-
+  const outputDirectoryPath = host.getTaskOutputDirectoryPath(scriptFilePath);
   const cleanId = scriptRelativeFilePath.replace(/[\\.]/gi, "-");
-  const logFileName = `./task-output/${scriptName}/output.log`;
-  const errorLogFileName = `./task-output/${scriptName}/error.log`;
+  const logFileName = `${outputDirectoryPath}output.log`;
+  const errorLogFileName = `${outputDirectoryPath}error.log`;
 
   if (logger) {
     return logger;

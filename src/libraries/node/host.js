@@ -38,12 +38,27 @@ const readFile = async (hostPath) => {
   return fs.promises.readFile(hostPath, { encoding: "utf-8" });
 };
 
+const readJson = async (hostPath) => {
+  const content = await readFile(hostPath);
+  return JSON.parse(content);
+};
+
 const writeFile = async (hostPath, content) => {
   return fs.promises.writeFile(hostPath, content, { encoding: "utf-8" });
 };
 
+const writeJson = async (hostPath, value) => {
+  const content = JSON.stringify(value);
+  return await writeFile(hostPath, content);
+};
+
 const loadDotenv = async () => {
   dotenv.config();
+};
+
+const getTaskOutputDirectoryPath = (scriptFilePath) => {
+  const scriptName = path.basename(scriptFilePath);
+  return `./task-output/${scriptName}/`;
 };
 
 module.exports = {
@@ -53,7 +68,10 @@ module.exports = {
   getPathName,
   getRelativePath,
   getRelativeToRootPath,
+  getTaskOutputDirectoryPath,
   loadDotenv,
   readFile,
+  readJson,
   writeFile,
+  writeJson,
 };
