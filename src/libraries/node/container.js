@@ -6,14 +6,16 @@ const host = require("../../libraries/node/host");
 const log = require("../../libraries/node/log");
 const podman = require("../../libraries/node/podman");
 
-const buildImage = async (imageTag, buildArguments) => {
+const buildImage = async (options) => {
   const { stdout, stderr } = await podman.build({
-    imageTag,
-    context: "./src",
-    filePath: "./src/containerfile",
-    ignoreFilePath: "./src/.containerignore",
+    imageTag: options.imageTag,
+    context: options.context ? options.context : "./src",
+    filePath: options.filePath ? options.filePath : "./src/containerfile",
+    ignoreFilePath: options.ignoreFilePath
+      ? options.ignoreFilePath
+      : "./src/.containerignore",
     network: "host",
-    buildArguments,
+    buildArguments: options.buildArguments,
   });
 
   if (stderr) {
@@ -65,12 +67,12 @@ const createImageDistributionFile = async (scriptFilePath, imageTag) => {
   });
 };
 
-const build = async (
-  scriptFilePath,
-  imageName,
-  buildArguments,
-  skipBuildAndPull,
-) => {
+const build = async (options) => {
+  const scriptFilePath = options.scriptFilePath;
+  const imageName = options.imageName;
+  const buildArguments = options.buildArguments;
+  const skipBuildAndPull = options.skipBuildAndPull;
+
   log.debug("");
   log.debug("Building...");
 
@@ -101,7 +103,24 @@ const build = async (
       });
     }
 
-    await buildImage(imageTag, buildArguments);
+    const buildOptions = {
+      imageTag,
+      buildArguments,
+    };
+
+    if (options.context) {
+      buildOptions.context = options.context;
+    }
+
+    if (options.filePath) {
+      buildOptions.filePath = options.filePath;
+    }
+
+    if (options.ignoreFilePath) {
+      buildOptions.ignoreFilePath = options.ignoreFilePath;
+    }
+
+    await buildImage(buildOptions);
     log.info("Successfully built image", { imageTag });
 
     await tagImage(imageTag, deployTag);

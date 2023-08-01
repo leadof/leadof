@@ -24,10 +24,12 @@ const main = async () => {
     environmentVariableOptions,
   );
 
-  // Always build this image.
-  const skipBuildAndPull = false;
-
-  await container.build(__filename, "smol", buildArguments, skipBuildAndPull);
+  await container.build({
+    scriptFilePath: __filename,
+    imageName: "smol",
+    buildArguments,
+    skipBuildAndPull: false,
+  });
 };
 
 (async () => {

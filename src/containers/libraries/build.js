@@ -24,15 +24,12 @@ const main = async () => {
     environmentVariableOptions,
   );
 
-  // Always build this image.
-  const skipBuildAndPull = false;
-
-  await container.build(
-    __filename,
-    "libraries",
+  await container.build({
+    scriptFilePath: __filename,
+    imageName: "libraries",
     buildArguments,
-    skipBuildAndPull,
-  );
+    skipBuildAndPull: false,
+  });
 };
 
 (async () => {

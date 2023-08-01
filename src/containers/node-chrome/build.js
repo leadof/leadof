@@ -27,15 +27,12 @@ const main = async () => {
     environmentVariableOptions,
   );
 
-  // Only skip if CI.
-  const skipBuildAndPull = env.isContinuousIntegrationMode();
-
-  await container.build(
-    __filename,
-    "node-chrome",
+  await container.build({
+    scriptFilePath: __filename,
+    imageName: "node-chrome",
     buildArguments,
-    skipBuildAndPull,
-  );
+    skipBuildAndPull: env.isContinuousIntegrationMode(),
+  });
 };
 
 (async () => {

@@ -74,10 +74,12 @@ const main = async () => {
     buildArguments["PNPM_VERSION"] = pnpmVersion;
   }
 
-  // Only skip if CI.
-  const skipBuildAndPull = env.isContinuousIntegrationMode();
-
-  await container.build(__filename, "node", buildArguments, skipBuildAndPull);
+  await container.build({
+    scriptFilePath: __filename,
+    imageName: "node",
+    buildArguments,
+    skipBuildAndPull: env.isContinuousIntegrationMode(),
+  });
 };
 
 (async () => {
