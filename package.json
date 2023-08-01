@@ -72,7 +72,7 @@
       ]
     },
     "container:src": {
-      "command": "make install-src",
+      "command": "node ./install-src.js",
       "dependencies": [
         "container:dependencies",
         "./src/containers/libraries:container:build",
@@ -86,16 +86,17 @@
         "!**/dist",
         "!**/node_modules",
         "!**/test-results",
+        "!**/task-output",
         "!**/.containerignore",
         "!**/*.containerfile",
+        "install-src.containerfile",
         "!**/*.drawio",
         "!./src/docs/",
         "!./src/gh/",
-        "!./src/media/",
-        "install-src.containerfile"
+        "!./src/media/"
       ],
       "output": [
-        "dist/src-container_digest.txt"
+        "task-output/install-src.js/*"
       ]
     },
     "container:check:formatting": {

@@ -19,7 +19,7 @@ install-dependencies:
 
 .PHONY: install-src
 install-src:
-	@./install-src.sh
+	@pnpm container:src
 
 .PHONY: install-containers
 install-containers:
