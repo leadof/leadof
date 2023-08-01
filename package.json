@@ -19,6 +19,7 @@
     "container:check:repository": "wireit",
     "container:check:all": "wireit",
     "container:build:all": "wireit",
+    "container:all": "wireit",
     "clean:all": "wireit"
   },
   "wireit": {
@@ -140,7 +141,7 @@
         "./src/containers/node-chrome:container:build",
         "./src/containers/playwright:container:build",
         "./src/containers/smol:container:build",
-        "./src/apps/leadof-us:container:container:build"
+        "./src/apps/leadof-us:container:build"
       ]
     },
     "container:all": {

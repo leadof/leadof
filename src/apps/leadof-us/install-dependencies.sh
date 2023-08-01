@@ -7,7 +7,7 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
-. ../../containers/libraries/shell/_command.sh
+. ../../containers/libraries/src/shell/_command.sh
 
 #######################################
 # Installs the application.

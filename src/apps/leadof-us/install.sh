@@ -7,9 +7,9 @@ set -e
 # fail if a function call is missing an argument
 set -u
 
-. ../../containers/libraries/shell/_command.sh
-. ../../containers/libraries/shell/_node.sh
-. ../../containers/libraries/shell/_podman.sh
+. ../../containers/libraries/src/shell/_command.sh
+. ../../containers/libraries/src/shell/_node.sh
+. ../../containers/libraries/src/shell/_podman.sh
 
 #######################################
 # Installs the application.
