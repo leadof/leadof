@@ -6,6 +6,8 @@
 **/dist
 **/node_modules
 **/test-results
+**/task-output
+!task-output/parse-dependencies
 **/tmp
 **/www
 

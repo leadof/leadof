@@ -27,7 +27,7 @@
         "./package.json"
       ],
       "output": [
-        "task-output/build.js/*"
+        ".task-output/build.js/*"
       ]
     },
     "container:deploy": {
@@ -46,7 +46,7 @@
         "./package.json"
       ],
       "output": [
-        "task-output/deploy.js/*"
+        ".task-output/deploy.js/*"
       ]
     },
     "clean": {

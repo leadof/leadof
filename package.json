@@ -48,7 +48,7 @@
         "./parse-dependencies.js"
       ],
       "output": [
-        "task-output/parse-dependencies.js/*"
+        ".task-output/parse-dependencies.js/*"
       ]
     },
     "container:dependencies": {
@@ -61,14 +61,14 @@
         "./src/containers/smol:container:build"
       ],
       "files": [
-        "./task-output/parse-dependencies.js/*",
+        "./.task-output/parse-dependencies.js/*",
         "./pnpm-lock.yaml",
         "./pnpm-workspace.yaml",
         "./install-dependencies.containerfile",
         "./install-dependencies.js"
       ],
       "output": [
-        "task-output/install-dependencies.js/*"
+        ".task-output/install-dependencies.js/*"
       ]
     },
     "container:src": {
@@ -86,7 +86,7 @@
         "!**/dist",
         "!**/node_modules",
         "!**/test-results",
-        "!**/task-output",
+        "!**/.task-output",
         "!**/.containerignore",
         "!**/*.containerfile",
         "install-src.containerfile",
@@ -96,7 +96,7 @@
         "!./src/media/"
       ],
       "output": [
-        "task-output/install-src.js/*"
+        ".task-output/install-src.js/*"
       ]
     },
     "container:check:formatting": {

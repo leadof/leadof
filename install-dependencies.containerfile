@@ -16,7 +16,7 @@ WORKDIR /usr/src/leadof/
 COPY --chown=node:node ./pnpm-lock.yaml ./pnpm-workspace.yaml /usr/src/leadof/
 
 # Copy all package files.
-COPY --chown=node:node ./task-output/parse-dependencies.js/packages/ /usr/src/leadof/
+COPY --chown=node:node ./.task-output/parse-dependencies.js/packages/ /usr/src/leadof/
 
 # recursively install (all) dependencies
 # cleanup source files and only store dependencies

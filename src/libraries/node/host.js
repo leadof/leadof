@@ -58,7 +58,7 @@ const loadDotenv = async () => {
 
 const getTaskOutputDirectoryPath = (scriptFilePath) => {
   const scriptName = path.basename(scriptFilePath);
-  return `./task-output/${scriptName}/`;
+  return `./.task-output/${scriptName}/`;
 };
 
 module.exports = {

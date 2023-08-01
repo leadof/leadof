@@ -17,7 +17,7 @@ const main = async () => {
   );
 
   const packageFilePaths = await glob("**/package.json", {
-    ignore: ["node_modules/**", "task-output/**"],
+    ignore: ["node_modules/**", ".task-output/**"],
   });
 
   for (const packageFilePath of packageFilePaths) {

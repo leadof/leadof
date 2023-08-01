@@ -1,10 +1,10 @@
 .containers
+.task-output
 .wireit
 
 dist
 node_modules
 test-results
-task-output
 
 .env
 

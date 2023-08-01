@@ -1,5 +1,6 @@
 .angular
 .containers
+.task-output
 .wireit
 coverage
 dist

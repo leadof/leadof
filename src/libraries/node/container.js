@@ -44,14 +44,14 @@ const createImageDistributionFile = async (scriptFilePath, imageTag) => {
 
   const outputDirectoryPath = host.getRelativePath(
     scriptDirectoryPath,
-    `./task-output/${scriptName}/`,
+    `./.task-output/${scriptName}/`,
   );
 
   await fs.promises.mkdir(outputDirectoryPath, { recursive: true });
 
   const distributionImageDigestFilePath = host.getRelativePath(
     scriptDirectoryPath,
-    `./task-output/${scriptName}/container_digest.txt`,
+    `./.task-output/${scriptName}/container_digest.txt`,
   );
 
   if (await host.pathExists(distributionImageDigestFilePath)) {

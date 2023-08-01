@@ -22,7 +22,7 @@
         "./package.json"
       ],
       "output": [
-        "task-output/build.js/*"
+        ".task-output/build.js/*"
       ]
     },
     "clean": {

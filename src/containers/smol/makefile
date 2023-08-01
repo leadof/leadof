@@ -10,7 +10,7 @@ install:
 clean:
 	@rm --recursive --force \
 		./.wireit/*/cache \
-		./task-output/
+		./.task-output/
 
 .PHONY: reset
 reset: clean

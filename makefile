@@ -140,7 +140,7 @@ endif
 
 .PHONY: clean
 clean:
-	@rm --recursive --force ./dist/ ./test-results/
+	@rm --recursive --force ./dist/ ./test-results/ ./.task-output/
 	@podman rm --force tmp_copy__leadof-dependencies_results || true
 	@podman rm --force tmp_copy__lint_results || true
 	@podman rm --force tmp_copy__spelling_results || true
