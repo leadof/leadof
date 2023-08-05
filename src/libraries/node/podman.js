@@ -180,6 +180,9 @@ const deleteContainer = async (nameOrId) => {
 const run = async (imageTag, ...argv) => {
   const name = `tmp-` + imageTag.replace(/[\/:]/gi, "-");
 
+  // make sure it doesn't already exist (from any previous run)
+  await deleteContainer(name);
+
   const commandArguments = [
     "run",
     "--name",
@@ -206,6 +209,7 @@ const run = async (imageTag, ...argv) => {
 module.exports = {
   build,
   default: runCommand,
+  deleteContainer,
   getContainers,
   getImages,
   getImageDigest,

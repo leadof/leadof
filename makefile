@@ -38,7 +38,8 @@ check-spelling:
 	@pnpm container:check:spelling
 
 .PHONY: check-quick
-check-quick: check-formatting check-spelling
+check-quick:
+	@pnpm container:check:repository
 
 .PHONY: check
 check: check-quick install-containers
