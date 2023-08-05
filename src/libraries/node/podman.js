@@ -167,9 +167,23 @@ const load = async (archiveFilePath) => {
   return await runCommand(commandArguments);
 };
 
+const deleteContainer = async (nameOrId) => {
+  const commandArguments = ["rm", "--force", nameOrId];
+
+  try {
+    await runCommand(commandArguments);
+  } catch (e) {
+    // ignore errors
+  }
+};
+
 const run = async (imageTag, ...argv) => {
+  const name = `tmp-` + imageTag.replace(/[\/:]/gi, "-");
+
   const commandArguments = [
     "run",
+    "--name",
+    name,
     "--rm",
     "--network",
     "host",
@@ -177,7 +191,16 @@ const run = async (imageTag, ...argv) => {
     ...argv,
   ];
 
-  return await runCommand(commandArguments);
+  let results;
+
+  try {
+    results = await runCommand(commandArguments);
+  } finally {
+    // always clean up
+    await deleteContainer(name);
+  }
+
+  return results;
 };
 
 module.exports = {
