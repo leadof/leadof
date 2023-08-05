@@ -29,19 +29,16 @@ install-containers:
 format:
 	@pnpm local:format
 
-.PHONY: check-lint
-check-lint:
-	@./check-lint.sh
+.PHONY: check-formatting
+check-formatting:
+	@pnpm container:check:formatting
 
 .PHONY: check-spelling
 check-spelling:
-	@./check-spelling.sh
-
-.PHONY: spelling
-spelling: check-spelling
+	@pnpm container:check:spelling
 
 .PHONY: check-quick
-check-quick: check-lint check-spelling
+check-quick: check-formatting check-spelling
 
 .PHONY: check
 check: check-quick install-containers

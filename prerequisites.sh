@@ -98,15 +98,18 @@ main() {
 
   auth_gh_container_registry
 
-  if [ ! -d "./dist/" ]; then
-    mkdir "./dist/"
+  outputDirectoryPath="./.task-output/prerequisites.sh/"
+  outputFilePath="${outputDirectoryPath}prerequisites.txt"
+
+  if [ ! -d $outputDirectoryPath ]; then
+    mkdir --parents $outputDirectoryPath
   fi
 
-  if [ -f "./dist/prerequisites.txt" ]; then
-    rm --force ./dist/prerequisites.txt
+  if [ -f $outputFilePath ]; then
+    rm --force $outputFilePath
   fi
 
-  echo "Prerequisites installed" >./dist/prerequisites.txt
+  echo "Prerequisites installed" >$outputFilePath
 }
 
 dotenv

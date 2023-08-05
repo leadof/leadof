@@ -42,7 +42,10 @@ const registerLoggerSingleton = (scriptFilePath) => {
 
   logger = winston.createLogger({
     level: process.env["DEBUG"] ? "debug" : "info",
-    format: winston.format.json(),
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+    ),
     defaultMeta: { id: cleanId },
     transports: [
       //

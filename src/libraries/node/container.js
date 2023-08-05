@@ -47,7 +47,7 @@ const createImageDistributionFile = async (scriptFilePath, imageTag) => {
     `./.task-output/${scriptName}/`,
   );
 
-  await fs.promises.mkdir(outputDirectoryPath, { recursive: true });
+  await host.mkdir(outputDirectoryPath, true);
 
   const distributionImageDigestFilePath = host.getRelativePath(
     scriptDirectoryPath,
@@ -93,14 +93,17 @@ const build = async (options) => {
     await podman.tag(deployTag, localTag);
     log.info("Successfully tagged remote image with local tag", localTag);
   } else {
+    const isCacheContainersEnabled = env.getAsBoolean("CI");
     const cacheImageFilePath = `./.containers/${imageName}-image.tar`;
     const cacheImageDirectoryPath = path.dirname(cacheImageFilePath);
 
-    if (await host.pathExists(cacheImageFilePath)) {
-      await podman.load(cacheImageFilePath);
-      log.info("Loaded previously cached image from file", {
-        path: cacheImageFilePath,
-      });
+    if (isCacheContainersEnabled) {
+      if (await host.pathExists(cacheImageFilePath)) {
+        await podman.load(cacheImageFilePath);
+        log.info("Loaded previously cached image from file", {
+          path: cacheImageFilePath,
+        });
+      }
     }
 
     const buildOptions = {
@@ -126,19 +129,21 @@ const build = async (options) => {
     await tagImage(imageTag, deployTag);
     log.info("Successfully tagged image for deployment", { deployTag });
 
-    if (await host.pathExists(cacheImageFilePath)) {
-      await host.deletePath(cacheImageFilePath);
-      log.info("Deleted previously cached image file", {
-        path: cacheImageFilePath,
-      });
-    }
+    if (isCacheContainersEnabled) {
+      if (await host.pathExists(cacheImageFilePath)) {
+        await host.deletePath(cacheImageFilePath);
+        log.info("Deleted previously cached image file", {
+          path: cacheImageFilePath,
+        });
+      }
 
-    if (!(await host.pathExists(cacheImageDirectoryPath))) {
-      await fs.promises.mkdir(cacheImageDirectoryPath, { recursive: true });
-    }
+      if (!(await host.pathExists(cacheImageDirectoryPath))) {
+        await fs.promises.mkdir(cacheImageDirectoryPath, { recursive: true });
+      }
 
-    await podman.save(imageTag, cacheImageFilePath);
-    log.info("Saved cached image file", { path: cacheImageFilePath });
+      await podman.save(imageTag, cacheImageFilePath);
+      log.info("Saved cached image file", { path: cacheImageFilePath });
+    }
   }
 
   await createImageDistributionFile(scriptFilePath, imageTag);

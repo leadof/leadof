@@ -8,10 +8,10 @@
   "scripts": {
     "prepare": "husky install",
     "local:prerequisites": "wireit",
-    "local:spelling": "cspell --config ./cspell.yaml --no-color **",
     "local:format": "prettier --write --ignore-path ./.prettierignore ./",
-    "local:lint": "prettier --check --ignore-path ./.prettierignore ./",
-    "local:lint:changes": "lint-staged",
+    "local:check:spelling": "cspell --config ./cspell.yaml --no-color **",
+    "local:check:formatting": "prettier --check --ignore-path ./.prettierignore ./",
+    "local:check:formatting:changes": "lint-staged",
     "local:parse:dependencies": "wireit",
     "container:dependencies": "wireit",
     "container:src": "wireit",
@@ -35,7 +35,7 @@
         "./prerequisites.sh"
       ],
       "output": [
-        "./dist/prerequisites.txt"
+        ".task-output/prerequisites.sh/*"
       ]
     },
     "local:parse:dependencies": {
@@ -100,41 +100,37 @@
       ]
     },
     "container:check:formatting": {
-      "command": "make check-lint",
+      "command": "node ./check-formatting.js",
       "dependencies": [
-        "container:src",
-        "./src/containers/smol:container:build"
+        "container:src"
       ],
       "files": [
         "./*",
         "!**/.angular",
         "!**/.containers",
+        "!**/.task-output",
         "!**/.wireit",
-        "!**/dist",
-        "!**/node_modules",
-        "!**/test-results"
+        "!**/node_modules"
       ],
       "output": [
-        "dist/lint-container_digest.txt"
+        ".task-output/check-formatting.js/*"
       ]
     },
     "container:check:spelling": {
-      "command": "make check-spelling",
+      "command": "node ./check-spelling.js",
       "dependencies": [
-        "container:src",
-        "./src/containers/smol:container:build"
+        "container:src"
       ],
       "files": [
         "./*",
         "!**/.angular",
         "!**/.containers",
+        "!**/.task-output",
         "!**/.wireit",
-        "!**/dist",
-        "!**/node_modules",
-        "!**/test-results"
+        "!**/node_modules"
       ],
       "output": [
-        "dist/spelling-container_digest.txt"
+        ".task-output/check-spelling.js/*"
       ]
     },
     "container:check:repository": {

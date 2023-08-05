@@ -13,7 +13,10 @@ const get = (key) => {
 };
 
 const getAsBoolean = (key) => {
-  return process.env[key] ? JSON.parse(process.env[key]) : false;
+  if (hasKey(key) && process.env[key]) {
+    return JSON.parse(process.env[key]);
+  }
+  return false;
 };
 
 const getRequired = (key) => {

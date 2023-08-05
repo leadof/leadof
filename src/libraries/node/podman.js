@@ -167,6 +167,19 @@ const load = async (archiveFilePath) => {
   return await runCommand(commandArguments);
 };
 
+const run = async (imageTag, ...argv) => {
+  const commandArguments = [
+    "run",
+    "--rm",
+    "--network",
+    "host",
+    imageTag,
+    ...argv,
+  ];
+
+  return await runCommand(commandArguments);
+};
+
 module.exports = {
   build,
   default: runCommand,
@@ -177,7 +190,8 @@ module.exports = {
   load,
   pull,
   push,
-  run: runCommand,
+  run,
+  runCommand,
   save,
   tag,
 };

@@ -61,6 +61,20 @@ const getTaskOutputDirectoryPath = (scriptFilePath) => {
   return `./.task-output/${scriptName}/`;
 };
 
+const getTaskOutputFilePath = (scriptFilePath, relativeFilePath) => {
+  const scriptName = path.basename(scriptFilePath);
+  return path.join(
+    getTaskOutputDirectoryPath(scriptFilePath),
+    `./${relativeFilePath}`,
+  );
+};
+
+const mkdir = async (directoryPath, isRecursive) => {
+  if (!(await pathExists(directoryPath))) {
+    await fs.promises.mkdir(directoryPath, { recursive: isRecursive });
+  }
+};
+
 module.exports = {
   deletePath,
   pathExists,
@@ -69,7 +83,9 @@ module.exports = {
   getRelativePath,
   getRelativeToRootPath,
   getTaskOutputDirectoryPath,
+  getTaskOutputFilePath,
   loadDotenv,
+  mkdir,
   readFile,
   readJson,
   writeFile,
