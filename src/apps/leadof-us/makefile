@@ -22,9 +22,9 @@ pre: prerequisites
 src:
 	@./install-src.sh
 
-.PHONY: check-lint
-check-lint:
-	@./check-lint.sh
+.PHONY: check-formatting
+check-formatting:
+	@pnpm container:check:formatting
 
 .PHONY: check-test
 check-test:
@@ -39,7 +39,7 @@ check-performance:
 	@node ./check-performance.js
 
 .PHONY: check
-check: check-lint check-test check-e2e
+check: check-formatting check-test check-e2e
 
 .PHONY: install-dependencies
 install-dependencies:

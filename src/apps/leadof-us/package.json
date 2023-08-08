@@ -10,8 +10,8 @@
     "start": "ng serve --port 4200",
     "watch::comment": "Watched build for front-end Angular application without SSR",
     "watch": "ng build --watch --configuration development",
-    "local:lint::comment": "Linting",
-    "local:lint": "ng lint",
+    "local:check:formatting:comment": "Formatting checks",
+    "local:check:formatting": "ng lint",
     "local:test::comment": "Unit tests",
     "local:test": "ng test --code-coverage true --progress false --watch false",
     "local:e2e::comment": "End-to-end tests",
@@ -32,8 +32,8 @@
     "container:dependencies": "wireit",
     "container:src::comment": "Containerized source code",
     "container:src": "wireit",
-    "container:lint::comment": "Containerized linting",
-    "container:lint": "wireit",
+    "container:check:formatting::comment": "Containerized linting",
+    "container:check:formatting": "wireit",
     "container:test::comment": "Containerized unit testing",
     "container:test": "wireit",
     "container:e2e::comment": "Containerized end-to-end testing",
@@ -81,23 +81,21 @@
         "!test-results"
       ]
     },
-    "container:lint": {
-      "command": "make check-lint",
+    "container:check:formatting": {
+      "command": "node ./check-formatting.js",
       "dependencies": [
-        "../../../:container:src",
-        "../../containers/smol:container:build"
+        "../../../:container:src"
       ],
       "files": [
         "./*",
         "!**/.angular",
         "!**/.containers",
+        "!**/.task-output",
         "!**/.wireit",
-        "!**/dist",
-        "!**/node_modules",
-        "!**/test-results"
+        "!**/node_modules"
       ],
       "output": [
-        "dist/lint-container_digest.txt"
+        ".task-output/check-formatting.js/*"
       ]
     },
     "container:test": {
@@ -142,7 +140,7 @@
     },
     "container:check": {
       "dependencies": [
-        "container:lint",
+        "container:check:formatting",
         "container:test",
         "container:e2e"
       ]

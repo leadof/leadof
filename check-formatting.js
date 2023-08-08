@@ -8,19 +8,28 @@ const main = async () => {
   log.info("Checking formatting initiated.");
 
   const imageTag = "localhost/leadof/src:latest";
-  const argv = ["pnpm", "local:check:formatting"];
+  const commandArguments = ["pnpm", "local:check:formatting"];
 
-  // BUG: a successful command will use "stderr" (https://github.com/containers/podman/discussions/19454)
-  const { stderr } = await podman.run(imageTag, ...argv);
-
-  log.debug(stderr, { tag: imageTag, command: argv.join(" ") });
+  const { stdout, stderr, exitCode, error } = await podman.run({
+    imageTag,
+    isTemporary: true,
+    commandArguments,
+  });
 
   const commandOutputFilePath = host.getTaskOutputFilePath(
     __filename,
-    "formatting.log",
+    exitCode !== 0 || error ? "formatting.error.log" : "formatting.log",
   );
 
-  host.writeFile(commandOutputFilePath, stderr);
+  host.writeFile(commandOutputFilePath, exitCode === 0 ? stdout : stderr);
+
+  if (error) {
+    throw error;
+  }
+
+  if (exitCode !== 0) {
+    throw new Error("Container returned a non-zero exit code.\n\n${stderr}");
+  }
 
   log.info("Successfully checked formatting.");
 };

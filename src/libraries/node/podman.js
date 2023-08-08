@@ -1,24 +1,17 @@
-const util = require("node:util");
-const execFile = util.promisify(require("node:child_process").execFile);
+const { v4: uuidv4 } = require("uuid");
 
 const cmd = require("./cmd");
 const log = require("./log");
 
 const COMMAND_NAME = "podman";
 
-const runCommand = async (argv) => {
-  return await cmd.run(COMMAND_NAME, argv);
-};
-
 const getVersion = async () => {
   const commandArguments = ["--version"];
 
-  const { stdout, stderr } = await runCommand(commandArguments);
-
-  if (stderr) {
-    log.error("Error getting version", { stderr });
-    throw new Error(stderr);
-  }
+  const stdout = await cmd.runAndExpectStdOutCommand(
+    COMMAND_NAME,
+    commandArguments,
+  );
 
   return stdout.trim();
 };
@@ -32,32 +25,30 @@ const getImageDigest = async (imageTag) => {
     "{{.Digest}}",
   ];
 
-  const { stdout, stderr } = await runCommand(commandArguments);
+  const stdout = await cmd.runAndExpectStdOutCommand(
+    COMMAND_NAME,
+    commandArguments,
+  );
 
-  if (stderr) {
-    log.error("Error getting image digest", { imageTag, stderr });
-    throw new Error(stderr);
-  }
-
-  return stdout;
+  return stdout.trim();
 };
 
 const tag = async (imageTag, newTag) => {
   const commandArguments = ["tag", imageTag, newTag];
 
-  return await runCommand(commandArguments);
+  return await cmd.runAndExpectStdOutCommand(COMMAND_NAME, commandArguments);
 };
 
 const pull = async (imageTag) => {
   const commandArguments = ["pull", imageTag];
 
-  return await runCommand(commandArguments);
+  return await cmd.runAndExpectStdOutCommand(COMMAND_NAME, commandArguments);
 };
 
 const push = async (imageTag) => {
   const commandArguments = ["push", imageTag];
 
-  return await runCommand(commandArguments);
+  return await cmd.runAndExpectStdErrCommand(COMMAND_NAME, commandArguments);
 };
 
 const getImages = async (showAll) => {
@@ -65,12 +56,10 @@ const getImages = async (showAll) => {
     ? ["images", "--all", "--format", "json"]
     : ["images", "--format", "json"];
 
-  const { stdout, stderr } = await runCommand(commandArguments);
-
-  if (stderr) {
-    log.error("Error retrieving container image list", { stderr });
-    process.exit(1);
-  }
+  const stdout = await cmd.runAndExpectStdOutCommand(
+    COMMAND_NAME,
+    commandArguments,
+  );
 
   try {
     return JSON.parse(stdout.trim());
@@ -88,12 +77,10 @@ const getContainers = async (showAll) => {
     ? ["ps", "--all", "--format", "json"]
     : ["ps", "--format", "json"];
 
-  const { stdout, stderr } = await runCommand(commandArguments);
-
-  if (stderr) {
-    log.error("Error retrieving container image list", { stderr });
-    process.exit(1);
-  }
+  const stdout = await cmd.runAndExpectStdOutCommand(
+    COMMAND_NAME,
+    commandArguments,
+  );
 
   try {
     return JSON.parse(stdout.trim());
@@ -152,63 +139,94 @@ const build = async (options) => {
     contextPath,
   ];
 
-  return await runCommand(commandArguments);
+  return await cmd.runAndExpectStdOutCommand(COMMAND_NAME, commandArguments);
 };
 
 const save = async (imageTag, archiveFilePath) => {
   const commandArguments = ["save", "--output", archiveFilePath, imageTag];
 
-  return await runCommand(commandArguments);
+  return await cmd.runAndExpectStdOutCommand(COMMAND_NAME, commandArguments);
 };
 
 const load = async (archiveFilePath) => {
   const commandArguments = ["load", "--input", archiveFilePath];
 
-  return await runCommand(commandArguments);
+  return await cmd.runAndExpectStdOutCommand(COMMAND_NAME, commandArguments);
 };
 
 const deleteContainer = async (nameOrId) => {
   const commandArguments = ["rm", "--force", nameOrId];
 
   try {
-    await runCommand(commandArguments);
+    await cmd.run(COMMAND_NAME, commandArguments);
   } catch (e) {
     // ignore errors
   }
 };
 
-const run = async (imageTag, ...argv) => {
-  const name = `tmp-` + imageTag.replace(/[\/:]/gi, "-");
+const run = async (options) => {
+  const imageTag = options.imageTag;
+  const argv = options.commandArguments ? options.commandArguments : [];
+  const isTemporary = options.isTemporary ? options.isTemporary : false;
+  const network = options.network ? options.network : "host";
+  // create a unique identifier of 6 characters
+  const uniqueId = uuidv4().replace("-", "").substring(0, 6);
+  const name = options.containerName
+    ? options.containerName
+    : `tmp-` + imageTag.replace(/[\/:]/gi, "-") + `-${uniqueId}`;
+  const workingDirectoryPath = options.workingDirectoryPath
+    ? options.workingDirectoryPath
+    : null;
 
   // make sure it doesn't already exist (from any previous run)
-  await deleteContainer(name);
+  if (isTemporary) {
+    await deleteContainer(name);
+  }
 
   const commandArguments = [
     "run",
     "--name",
     name,
-    "--rm",
+    ...(isTemporary ? ["--rm"] : []),
     "--network",
-    "host",
+    network,
+    ...(workingDirectoryPath ? ["--workdir", workingDirectoryPath] : []),
     imageTag,
     ...argv,
   ];
 
-  let results;
+  let commandExitCode;
+  let commandStdOut;
+  let commandStdErr;
+  let commandError;
 
   try {
-    results = await runCommand(commandArguments);
+    const { stdout, stderr, error, exitCode } = await cmd.run(
+      COMMAND_NAME,
+      commandArguments,
+    );
+    commandStdOut = stdout;
+    commandStdErr = stderr;
+    commandError = error;
+    commandExitCode = exitCode;
   } finally {
     // always clean up
-    await deleteContainer(name);
+    if (isTemporary) {
+      await deleteContainer(name);
+    }
   }
 
-  return results;
+  return {
+    stdout: commandStdOut,
+    stderr: commandStdErr,
+    error: commandError,
+    exitCode: commandExitCode,
+  };
 };
 
 module.exports = {
   build,
-  default: runCommand,
+  default: run,
   deleteContainer,
   getContainers,
   getImages,
@@ -218,7 +236,6 @@ module.exports = {
   pull,
   push,
   run,
-  runCommand,
   save,
   tag,
 };

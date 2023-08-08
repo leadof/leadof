@@ -1,19 +1,19 @@
-const host = require("./src/libraries/node/host");
-const log = require("./src/libraries/node/log");
-const podman = require("./src/libraries/node/podman");
+const host = require("../../libraries/node/host");
+const log = require("../../libraries/node/log");
+const podman = require("../../libraries/node/podman");
 
 const main = async () => {
   log.registerLoggerSingleton(__filename);
 
-  log.info("Checking spelling initiated.");
+  log.info("Checking formatting initiated.");
 
   const imageTag = "localhost/leadof/src:latest";
-  const commandArguments = ["pnpm", "local:check:spelling"];
+  const commandArguments = ["pnpm", "local:check:formatting"];
 
-  // BUG: a successful command will use "stderr" (https://github.com/containers/podman/discussions/19454)
   const { stdout, stderr } = await podman.run({
     imageTag,
     isTemporary: true,
+    workingDirectoryPath: "/usr/src/leadof/src/apps/leadof-us/",
     commandArguments,
   });
 
@@ -26,12 +26,12 @@ const main = async () => {
 
   const commandOutputFilePath = host.getTaskOutputFilePath(
     __filename,
-    "spelling.log",
+    "formatting.log",
   );
 
-  host.writeFile(commandOutputFilePath, stderr);
+  host.writeFile(commandOutputFilePath, stdout);
 
-  log.info("Successfully checked spelling.");
+  log.info("Successfully checked formatting.");
 };
 
 (async () => {
