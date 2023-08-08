@@ -63,7 +63,9 @@ const main = async () => {
     const containerPath =
       "/usr/src/leadof/src/apps/leadof-us/.task-output/coverage/";
 
-    await podman.copyFiles(containerName, containerPath, outputDirectoryPath);
+    await podman.copyFiles(containerName, containerPath, outputDirectoryPath, {
+      isOverwriteEnabled: true,
+    });
     log.info("Successfully copied test output files", {
       containerName,
       containerPath,

@@ -8,7 +8,7 @@ test('performance report', async ({ page, browserName }) => {
   if (browserName === 'chromium') {
     const testResultsDirectoryPath = path.join(
       process.cwd(),
-      './test-results/',
+      './.task-output/',
     );
     const e2eTestResultsDirectoryPath = path.join(
       testResultsDirectoryPath,

@@ -168,7 +168,7 @@ const copyFiles = async (
   containerName,
   containerPath,
   hostPath,
-  isOverwriteEnabled,
+  { isOverwriteEnabled = false } = {},
 ) => {
   const commandArguments = [
     "cp",
