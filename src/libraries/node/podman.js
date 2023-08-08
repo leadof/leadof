@@ -164,10 +164,27 @@ const deleteContainer = async (nameOrId) => {
   }
 };
 
+const copyFiles = async (
+  containerName,
+  containerPath,
+  hostPath,
+  isOverwriteEnabled,
+) => {
+  const commandArguments = [
+    "cp",
+    ...(isOverwriteEnabled ? ["--overwrite"] : []),
+    `${containerName}:${containerPath}`,
+    hostPath,
+  ];
+
+  return await cmd.runAndExpectStdOutCommand(COMMAND_NAME, commandArguments);
+};
+
 const run = async (options) => {
   const imageTag = options.imageTag;
   const argv = options.commandArguments ? options.commandArguments : [];
   const isTemporary = options.isTemporary ? options.isTemporary : false;
+  const isDetached = options.isDetached ? options.isDetached : false;
   const network = options.network ? options.network : "host";
   // create a unique identifier of 6 characters
   const uniqueId = uuidv4().replace("-", "").substring(0, 6);
@@ -188,6 +205,7 @@ const run = async (options) => {
     "--name",
     name,
     ...(isTemporary ? ["--rm"] : []),
+    ...(isDetached ? ["--detach"] : []),
     "--network",
     network,
     ...(workingDirectoryPath ? ["--workdir", workingDirectoryPath] : []),
@@ -226,6 +244,7 @@ const run = async (options) => {
 
 module.exports = {
   build,
+  copyFiles,
   default: run,
   deleteContainer,
   getContainers,

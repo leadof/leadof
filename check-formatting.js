@@ -21,7 +21,7 @@ const main = async () => {
     exitCode !== 0 || error ? "formatting.error.log" : "formatting.log",
   );
 
-  host.writeFile(commandOutputFilePath, exitCode === 0 ? stdout : stderr);
+  await host.writeFile(commandOutputFilePath, exitCode === 0 ? stdout : stderr);
 
   if (error) {
     throw error;

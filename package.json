@@ -6,16 +6,22 @@
   "author": "Eric Swanson",
   "license": "UNLICENSED",
   "scripts": {
+    "prepare::comment": "Sets up dependencies for git hooks using Husky",
     "prepare": "husky install",
+    "local:prerequisites::comment": "Sets up local dependencies",
     "local:prerequisites": "wireit",
+    "local:format::comment": "Auto-formats all local files",
     "local:format": "prettier --write --ignore-path ./.prettierignore ./",
+    "local:check:spelling::comment": "Checks spelling inside of a container",
     "local:check:spelling": "cspell --config ./cspell.yaml --no-color **",
+    "local:check:formatting::comment": "Checks formatting inside of a container",
     "local:check:formatting": "prettier --check --ignore-path ./.prettierignore ./",
     "local:check:formatting:changes": "lint-staged",
     "local:parse:dependencies": "wireit",
     "container:dependencies": "wireit",
     "container:src": "wireit",
     "container:chrome:src": "wireit",
+    "container:playwright:src": "wireit",
     "container:check:formatting": "wireit",
     "container:check:spelling": "wireit",
     "container:check:repository": "wireit",
@@ -122,6 +128,32 @@
       ],
       "output": [
         ".task-output/install-chrome-src.js/*"
+      ]
+    },
+    "container:playwright:src": {
+      "command": "node ./install-playwright-src.js",
+      "dependencies": [
+        "container:dependencies",
+        "./src/containers/libraries:container:build",
+        "./src/containers/playwright:container:build"
+      ],
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/node_modules",
+        "!**/.task-output",
+        "!**/.containerignore",
+        "!**/*.containerfile",
+        "install-playwright-src.containerfile",
+        "!**/*.drawio",
+        "!./src/docs/",
+        "!./src/gh/",
+        "!./src/media/"
+      ],
+      "output": [
+        ".task-output/install-playwright-src.js/*"
       ]
     },
     "container:check:formatting": {

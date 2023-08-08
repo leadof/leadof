@@ -5,10 +5,10 @@ const podman = require("../../libraries/node/podman");
 const main = async () => {
   log.registerLoggerSingleton(__filename);
 
-  log.info("Checking formatting initiated.");
+  log.info("Checking end-to-end testing initiated.");
 
-  const imageTag = "localhost/leadof/src:latest";
-  const commandArguments = ["pnpm", "local:check:formatting"];
+  const imageTag = "localhost/leadof/playwright-src:latest";
+  const commandArguments = ["pnpm", "local:check:e2e"];
 
   const { stdout, stderr } = await podman.run({
     imageTag,
@@ -26,12 +26,12 @@ const main = async () => {
 
   const commandOutputFilePath = host.getTaskOutputFilePath(
     __filename,
-    "formatting.log",
+    "e2e.log",
   );
 
   await host.writeFile(commandOutputFilePath, stdout);
 
-  log.info("Successfully checked formatting.");
+  log.info("Successfully checked end-to-end testing.");
 };
 
 (async () => {

@@ -29,7 +29,7 @@ const main = async () => {
     "spelling.log",
   );
 
-  host.writeFile(commandOutputFilePath, stderr);
+  await host.writeFile(commandOutputFilePath, stderr);
 
   log.info("Successfully checked spelling.");
 };

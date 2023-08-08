@@ -6,28 +6,30 @@
   "author": "Eric Swanson",
   "homepage": "https://leadof.us/",
   "scripts": {
-    "start::comment": "Normal start for front-end Angular application without SSR",
-    "start": "ng serve --port 4200",
-    "watch::comment": "Watched build for front-end Angular application without SSR",
-    "watch": "ng build --watch --configuration development",
+    "local:start::comment": "Normal start for front-end Angular application without SSR",
+    "local:start": "ng serve --port 4200",
+    "local:watch::comment": "Watched build for front-end Angular application without SSR",
+    "local:watch": "ng build --watch --configuration development",
     "local:check:formatting:comment": "Formatting checks",
     "local:check:formatting": "ng lint",
     "local:check:testing::comment": "Unit tests",
     "local:check:testing": "ng test --code-coverage true --progress false --watch false",
-    "local:e2e::comment": "End-to-end tests",
-    "local:e2e": "playwright test",
+    "local:install:e2e::comment": "Install Playwright dependencies",
+    "local:install:e2e": "wireit",
+    "local:check:e2e::comment": "End-to-end tests",
+    "local:check:e2e": "wireit",
+    "local:check:e2e:debug::comment": "Debugging end-to-end tests with a headed browser",
+    "local:check:e2e:debug": "playwright test --project chromium --headed",
     "local:build::comment": "Build both the front-end and SSR versions of this application",
     "local:build": "ng build --progress false --configuration production && ng run app:server:production",
-    "e2e:debug::comment": "Debugging end-to-end tests with a headed browser",
-    "e2e:debug": "playwright test --project chromium --headed",
-    "dev:ssr::comment": "Development server for SSR",
-    "dev:ssr": "ng run app:serve-ssr",
-    "build:ssr::comment": "Build both the front-end and SSR versions of this application",
-    "build:ssr": "ng build --progress false --configuration production && ng run app:server:production",
-    "serve:ssr::comment": "Run the SSR application",
-    "serve:ssr": "node dist/app/server/main.js",
-    "prerender::comment": "Executes the SSR-prerendering process.",
-    "prerender": "ng run app:prerender:production",
+    "local:dev:ssr::comment": "Development server for SSR",
+    "local:dev:ssr": "ng run app:serve-ssr",
+    "local:build:ssr::comment": "Build both the front-end and SSR versions of this application",
+    "local:build:ssr": "ng build --progress false --configuration production && ng run app:server:production",
+    "local:serve:ssr::comment": "Run the SSR application",
+    "local:serve:ssr": "node dist/app/server/main.js",
+    "local:prerender::comment": "Executes the SSR-prerendering process.",
+    "local:prerender": "ng run app:prerender:production",
     "container:dependencies::comment": "Containerized build of system dependencies only",
     "container:dependencies": "wireit",
     "container:src::comment": "Containerized source code",
@@ -36,8 +38,8 @@
     "container:check:formatting": "wireit",
     "container:check:testing::comment": "Containerized unit testing",
     "container:check:testing": "wireit",
-    "container:e2e::comment": "Containerized end-to-end testing",
-    "container:e2e": "wireit",
+    "container:check:e2e::comment": "Containerized end-to-end testing",
+    "container:check:e2e": "wireit",
     "container:check::comment": "All containerized checks and testing",
     "container:check": "wireit",
     "check::comment": "Containerized build; creates a production-ready SSR container.",
@@ -57,6 +59,15 @@
     "clean": "wireit"
   },
   "wireit": {
+    "local:install:e2e": {
+      "command": "pnpm playwright install"
+    },
+    "local:check:e2e": {
+      "command": "pnpm playwright test",
+      "dependencies": [
+        "local:install:e2e"
+      ]
+    },
     "container:dependencies": {
       "command": "make install-dependencies",
       "files": [
@@ -115,31 +126,28 @@
         ".task-output/check-testing.js/*"
       ]
     },
-    "container:e2e": {
-      "command": "make check-e2e",
+    "container:check:e2e": {
+      "command": "node ./check-e2e.js",
       "dependencies": [
-        "../../../:container:src",
-        "../../containers/smol:container:build",
-        "../../containers/playwright:container:build"
+        "../../../:container:playwright:src"
       ],
       "files": [
         "./*",
         "!**/.angular",
         "!**/.containers",
+        "!**/.task-output",
         "!**/.wireit",
-        "!**/dist",
-        "!**/node_modules",
-        "!**/test-results"
+        "!**/node_modules"
       ],
       "output": [
-        "dist/e2e-container-digest.txt"
+        ".task-output/check-e2e.js/*"
       ]
     },
     "container:check": {
       "dependencies": [
         "container:check:formatting",
         "container:check:testing",
-        "container:e2e"
+        "container:check:e2e"
       ]
     },
     "container:build": {
