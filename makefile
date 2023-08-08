@@ -138,16 +138,14 @@ endif
 
 .PHONY: clean
 clean:
-	@rm --recursive --force ./dist/ ./test-results/ ./.task-output/
-	@podman rm --force tmp_copy__leadof-dependencies_results || true
-	@podman rm --force tmp_copy__lint_results || true
-	@podman rm --force tmp_copy__spelling_results || true
+	@rm --recursive --force ./.task-output/
 
 .PHONY: reset
 reset: clean
 	@rm --recursive --force ./.containers/ ./.wireit/ ./node_modules/
-	@podman rmi --force localhost/leadof/lint:latest || true
-	@podman rmi --force localhost/leadof/spelling:latest || true
+	@podman rmi --force localhost/leadof/chrome-src:latest || true
+	@podman rmi --force localhost/leadof/src:latest || true
+	@podman rmi --force localhost/leadof/dependencies:latest || true
 
 .PHONY: clean-all
 clean-all: clean

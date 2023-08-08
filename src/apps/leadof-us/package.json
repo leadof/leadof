@@ -12,8 +12,8 @@
     "watch": "ng build --watch --configuration development",
     "local:check:formatting:comment": "Formatting checks",
     "local:check:formatting": "ng lint",
-    "local:test::comment": "Unit tests",
-    "local:test": "ng test --code-coverage true --progress false --watch false",
+    "local:check:testing::comment": "Unit tests",
+    "local:check:testing": "ng test --code-coverage true --progress false --watch false",
     "local:e2e::comment": "End-to-end tests",
     "local:e2e": "playwright test",
     "local:build::comment": "Build both the front-end and SSR versions of this application",
@@ -34,8 +34,8 @@
     "container:src": "wireit",
     "container:check:formatting::comment": "Containerized linting",
     "container:check:formatting": "wireit",
-    "container:test::comment": "Containerized unit testing",
-    "container:test": "wireit",
+    "container:check:testing::comment": "Containerized unit testing",
+    "container:check:testing": "wireit",
     "container:e2e::comment": "Containerized end-to-end testing",
     "container:e2e": "wireit",
     "container:check::comment": "All containerized checks and testing",
@@ -98,24 +98,21 @@
         ".task-output/check-formatting.js/*"
       ]
     },
-    "container:test": {
-      "command": "make check-test",
+    "container:check:testing": {
+      "command": "node ./check-testing.js",
       "dependencies": [
-        "../../../:container:src",
-        "../../containers/smol:container:build",
-        "../../containers/node-chrome:container:build"
+        "../../../:container:chrome:src"
       ],
       "files": [
         "./*",
         "!**/.angular",
         "!**/.containers",
+        "!**/.task-output",
         "!**/.wireit",
-        "!**/dist",
-        "!**/node_modules",
-        "!**/test-results"
+        "!**/node_modules"
       ],
       "output": [
-        "dist/unit_test-container_digest.txt"
+        ".task-output/check-testing.js/*"
       ]
     },
     "container:e2e": {
@@ -141,7 +138,7 @@
     "container:check": {
       "dependencies": [
         "container:check:formatting",
-        "container:test",
+        "container:check:testing",
         "container:e2e"
       ]
     },

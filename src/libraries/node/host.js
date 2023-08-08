@@ -2,6 +2,17 @@ const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
 
+const ansiRegex = ({ onlyFirst = false } = {}) => {
+  const pattern = [
+    "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)",
+    "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))",
+  ].join("|");
+
+  return new RegExp(pattern, onlyFirst ? undefined : "g");
+};
+
+const escapeAnsiRegex = ansiRegex();
+
 const pathExists = async (hostPath) => {
   try {
     fs.accessSync(hostPath, fs.constants.F_OK);
@@ -43,8 +54,16 @@ const readJson = async (hostPath) => {
   return JSON.parse(content);
 };
 
-const writeFile = async (hostPath, content) => {
-  return fs.promises.writeFile(hostPath, content, { encoding: "utf-8" });
+const writeFile = async (
+  hostPath,
+  content,
+  { cleanAnsiCharacters = true } = {},
+) => {
+  const cleanContent = cleanAnsiCharacters
+    ? content.replace(escapeAnsiRegex, "")
+    : content;
+
+  return fs.promises.writeFile(hostPath, cleanContent, { encoding: "utf-8" });
 };
 
 const writeJson = async (hostPath, value) => {

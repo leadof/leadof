@@ -26,9 +26,9 @@ src:
 check-formatting:
 	@pnpm container:check:formatting
 
-.PHONY: check-test
-check-test:
-	@./check-test.sh
+.PHONY: check-testing
+check-testing:
+	@pnpm container:check:testing
 
 .PHONY: check-e2e
 check-e2e:
@@ -39,7 +39,7 @@ check-performance:
 	@node ./check-performance.js
 
 .PHONY: check
-check: check-formatting check-test check-e2e
+check: check-formatting check-testing check-e2e
 
 .PHONY: install-dependencies
 install-dependencies:

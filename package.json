@@ -15,6 +15,7 @@
     "local:parse:dependencies": "wireit",
     "container:dependencies": "wireit",
     "container:src": "wireit",
+    "container:chrome:src": "wireit",
     "container:check:formatting": "wireit",
     "container:check:spelling": "wireit",
     "container:check:repository": "wireit",
@@ -95,6 +96,32 @@
       ],
       "output": [
         ".task-output/install-src.js/*"
+      ]
+    },
+    "container:chrome:src": {
+      "command": "node ./install-chrome-src.js",
+      "dependencies": [
+        "container:dependencies",
+        "./src/containers/libraries:container:build",
+        "./src/containers/node-chrome:container:build"
+      ],
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/node_modules",
+        "!**/.task-output",
+        "!**/.containerignore",
+        "!**/*.containerfile",
+        "install-chrome-src.containerfile",
+        "!**/*.drawio",
+        "!./src/docs/",
+        "!./src/gh/",
+        "!./src/media/"
+      ],
+      "output": [
+        ".task-output/install-chrome-src.js/*"
       ]
     },
     "container:check:formatting": {
