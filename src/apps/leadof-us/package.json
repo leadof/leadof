@@ -27,7 +27,7 @@
     "local:build:ssr::comment": "Build both the front-end and SSR versions of this application",
     "local:build:ssr": "ng build --progress false --configuration production && ng run app:server:production",
     "local:serve:ssr::comment": "Run the SSR application",
-    "local:serve:ssr": "node dist/app/server/main.js",
+    "local:serve:ssr": "node ./.task-ouput/build/app/server/main.js",
     "local:prerender::comment": "Executes the SSR-prerendering process.",
     "local:prerender": "ng run app:prerender:production",
     "container:dependencies::comment": "Containerized build of system dependencies only",
@@ -151,7 +151,7 @@
       ]
     },
     "container:build": {
-      "command": "make install",
+      "command": "node ./build.js",
       "dependencies": [
         "../../../:container:src"
       ],
@@ -159,13 +159,12 @@
         "./*",
         "!**/.angular",
         "!**/.containers",
+        "!**/.task-output",
         "!**/.wireit",
-        "!**/dist",
-        "!**/node_modules",
-        "!**/test-results"
+        "!**/node_modules"
       ],
       "output": [
-        "dist/web-container_digest.txt"
+        ".task-output/build.js/*"
       ]
     },
     "container:all": {

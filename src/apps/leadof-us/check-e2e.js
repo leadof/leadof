@@ -9,7 +9,7 @@ const main = async () => {
 
   log.info("Checking end-to-end testing initiated.");
 
-  const imageTag = "localhost/leadof/playwright-src:latest";
+  const imageTag = "localhost/leadof/playwright-src";
   const commandArguments = ["pnpm", "local:check:e2e"];
 
   const containerName = "tmp-e2e-leadof-us";

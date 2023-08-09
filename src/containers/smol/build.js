@@ -29,6 +29,7 @@ const main = async () => {
     imageName: "smol",
     buildArguments,
     skipBuildAndPull: false,
+    isPrepareForDeployEnabled: true,
   });
 };
 

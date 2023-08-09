@@ -10,7 +10,16 @@ import bootstrap from './src/main.server';
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/app/browser');
+  const buildOutputRelativeDirectoryPath = process.env['APP_PATH']
+    ? process.env['APP_PATH']
+    : './.task-output/build/';
+
+  const distFolder = join(
+    process.cwd(),
+    buildOutputRelativeDirectoryPath,
+    './app/browser',
+  );
+
   const indexHtml = existsSync(join(distFolder, 'index.original.html'))
     ? 'index.original.html'
     : 'index';

@@ -1,7 +1,7 @@
 ARG PUBLISHED_SOURCE_URL=https://github.com/leadof/leadof
 ARG PUBLISHED_DOCUMENTATION_URL=https://github.com/leadof/leadof#readme
 
-FROM localhost/leadof/node:latest as node
+FROM localhost/leadof/node as node
 
 ################################################################################
 # Layer target: node with chrome browser

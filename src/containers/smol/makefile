@@ -15,7 +15,8 @@ clean:
 .PHONY: reset
 reset: clean
 	@rm --recursive --force \
+		./.containers/ \
 		./.wireit/ \
 		./node_modules/
-	@podman rmi --force localhost/leadof/smol:latest || true
-	@podman rmi --force ghcr.io/leadof/leadof/smol:latest || true
+	@podman rmi --force localhost/leadof/smol || true
+	@podman rmi --force ghcr.io/leadof/leadof/smol || true

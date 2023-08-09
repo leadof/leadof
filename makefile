@@ -138,23 +138,27 @@ endif
 
 .PHONY: clean
 clean:
-	@rm --recursive --force ./.task-output/
+	@rm --recursive --force \
+		./.wireit/*/cache \
+		./.task-output/
 
 .PHONY: reset
 reset: clean
 	@rm --recursive --force ./.containers/ ./.wireit/ ./node_modules/
-	@podman rmi --force localhost/leadof/chrome-src:latest || true
-	@podman rmi --force localhost/leadof/src:latest || true
-	@podman rmi --force localhost/leadof/dependencies:latest || true
+	@podman rmi --force localhost/leadof/chrome-src || true
+	@podman rmi --force localhost/leadof/src || true
+	@podman rmi --force localhost/leadof/dependencies || true
 
 .PHONY: clean-all
 clean-all: clean
-	@cd ./src/containers/ && "$(MAKE)" clean
 	@cd ./src/apps/leadof-us/ && "$(MAKE)" clean
+	@cd ./src/containers/ && "$(MAKE)" clean
+	@cd ./src/libraries/node/ && "$(MAKE)" clean
 
 .PHONY: reset-all
 reset-all: clean-all reset
-	@cd ./src/containers/ && "$(MAKE)" reset
 	@cd ./src/apps/leadof-us/ && "$(MAKE)" reset
+	@cd ./src/containers/ && "$(MAKE)" reset
+	@cd ./src/libraries/node/ && "$(MAKE)" reset
 	@podman system prune --force
 	@podman volume prune --force

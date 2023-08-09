@@ -9,7 +9,7 @@ const main = async () => {
 
   log.info("Checking testing initiated.");
 
-  const imageTag = "localhost/leadof/chrome-src:latest";
+  const imageTag = "localhost/leadof/chrome-src";
   const commandArguments = ["pnpm", "local:check:testing"];
 
   const containerName = "tmp-testing-leadof-us";

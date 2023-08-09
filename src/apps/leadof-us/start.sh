@@ -19,7 +19,7 @@ start() {
     --name "${container_name}" \
     --detach \
     --publish 4000:4000 \
-    leadof-us/web:latest
+    leadof-us/web
 
   podman container inspect "${container_name}" --format "{{.Id}}::{{.ImageDigest}}" >./dist/${container_name}-container_digest.txt
 

@@ -48,6 +48,7 @@ Locally, versions of `node`, `npm` and `pnpm` will be checked with the command `
 
 ## Troubleshooting
 
+-   [Avoid the ":latest" tag on local containers](https://stackoverflow.com/a/64057789/6258497)
 -   Known BUG 🐛: [Angular SSR outputs "selector error" warnings](https://github.com/ionic-team/ionic-cli/issues/4774)
 
 ## Technical History notes

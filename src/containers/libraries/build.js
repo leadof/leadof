@@ -29,6 +29,7 @@ const main = async () => {
     imageName: "libraries",
     buildArguments,
     skipBuildAndPull: false,
+    isPrepareForDeployEnabled: true,
   });
 };
 

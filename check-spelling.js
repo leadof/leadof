@@ -7,7 +7,7 @@ const main = async () => {
 
   log.info("Checking spelling initiated.");
 
-  const imageTag = "localhost/leadof/src:latest";
+  const imageTag = "localhost/leadof/src";
   const commandArguments = ["pnpm", "local:check:spelling"];
 
   // BUG: a successful command will use "stderr" (https://github.com/containers/podman/discussions/19454)

@@ -51,6 +51,12 @@
         "local:prerequisites"
       ],
       "files": [
+        "./src/libraries/node/*",
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/node_modules",
+        "!**/.task-output",
         "**/package.json",
         "./parse-dependencies.js"
       ],
@@ -68,6 +74,12 @@
         "./src/containers/smol:container:build"
       ],
       "files": [
+        "./src/libraries/node/*",
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.wireit",
+        "!**/node_modules",
+        "!**/.task-output",
         "./.task-output/parse-dependencies.js/*",
         "./pnpm-lock.yaml",
         "./pnpm-workspace.yaml",

@@ -22,5 +22,5 @@ reset: clean
 		./.containers/ \
 		./.wireit/ \
 		./node_modules/
-	@podman rmi --force localhost/leadof/node:latest || true
-	@podman rmi --force ghcr.io/leadof/leadof/node:latest || true
+	@podman rmi --force localhost/leadof/node || true
+	@podman rmi --force ghcr.io/leadof/leadof/node || true

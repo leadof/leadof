@@ -7,9 +7,9 @@
 #            benefits of copy-paste.
 ################################################################################
 
-FROM localhost/leadof/dependencies:latest as dependencies
-FROM localhost/leadof/libraries:latest as libraries
-FROM localhost/leadof/node-chrome:latest as node_chrome
+FROM localhost/leadof/dependencies as dependencies
+FROM localhost/leadof/libraries as libraries
+FROM localhost/leadof/node-chrome as node_chrome
 
 FROM node_chrome
 

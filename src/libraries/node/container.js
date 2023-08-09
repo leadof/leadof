@@ -54,11 +54,12 @@ const build = async (options) => {
   const imageName = options.imageName;
   const buildArguments = options.buildArguments;
   const skipBuildAndPull = options.skipBuildAndPull;
+  const isPrepareForDeployEnabled = options.isPrepareForDeployEnabled;
 
   log.debug("");
   log.debug("Building...");
 
-  const imageTag = `leadof/${imageName}:latest`;
+  const imageTag = `leadof/${imageName}`;
   const deployTag = `ghcr.io/leadof/${imageTag}`;
 
   if (skipBuildAndPull) {
@@ -108,8 +109,10 @@ const build = async (options) => {
     await buildImage(buildOptions);
     log.info("Successfully built image", { imageTag });
 
-    await podman.tag(imageTag, deployTag);
-    log.info("Successfully tagged image for deployment", { deployTag });
+    if (isPrepareForDeployEnabled) {
+      await podman.tag(imageTag, deployTag);
+      log.info("Successfully tagged image for deployment", { deployTag });
+    }
 
     if (isCacheContainersEnabled) {
       if (await host.pathExists(cacheImageFilePath)) {

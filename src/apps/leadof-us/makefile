@@ -18,10 +18,6 @@ prerequisites:
 .PHONY: pre
 pre: prerequisites
 
-.PHONY: src
-src:
-	@./install-src.sh
-
 .PHONY: check-formatting
 check-formatting:
 	@pnpm container:check:formatting
@@ -32,7 +28,7 @@ check-testing:
 
 .PHONY: check-e2e
 check-e2e:
-	@./check-e2e.sh
+	@pnpm container:check:e2e
 
 .PHONY: check-performance
 check-performance:
@@ -41,17 +37,9 @@ check-performance:
 .PHONY: check
 check: check-formatting check-testing check-e2e
 
-.PHONY: install-dependencies
-install-dependencies:
-	@./install-dependencies.sh
-
-.PHONY: deploy-dependencies
-deploy-dependencies: install-dependencies
-	@./deploy-dependencies.sh
-
 .PHONY: install
 install:
-	@./install.sh
+	@pnpm container:build
 
 .PHONY: start
 start:
@@ -72,7 +60,7 @@ run: start
 .PHONY: dev
 dev:
 	@pnpm install
-	@pnpm dev:ssr
+	@pnpm local:dev:ssr
 
 .PHONY: update
 update:
@@ -95,27 +83,10 @@ update:
 		@angular/compiler-cli \
 		@angular/language-service
 
-.PHONY: install-container
-install-container:
-	@podman build \
-		--tag leadof/us:latest \
-		--file ./Containerfile \
-		--ignorefile ./.containerignore \
-		.
-
-.PHONY: check-container
-check-container:
-	@podman build \
-		--tag leadof/us:latest \
-		--file ./Containerfile \
-		--ignorefile ./.containerignore \
-		--target lint \
-		.
-
 .PHONY: start-container
 start-container: install-container
 	@podman rm --force leadof-us-$@ || true
-	@podman run --name leadof-us-$@ --detach --publish 4000:4000 leadof/us:latest
+	@podman run --name leadof-us-$@ --detach --publish 4000:4000 leadof/us
 	@podman logs --follow leadof-us-$@
 
 .PHONY: clean
@@ -123,20 +94,14 @@ clean:
 	@podman rm --force leadof-us-start-container || true
 	@rm --recursive --force \
 		 ./.wireit/*/cache \
-		./dist/ \
-		./www/ \
-		./test-results/
+		./.task-output/
 
 .PHONY: reset
 reset: clean
 	@rm --recursive --force \
 		./.angular/ \
+		./.containers/ \
 		./.wireit/ \
 		./node_modules/
-	@podman rmi --force localhost/leadof-us/dependencies:latest || true
-	@podman rmi --force localhost/leadof-us/src:latest || true
-	@podman rmi --force localhost/leadof-us/e2e:latest || true
-	@podman rmi --force localhost/leadof-us/lint:latest || true
-	@podman rmi --force localhost/leadof-us/test:latest || true
-	@podman rmi --force localhost/leadof-us/web:latest || true
-	@podman rmi --force ghcr.io/leadof/leadof-us/web:latest || true
+	@podman rmi --force localhost/leadof/leadof-us/web || true
+	@podman rmi --force ghcr.io/leadof/leadof-us/web || true

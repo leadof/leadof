@@ -13,6 +13,12 @@ const ansiRegex = ({ onlyFirst = false } = {}) => {
 
 const escapeAnsiRegex = ansiRegex();
 
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
 const pathExists = async (hostPath) => {
   try {
     fs.accessSync(hostPath, fs.constants.F_OK);
@@ -107,6 +113,7 @@ module.exports = {
   mkdir,
   readFile,
   readJson,
+  sleep,
   writeFile,
   writeJson,
 };

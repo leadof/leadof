@@ -21,5 +21,5 @@ reset: clean
 	@rm --recursive --force \
 		./.wireit/ \
 		./node_modules/
-	@podman rmi --force localhost/leadof/node-chrome:latest || true
-	@podman rmi --force ghcr.io/leadof/leadof/node-chrome:latest || true
+	@podman rmi --force localhost/leadof/node-chrome || true
+	@podman rmi --force ghcr.io/leadof/leadof/node-chrome || true

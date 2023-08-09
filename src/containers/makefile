@@ -9,6 +9,7 @@ install:
 	@cd ./node/ && "$(MAKE)" $@
 	@cd ./node-chrome/ && "$(MAKE)" $@
 	@cd ./playwright/ && "$(MAKE)" $@
+	@cd ./smol/ && "$(MAKE)" $@
 
 .PHONY: clean
 clean:
@@ -17,6 +18,7 @@ clean:
 	@cd ./node/ && "$(MAKE)" $@
 	@cd ./node-chrome/ && "$(MAKE)" $@
 	@cd ./playwright/ && "$(MAKE)" $@
+	@cd ./smol/ && "$(MAKE)" $@
 
 .PHONY: reset
 reset:
@@ -25,3 +27,4 @@ reset:
 	@cd ./node/ && "$(MAKE)" $@
 	@cd ./node-chrome/ && "$(MAKE)" $@
 	@cd ./playwright/ && "$(MAKE)" $@
+	@cd ./smol/ && "$(MAKE)" $@

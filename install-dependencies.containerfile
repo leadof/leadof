@@ -1,5 +1,5 @@
-FROM localhost/leadof/node:latest as node
-FROM localhost/leadof/smol:latest as smol
+FROM localhost/leadof/node as node
+FROM localhost/leadof/smol as smol
 
 ################################################################################
 # Layer target: project dependencies

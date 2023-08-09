@@ -83,7 +83,7 @@ install_nexus() {
   fi
 
   nexus_data_name="nexus-data"
-  nexus_image_tag="leadof/nexus:latest"
+  nexus_image_tag="leadof/nexus"
   nexus_container_name="nexus"
   nexus_port=8081
   nexus_url="http://localhost:${nexus_port}"

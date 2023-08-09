@@ -20,7 +20,7 @@ install_nexus() {
     exit 1
   fi
 
-  nexus_image_tag="leadof/nexus:latest"
+  nexus_image_tag="leadof/nexus"
 
   echo ''
   echo 'Building the Nexus server image...'

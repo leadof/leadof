@@ -7,9 +7,9 @@
 #            benefits of copy-paste.
 ################################################################################
 
-FROM localhost/leadof/dependencies:latest as dependencies
-FROM localhost/leadof/libraries:latest as libraries
-FROM localhost/leadof/playwright:latest as playwright
+FROM localhost/leadof/dependencies as dependencies
+FROM localhost/leadof/libraries as libraries
+FROM localhost/leadof/playwright as playwright
 
 FROM playwright
 

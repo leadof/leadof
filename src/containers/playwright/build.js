@@ -79,6 +79,7 @@ const main = async () => {
     imageName: "playwright",
     buildArguments,
     skipBuildAndPull: env.isContinuousIntegrationMode(),
+    isPrepareForDeployEnabled: true,
   });
 };
 

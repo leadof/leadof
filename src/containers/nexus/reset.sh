@@ -23,7 +23,7 @@ reset() {
   else
     echo ''
     echo 'Resetting Nexus project and removing Nexus containers and images...'
-    podman rmi --force localhost/leadof/nexus:latest || true
+    podman rmi --force localhost/leadof/nexus || true
     podman volume rm --force nexus-data || true
     echo 'Successfully reset Nexus project.'
   fi

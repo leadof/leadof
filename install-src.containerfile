@@ -1,6 +1,6 @@
-FROM localhost/leadof/dependencies:latest as dependencies
-FROM localhost/leadof/libraries:latest as libraries
-FROM localhost/leadof/node:latest as node
+FROM localhost/leadof/dependencies as dependencies
+FROM localhost/leadof/libraries as libraries
+FROM localhost/leadof/node as node
 
 ################################################################################
 # Layer target: contains project src

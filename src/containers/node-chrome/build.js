@@ -32,6 +32,7 @@ const main = async () => {
     imageName: "node-chrome",
     buildArguments,
     skipBuildAndPull: env.isContinuousIntegrationMode(),
+    isPrepareForDeployEnabled: true,
   });
 };
 

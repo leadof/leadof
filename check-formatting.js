@@ -7,7 +7,7 @@ const main = async () => {
 
   log.info("Checking formatting initiated.");
 
-  const imageTag = "localhost/leadof/src:latest";
+  const imageTag = "localhost/leadof/src";
   const commandArguments = ["pnpm", "local:check:formatting"];
 
   const { stdout, stderr, exitCode, error } = await podman.run({

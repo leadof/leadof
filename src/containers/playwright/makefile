@@ -21,5 +21,5 @@ reset: clean
 	@rm --recursive --force \
 		./.wireit/ \
 		./node_modules/
-	@podman rmi --force localhost/leadof/playwright:latest || true
-	@podman rmi --force ghcr.io/leadof/leadof/playwright:latest || true
+	@podman rmi --force localhost/leadof/playwright || true
+	@podman rmi --force ghcr.io/leadof/leadof/playwright || true

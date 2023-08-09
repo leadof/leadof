@@ -79,6 +79,7 @@ const main = async () => {
     imageName: "node",
     buildArguments,
     skipBuildAndPull: env.isContinuousIntegrationMode(),
+    isPrepareForDeployEnabled: true,
   });
 };
 
