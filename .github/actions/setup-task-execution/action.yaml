@@ -57,9 +57,9 @@ runs:
         path: "**/.containers"
         key: ${{ runner.os }}-containers
 
-    - name: local-prerequisites
+    - name: prerequisites
       env:
         CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
         CONTAINER_REGISTRY_PASSWORD: ${{ inputs.container-registry-password }}
       shell: bash
-      run: pnpm local:prerequisites
+      run: make prerequisites
