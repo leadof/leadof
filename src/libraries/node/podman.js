@@ -185,7 +185,7 @@ const run = async (options) => {
   const argv = options.commandArguments ? options.commandArguments : [];
   const isTemporary = options.isTemporary ? options.isTemporary : false;
   const isDetached = options.isDetached ? options.isDetached : false;
-  const network = options.network ? options.network : "host";
+  const network = options.network ? options.network : null;
   // create a unique identifier of 6 characters
   const uniqueId = uuidv4().replace("-", "").substring(0, 6);
   const name = options.containerName
@@ -194,6 +194,15 @@ const run = async (options) => {
   const workingDirectoryPath = options.workingDirectoryPath
     ? options.workingDirectoryPath
     : null;
+
+  const publishPorts = options.publishPorts
+    ? options.publishPorts
+        .map((publishPort) => [
+          "--publish",
+          `${publishPort.host}:${publishPort.container}`,
+        ])
+        .flat(1)
+    : [];
 
   // make sure it doesn't already exist (from any previous run)
   if (isTemporary) {
@@ -206,8 +215,8 @@ const run = async (options) => {
     name,
     ...(isTemporary ? ["--rm"] : []),
     ...(isDetached ? ["--detach"] : []),
-    "--network",
-    network,
+    ...(network ? ["--network", network] : []),
+    ...publishPorts,
     ...(workingDirectoryPath ? ["--workdir", workingDirectoryPath] : []),
     imageTag,
     ...argv,
@@ -235,6 +244,11 @@ const run = async (options) => {
   }
 
   return {
+    command:
+      COMMAND_NAME +
+      (commandArguments && commandArguments.length > 0
+        ? " " + commandArguments.join(" ")
+        : ""),
     stdout: commandStdOut,
     stderr: commandStdErr,
     error: commandError,

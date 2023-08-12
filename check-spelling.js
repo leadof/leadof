@@ -13,6 +13,7 @@ const main = async () => {
   // BUG: a successful command will use "stderr" (https://github.com/containers/podman/discussions/19454)
   const { stdout, stderr } = await podman.run({
     imageTag,
+    network: "host",
     isTemporary: true,
     commandArguments,
   });

@@ -12,6 +12,7 @@ const main = async () => {
 
   const { stdout, stderr, exitCode, error } = await podman.run({
     imageTag,
+    network: "host",
     isTemporary: true,
     commandArguments,
   });

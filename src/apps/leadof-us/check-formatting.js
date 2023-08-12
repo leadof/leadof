@@ -12,6 +12,7 @@ const main = async () => {
 
   const { stdout, stderr } = await podman.run({
     imageTag,
+    network: "host",
     isTemporary: true,
     workingDirectoryPath: "/usr/src/leadof/src/apps/leadof-us/",
     commandArguments,

@@ -45,7 +45,7 @@ COPY --chown=node:node --from=run_build /usr/src/leadof/src/apps/leadof-us/.task
 
 ENV APP_PATH="./"
 
-WORKDIR /usr/src/app/
+WORKDIR /usr/src/
 
 # Server assumes a working directory above "./dist/app/", so
 # pwd is "/usr/src/app/" above "./dist/app/" (browser and server)

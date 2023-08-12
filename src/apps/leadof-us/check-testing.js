@@ -22,7 +22,8 @@ const main = async () => {
 
     const { stdout, stderr, error, exitCode } = await podman.run({
       imageTag,
-      containerName: containerName,
+      containerName,
+      network: "host",
       isTemporary: false,
       workingDirectoryPath: "/usr/src/leadof/src/apps/leadof-us/",
       commandArguments,
@@ -71,11 +72,12 @@ const main = async () => {
       containerPath,
       outputDirectoryPath,
     });
+
+    log.info("Successfully checked testing.");
   } finally {
+    // always cleanup the container
     await podman.deleteContainer(containerName);
   }
-
-  log.info("Successfully checked testing.");
 };
 
 (async () => {

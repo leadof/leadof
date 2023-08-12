@@ -161,7 +161,9 @@
         "!**/.containers",
         "!**/.task-output",
         "!**/.wireit",
-        "!**/node_modules"
+        "!**/node_modules",
+        "!start.js",
+        "!stop.js"
       ],
       "output": [
         ".task-output/build.js/*"
@@ -174,7 +176,7 @@
       ]
     },
     "container:start": {
-      "command": "make start",
+      "command": "node ./start.js",
       "dependencies": [
         "container:build"
       ],
@@ -182,17 +184,19 @@
         "./*",
         "!**/.angular",
         "!**/.containers",
+        "!**/.task-output",
         "!**/.wireit",
-        "!**/dist",
-        "!**/node_modules",
-        "!**/test-results"
+        "!**/node_modules"
       ],
       "output": [
-        "dist/leadof-us-dev-container_digest.txt"
+        ".task-output/start.js/*"
       ]
     },
     "container:stop": {
-      "command": "make stop"
+      "command": "node ./stop.js",
+      "output": [
+        ".task-output/stop.js/*"
+      ]
     },
     "container:restart": {
       "command": "make restart"
