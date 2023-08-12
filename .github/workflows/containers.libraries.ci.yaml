@@ -46,4 +46,4 @@ jobs:
         env:
           PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
           PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
-        run: make deploy
+        run: make
