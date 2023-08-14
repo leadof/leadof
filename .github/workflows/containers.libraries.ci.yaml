@@ -25,6 +25,7 @@ concurrency:
 
 env:
   CI: true
+  CONTAINER_DEPLOY_NAME: "libraries"
 
 jobs:
   integrate:

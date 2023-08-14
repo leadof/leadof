@@ -1,4 +1,5 @@
 const container = require("../../libraries/node/container");
+const env = require("../../libraries/node/env");
 const host = require("../../libraries/node/host");
 const log = require("../../libraries/node/log");
 
@@ -24,12 +25,20 @@ const main = async () => {
     environmentVariableOptions,
   );
 
+  const imageName = "libraries";
+  const containerDeployName = env.get("CONTAINER_DEPLOY_NAME");
+
+  const isSkipBuildAndPullEnabled =
+    containerDeployName && containerDeployName !== imageName;
+  const isPrepareForDeployEnabled =
+    containerDeployName && containerDeployName === imageName;
+
   await container.build({
     scriptFilePath: __filename,
-    imageName: "libraries",
+    imageName,
     buildArguments,
-    skipBuildAndPull: false,
-    isPrepareForDeployEnabled: true,
+    skipBuildAndPull: isSkipBuildAndPullEnabled,
+    isPrepareForDeployEnabled,
   });
 };
 

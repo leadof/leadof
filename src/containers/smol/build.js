@@ -1,4 +1,5 @@
 const container = require("../../libraries/node/container");
+const env = require("../../libraries/node/env");
 const host = require("../../libraries/node/host");
 const log = require("../../libraries/node/log");
 
@@ -29,7 +30,7 @@ const main = async () => {
     imageName: "smol",
     buildArguments,
     skipBuildAndPull: false,
-    isPrepareForDeployEnabled: true,
+    isPrepareForDeployEnabled: false,
   });
 };
 

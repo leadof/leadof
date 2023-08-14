@@ -74,12 +74,20 @@ const main = async () => {
     buildArguments["PNPM_VERSION"] = pnpmVersion;
   }
 
+  const imageName = "node";
+  const containerDeployName = env.get("CONTAINER_DEPLOY_NAME");
+
+  const isSkipBuildAndPullEnabled =
+    containerDeployName && containerDeployName !== imageName;
+  const isPrepareForDeployEnabled =
+    containerDeployName && containerDeployName === imageName;
+
   await container.build({
     scriptFilePath: __filename,
-    imageName: "node",
+    imageName,
     buildArguments,
-    skipBuildAndPull: env.isContinuousIntegrationMode(),
-    isPrepareForDeployEnabled: true,
+    skipBuildAndPull: isSkipBuildAndPullEnabled,
+    isPrepareForDeployEnabled,
   });
 };
 

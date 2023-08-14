@@ -11,6 +11,7 @@ const main = async () => {
     imageName: "leadof-us/web",
     buildArguments: [],
     skipBuildAndPull: false,
+    isPrepareForDeployEnabled: false,
     filePath: "./build.containerfile",
     ignoreFilePath: "./.containerignore",
     context: "./",

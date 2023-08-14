@@ -28,6 +28,7 @@ concurrency:
 
 env:
   CI: true
+  CONTAINER_DEPLOY_NAME: "node-chrome"
 
 jobs:
   integrate:
