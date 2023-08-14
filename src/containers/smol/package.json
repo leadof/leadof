@@ -16,12 +16,6 @@
       "dependencies": [
         "../../libraries/node:build"
       ],
-      "files": [
-        "./src/*",
-        "./build.js",
-        "./makefile",
-        "./package.json"
-      ],
       "output": [
         ".task-output/build.js/*"
       ]
