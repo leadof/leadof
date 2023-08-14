@@ -51,6 +51,10 @@ Locally, versions of `node`, `npm` and `pnpm` will be checked with the command `
 -   [Avoid the ":latest" tag on local containers](https://stackoverflow.com/a/64057789/6258497)
 -   Known BUG 🐛: [Angular SSR outputs "selector error" warnings](https://github.com/ionic-team/ionic-cli/issues/4774)
 
+## Tips
+
+When debugging command output to NodeJS execution, check if the command outputs to "stdout" and/or "stderr"; some do one, both, or the other. Redirect "stderr" with `some_cmd 2>/dev/null`. Redirect "stdout" with `some_cmd >/dev/null`. And, redirect both with `some_cmd >/dev/null 2>&1`.
+
 ## Technical History notes
 
 -   ["pretty-quick"](https://github.com/azz/pretty-quick/) was replaced with ["lint-staged"](https://github.com/okonet/lint-staged) because of a [dependency incompatibility](https://github.com/azz/pretty-quick/issues/164) introduced with "prettier@3.0.0" and a reliance on very limited code support

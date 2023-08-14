@@ -65,12 +65,22 @@ const runAndExpectStdOutCommand = async (cmd, argv) => {
 
   if (error) throw error;
 
-  if (stderr) throw new Error(`Error running command: ${cmd}\n\n${stderr}`);
+  // IMPORTANT: many commands use "stderr" for normal output
+  // if (stderr) throw new Error(`Error running command: ${cmd}\n\n${stderr}`);
 
-  if (exitCode !== 0)
+  if (exitCode !== 0) {
     throw new Error(
       `Non-zero exit code without additional detail: ${cmd}\n\n${stdout}`,
     );
+  }
+
+  if (stdout && stderr) {
+    return String(stderr) + "\n" + String(stdout);
+  }
+
+  if (stderr) {
+    return String(stderr);
+  }
 
   return String(stdout);
 };
