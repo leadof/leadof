@@ -42,9 +42,16 @@ jobs:
         with:
           container-registry-password: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
 
-      - name: make
+      - name: make deploy
         working-directory: ./src/containers/playwright/
         env:
           PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
           PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
         run: make deploy
+
+      - name: upload-task-output
+        uses: actions/upload-artifact@v3
+        with:
+          name: task-output
+          path: "**/.task-output/"
+          if-no-files-found: error

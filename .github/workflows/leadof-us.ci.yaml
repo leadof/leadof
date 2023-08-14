@@ -55,9 +55,9 @@ jobs:
         working-directory: ./src/apps/leadof-us/
         run: make ci
 
-      - name: upload-test-results
+      - name: upload-task-output
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: ./src/apps/leadof-us/test-results/
+          name: task-output
+          path: "**/.task-output/"
           if-no-files-found: error

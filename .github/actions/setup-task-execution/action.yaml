@@ -4,7 +4,7 @@ inputs:
   node-version:
     description: "Version of NodeJS"
     required: false
-    default: "18.17.0"
+    default: "18.17.1"
   npm-version:
     description: "Version of npm"
     required: false
@@ -12,7 +12,7 @@ inputs:
   pnpm-version:
     description: "Version of pnpm"
     required: false
-    default: "8.6.10"
+    default: "8.6.12"
   container-registry-password:
     description: "The password for the container registry"
     required: true
