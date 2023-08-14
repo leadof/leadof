@@ -10,7 +10,6 @@ const main = async () => {
     scriptFilePath: __filename,
     imageName: "src",
     buildArguments: [],
-    skipBuildAndPull: false,
     filePath: "./install-src.containerfile",
     ignoreFilePath: "./.containerignore",
     context: "./",

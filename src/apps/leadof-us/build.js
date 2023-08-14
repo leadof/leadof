@@ -10,7 +10,6 @@ const main = async () => {
     scriptFilePath: __filename,
     imageName: "leadof-us/web",
     buildArguments: [],
-    skipBuildAndPull: false,
     isPrepareForDeployEnabled: false,
     filePath: "./build.containerfile",
     ignoreFilePath: "./.containerignore",

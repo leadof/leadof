@@ -29,7 +29,6 @@ const main = async () => {
     scriptFilePath: __filename,
     imageName: "smol",
     buildArguments,
-    skipBuildAndPull: false,
     isPrepareForDeployEnabled: false,
   });
 };

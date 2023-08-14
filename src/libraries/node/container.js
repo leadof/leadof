@@ -53,7 +53,7 @@ const build = async (options) => {
   const scriptFilePath = options.scriptFilePath;
   const imageName = options.imageName;
   const buildArguments = options.buildArguments;
-  const skipBuildAndPull = options.skipBuildAndPull;
+  const isPullEnabled = options.isPullEnabled;
   const isPrepareForDeployEnabled = options.isPrepareForDeployEnabled;
 
   log.debug("");
@@ -62,11 +62,7 @@ const build = async (options) => {
   const imageTag = `leadof/${imageName}`;
   const deployTag = `ghcr.io/leadof/${imageTag}`;
 
-  if (skipBuildAndPull) {
-    log.debug(
-      "Context of running in Continuous Integration mode was detected.",
-    );
-
+  if (isPullEnabled) {
     await podman.pull(deployTag);
     log.info("Successfully pulled", deployTag);
 
@@ -75,60 +71,60 @@ const build = async (options) => {
     // this ensures that local image build references work
     await podman.tag(deployTag, localTag);
     log.info("Successfully tagged remote image with local tag", localTag);
-  } else {
-    const isCacheContainersEnabled = env.getAsBoolean("CI");
-    const cacheImageFilePath = `./.containers/${imageName}-image.tar`;
-    const cacheImageDirectoryPath = path.dirname(cacheImageFilePath);
+  }
 
-    if (isCacheContainersEnabled) {
-      if (await host.pathExists(cacheImageFilePath)) {
-        await podman.load(cacheImageFilePath);
-        log.info("Loaded previously cached image from file", {
-          path: cacheImageFilePath,
-        });
-      }
+  const isCacheContainersEnabled = env.getAsBoolean("CI");
+  const cacheImageFilePath = `./.containers/${imageName}-image.tar`;
+  const cacheImageDirectoryPath = path.dirname(cacheImageFilePath);
+
+  if (isCacheContainersEnabled) {
+    if (await host.pathExists(cacheImageFilePath)) {
+      await podman.load(cacheImageFilePath);
+      log.info("Loaded previously cached image from file", {
+        path: cacheImageFilePath,
+      });
+    }
+  }
+
+  const buildOptions = {
+    imageTag,
+    buildArguments,
+  };
+
+  if (options.context) {
+    buildOptions.context = options.context;
+  }
+
+  if (options.filePath) {
+    buildOptions.filePath = options.filePath;
+  }
+
+  if (options.ignoreFilePath) {
+    buildOptions.ignoreFilePath = options.ignoreFilePath;
+  }
+
+  await buildImage(buildOptions);
+  log.info("Successfully built image", { imageTag });
+
+  if (isPrepareForDeployEnabled) {
+    await podman.tag(imageTag, deployTag);
+    log.info("Successfully tagged image for deployment", { deployTag });
+  }
+
+  if (isCacheContainersEnabled) {
+    if (await host.pathExists(cacheImageFilePath)) {
+      await host.deletePath(cacheImageFilePath);
+      log.info("Deleted previously cached image file", {
+        path: cacheImageFilePath,
+      });
     }
 
-    const buildOptions = {
-      imageTag,
-      buildArguments,
-    };
-
-    if (options.context) {
-      buildOptions.context = options.context;
+    if (!(await host.pathExists(cacheImageDirectoryPath))) {
+      await fs.promises.mkdir(cacheImageDirectoryPath, { recursive: true });
     }
 
-    if (options.filePath) {
-      buildOptions.filePath = options.filePath;
-    }
-
-    if (options.ignoreFilePath) {
-      buildOptions.ignoreFilePath = options.ignoreFilePath;
-    }
-
-    await buildImage(buildOptions);
-    log.info("Successfully built image", { imageTag });
-
-    if (isPrepareForDeployEnabled) {
-      await podman.tag(imageTag, deployTag);
-      log.info("Successfully tagged image for deployment", { deployTag });
-    }
-
-    if (isCacheContainersEnabled) {
-      if (await host.pathExists(cacheImageFilePath)) {
-        await host.deletePath(cacheImageFilePath);
-        log.info("Deleted previously cached image file", {
-          path: cacheImageFilePath,
-        });
-      }
-
-      if (!(await host.pathExists(cacheImageDirectoryPath))) {
-        await fs.promises.mkdir(cacheImageDirectoryPath, { recursive: true });
-      }
-
-      await podman.save(imageTag, cacheImageFilePath);
-      log.info("Saved cached image file", { path: cacheImageFilePath });
-    }
+    await podman.save(imageTag, cacheImageFilePath);
+    log.info("Saved cached image file", { path: cacheImageFilePath });
   }
 
   await createImageDistributionFile(scriptFilePath, imageTag);

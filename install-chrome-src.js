@@ -12,7 +12,6 @@ const main = async () => {
     scriptFilePath: __filename,
     imageName: "chrome-src",
     buildArguments: [],
-    skipBuildAndPull: false,
     filePath: "./install-chrome-src.containerfile",
     ignoreFilePath: "./.containerignore",
     context: "./",

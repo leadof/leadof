@@ -12,7 +12,6 @@ const main = async () => {
     scriptFilePath: __filename,
     imageName: "playwright-src",
     buildArguments: [],
-    skipBuildAndPull: false,
     filePath: "./install-playwright-src.containerfile",
     ignoreFilePath: "./.containerignore",
     context: "./",

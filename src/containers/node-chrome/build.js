@@ -28,8 +28,6 @@ const main = async () => {
   const imageName = "node-chrome";
   const containerDeployName = env.get("CONTAINER_DEPLOY_NAME");
 
-  const isSkipBuildAndPullEnabled =
-    containerDeployName && containerDeployName !== imageName;
   const isPrepareForDeployEnabled =
     containerDeployName && containerDeployName === imageName;
 
@@ -37,7 +35,7 @@ const main = async () => {
     scriptFilePath: __filename,
     imageName,
     buildArguments,
-    skipBuildAndPull: isSkipBuildAndPullEnabled,
+    isPullEnabled: true,
     isPrepareForDeployEnabled,
   });
 };

@@ -10,7 +10,6 @@ const main = async () => {
     scriptFilePath: __filename,
     imageName: "dependencies",
     buildArguments: [],
-    skipBuildAndPull: false,
     filePath: "./install-dependencies.containerfile",
     ignoreFilePath: "./.containerignore",
     context: "./",
