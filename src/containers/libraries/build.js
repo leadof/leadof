@@ -25,17 +25,11 @@ const main = async () => {
     environmentVariableOptions,
   );
 
-  const imageName = "libraries";
-  const containerDeployName = env.get("CONTAINER_DEPLOY_NAME");
-
-  const isPrepareForDeployEnabled =
-    containerDeployName && containerDeployName === imageName;
-
   await container.build({
     scriptFilePath: __filename,
-    imageName,
+    imageName: "libraries",
     buildArguments,
-    isPrepareForDeployEnabled,
+    isPrepareForDeployEnabled: false,
   });
 };
 
