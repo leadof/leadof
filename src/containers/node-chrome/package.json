@@ -8,8 +8,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "container:build": "wireit",
-    "container:pull": "wireit",
-    "container:pullandbuild": "wireit",
     "container:deploy": "wireit",
     "clean": "wireit"
   },
@@ -17,32 +15,10 @@
     "container:build": {
       "command": "node ./build.js",
       "dependencies": [
-        "../node:container:pullandbuild",
         "../../libraries/node:build"
-      ],
-      "files": [
-        "../../../.nvmrc",
-        "../../../.npm-version",
-        "../../../.pnpm-version",
-        "./src/*",
-        "./build.js",
-        "./makefile",
-        "./package.json"
       ],
       "output": [
         ".task-output/build.js/*"
-      ]
-    },
-    "container:pull": {
-      "command": "node ./pull.js",
-      "output": [
-        ".task-output/pull.js/*"
-      ]
-    },
-    "container:pullandbuild": {
-      "dependencies": [
-        "container:build",
-        "container:pull"
       ]
     },
     "container:deploy": {
