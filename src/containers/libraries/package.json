@@ -11,7 +11,7 @@
   },
   "wireit": {
     "container:build": {
-      "command": "node ./build",
+      "command": "node ./build.js",
       "dependencies": [
         "../../libraries/node:build"
       ],

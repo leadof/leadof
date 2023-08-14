@@ -70,7 +70,7 @@
         "local:prerequisites",
         "local:parse:dependencies",
         "./src/containers/libraries:container:build",
-        "./src/containers/node:container:build",
+        "./src/containers/node:container:pullandbuild",
         "./src/containers/smol:container:build"
       ],
       "files": [
@@ -95,7 +95,7 @@
       "dependencies": [
         "container:dependencies",
         "./src/containers/libraries:container:build",
-        "./src/containers/node:container:build"
+        "./src/containers/node:container:pullandbuild"
       ],
       "files": [
         "./*",
@@ -121,7 +121,7 @@
       "dependencies": [
         "container:dependencies",
         "./src/containers/libraries:container:build",
-        "./src/containers/node-chrome:container:build"
+        "./src/containers/node-chrome:container:pullandbuild"
       ],
       "files": [
         "./*",
@@ -147,7 +147,7 @@
       "dependencies": [
         "container:dependencies",
         "./src/containers/libraries:container:build",
-        "./src/containers/playwright:container:build"
+        "./src/containers/playwright:container:pullandbuild"
       ],
       "files": [
         "./*",
@@ -218,9 +218,9 @@
       "dependencies": [
         "local:prerequisites",
         "./src/containers/libraries:container:build",
-        "./src/containers/node:container:build",
-        "./src/containers/node-chrome:container:build",
-        "./src/containers/playwright:container:build",
+        "./src/containers/node:container:pullandbuild",
+        "./src/containers/node-chrome:container:pullandbuild",
+        "./src/containers/playwright:container:pullandbuild",
         "./src/containers/smol:container:build",
         "./src/apps/leadof-us:container:build"
       ]
