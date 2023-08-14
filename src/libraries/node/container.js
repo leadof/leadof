@@ -64,13 +64,13 @@ const build = async (options) => {
 
   if (isPullEnabled) {
     await podman.pull(deployTag);
-    log.info("Successfully pulled", deployTag);
+    log.info("Successfully pulled", { deployTag });
 
     const localTag = `localhost/${imageTag}`;
     // tag the deployed image as a localhost image
     // this ensures that local image build references work
     await podman.tag(deployTag, localTag);
-    log.info("Successfully tagged remote image with local tag", localTag);
+    log.info("Successfully tagged remote image with local tag", { localTag });
   }
 
   const isCacheContainersEnabled = env.getAsBoolean("CI");

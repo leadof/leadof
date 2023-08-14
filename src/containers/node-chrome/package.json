@@ -15,7 +15,8 @@
     "container:build": {
       "command": "node ./build.js",
       "dependencies": [
-        "../../libraries/node:build"
+        "../../libraries/node:build",
+        "../node:container:build"
       ],
       "output": [
         ".task-output/build.js/*"
