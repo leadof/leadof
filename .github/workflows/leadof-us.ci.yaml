@@ -35,6 +35,8 @@ concurrency:
 
 env:
   CI: true
+  PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
+  PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
 
 jobs:
   integrate:
