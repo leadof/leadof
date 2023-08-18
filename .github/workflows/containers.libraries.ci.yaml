@@ -50,6 +50,7 @@ jobs:
         run: make
 
       - name: upload-task-output
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: task-output
