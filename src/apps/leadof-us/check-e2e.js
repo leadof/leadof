@@ -67,9 +67,13 @@ const main = async () => {
     const containerPath =
       "/usr/src/leadof/src/apps/leadof-us/.task-output/e2e/";
 
-    await podman.copyFiles(containerName, containerPath, outputDirectoryPath, {
-      isOverwriteEnabled: true,
-    });
+    const fullCopyOutputPath = path.join(outputDirectoryPath, "./e2e/");
+
+    if (await host.pathExists(fullCopyOutputPath)) {
+      await host.deletePath(fullCopyOutputPath);
+    }
+
+    await podman.copyFiles(containerName, containerPath, outputDirectoryPath);
     log.info("Successfully copied test output files", {
       containerName,
       containerPath,

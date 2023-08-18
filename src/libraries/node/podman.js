@@ -164,15 +164,12 @@ const deleteContainer = async (nameOrId) => {
   }
 };
 
-const copyFiles = async (
-  containerName,
-  containerPath,
-  hostPath,
-  { isOverwriteEnabled = false } = {},
-) => {
+const copyFiles = async (containerName, containerPath, hostPath) => {
+  // BUG: GitHub Actions Ubuntu server podman version does not support `--overwrite`
+  // fn(... hostPath, { isOverwriteEnabled = false } = {},) {
+  // commandArguments = [..., ...(isOverwriteEnabled ? ["--overwrite"] : []), ]
   const commandArguments = [
     "cp",
-    ...(isOverwriteEnabled ? ["--overwrite"] : []),
     `${containerName}:${containerPath}`,
     hostPath,
   ];
