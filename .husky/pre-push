@@ -3,3 +3,7 @@
 
 pnpm local:check:spelling
 pnpm local:check:formatting
+
+# leave a little room before git messages
+echo ''
+echo ''

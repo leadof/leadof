@@ -2,3 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 pnpm local:check:formatting:changes
+
+# leave a little room before git messages
+echo ''
+echo ''
