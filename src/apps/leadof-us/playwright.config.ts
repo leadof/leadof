@@ -103,6 +103,6 @@ export default defineConfig({
     url: hostUrl,
     reuseExistingServer: !process.env['CI'],
     stdout: 'pipe',
-    timeout: 120 * 1000,
+    timeout: 3 * 60 * 1000,
   },
 });
