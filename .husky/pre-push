@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-. "$(dirname -- "$0")/../check-spelling.sh"
-. "$(dirname -- "$0")/../check-formatting.sh"
+pnpm local:check:spelling
+pnpm local:check:formatting
+
+# leave a little room before git messages
+echo ''
+echo ''

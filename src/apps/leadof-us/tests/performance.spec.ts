@@ -8,15 +8,15 @@ test('performance report', async ({ page, browserName }) => {
   if (browserName === 'chromium') {
     const testResultsDirectoryPath = path.join(
       process.cwd(),
-      './test-results/'
+      './.task-output/',
     );
     const e2eTestResultsDirectoryPath = path.join(
       testResultsDirectoryPath,
-      './e2e/'
+      './e2e/',
     );
     const lighthouseReportFilePath = path.join(
       e2eTestResultsDirectoryPath,
-      './lighthouse.html'
+      './lighthouse.html',
     );
 
     if (!fs.existsSync(testResultsDirectoryPath)) {
@@ -43,7 +43,7 @@ test('performance report', async ({ page, browserName }) => {
 
       const runnerResult = await lighthouse(
         page.url(),
-        lighthouseOptions as any
+        lighthouseOptions as any,
       );
 
       // `.report` is the HTML report as a string
@@ -56,19 +56,19 @@ test('performance report', async ({ page, browserName }) => {
 
       console.info(
         `Lighthouse report written to file`,
-        lighthouseReportFilePath
+        lighthouseReportFilePath,
       );
     } catch (e: any) {
       // write lighthouse report to file
       await fs.promises.writeFile(
         lighthouseReportFilePath,
         `Unexpected error: ${e.message}`,
-        { encoding: 'utf-8' }
+        { encoding: 'utf-8' },
       );
 
       console.error(
         `Lighthouse error report written to file`,
-        lighthouseReportFilePath
+        lighthouseReportFilePath,
       );
 
       expect(false, `Unexpected error: ${e.message}`).toBe(true);

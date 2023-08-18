@@ -35,9 +35,8 @@ concurrency:
 
 env:
   CI: true
-  PROJECT_PATH: ./src/apps/leadof-us/
-  CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
-  CONTAINER_REGISTRY_PASSWORD_FILE_PATH: ./GH_PACKAGES_WRITE_TOKEN
+  PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
+  PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
 
 jobs:
   integrate:
@@ -49,19 +48,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: executable-shell-scripts
-        uses: ./.github/actions/executable-shell-scripts/
+      - name: setup-task-execution
+        uses: ./.github/actions/setup-task-execution/
+        with:
+          container-registry-password: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
 
-      - name: Make
-        # change to the project directory
-        working-directory: ${{ env.PROJECT_PATH }}
-        run: |
-          printf "${{ secrets.GH_PACKAGES_WRITE_TOKEN }}" >> ${CONTAINER_REGISTRY_PASSWORD_FILE_PATH}
-          make
+      - name: make
+        working-directory: ./src/apps/leadof-us/
+        run: make ci
 
-      - name: Upload test results
+      - name: upload-task-output
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: ${{ env.PROJECT_PATH }}test-results/
+          name: task-output
+          path: "**/.task-output/"
           if-no-files-found: error

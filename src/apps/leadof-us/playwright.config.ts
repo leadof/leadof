@@ -23,6 +23,10 @@ export default defineConfig({
   retries: process.env['CI'] ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env['CI'] ? 1 : undefined,
+  outputDir: require('path').join(
+    __dirname,
+    './.task-output/e2e/playwright-results/',
+  ),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     [
@@ -30,7 +34,7 @@ export default defineConfig({
       {
         outputFolder: require('path').join(
           __dirname,
-          './test-results/e2e/playwright/'
+          './.task-output/e2e/playwright-reports/',
         ),
       },
     ],
@@ -99,6 +103,6 @@ export default defineConfig({
     url: hostUrl,
     reuseExistingServer: !process.env['CI'],
     stdout: 'pipe',
-    timeout: 120 * 1000,
+    timeout: 3 * 60 * 1000,
   },
 });

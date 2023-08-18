@@ -1,0 +1,65 @@
+name: "setup-task-execution"
+description: "Sets up Wireit with specific versions of NodeJS, npm, and pnpm"
+inputs:
+  node-version:
+    description: "Version of NodeJS"
+    required: false
+    default: "18.17.1"
+  npm-version:
+    description: "Version of npm"
+    required: false
+    default: "9.8.1"
+  pnpm-version:
+    description: "Version of pnpm"
+    required: false
+    default: "8.6.12"
+  container-registry-password:
+    description: "The password for the container registry"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: install-node ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: install-pnpm ${{ inputs.pnpm-version }}
+      id: install-pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: ${{ inputs.pnpm-version }}
+        run_install: false
+
+    - name: cache-pnpm-get-store-path
+      id: cache-pnpm-get-store-path
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - name: cache-
+      id: cache-pnpm
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.cache-pnpm-get-store-path.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: cache-wireit
+      id: cache-wireit
+      uses: google/wireit@setup-github-actions-caching/v1
+
+    - name: cache-containers
+      id: cache-containers
+      uses: actions/cache@v3
+      with:
+        path: "**/.containers"
+        key: ${{ runner.os }}-containers
+
+    - name: prerequisites
+      env:
+        CONTAINER_REGISTRY_USERNAME: ${{ github.actor }}
+        CONTAINER_REGISTRY_PASSWORD: ${{ inputs.container-registry-password }}
+      shell: bash
+      run: make prerequisites

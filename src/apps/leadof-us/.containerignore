@@ -1,11 +1,13 @@
-.angular
-.wireit
-dist
-node_modules
-test-results
+**/.containers
+**/.angular
+**/.wireit
+**/dist
+**/node_modules
+**/test-results
 
-*.sh
+**/*.containerfile
+**/*.sh
 
-.env
-containerfile
-makefile
+**/.env
+**/containerfile
+**/makefile

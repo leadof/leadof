@@ -1,8 +1,14 @@
+.containers
+.task-output
 .wireit
 
 dist
 node_modules
+test-results
 
 .env
 
 *.log
+
+tmp-*
+tmp.*

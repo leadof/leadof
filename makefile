@@ -1,52 +1,49 @@
 .DEFAULT_GOAL:=all
 
-all: prerequisites check install
-
-# Continuous integration
-.PHONY: ci
-ci: prerequisites check-formatting check-spelling
+.PHONY: all
+all:
+	@pnpm container:all
 
 # Prerequisites
 .PHONY: prerequisites
 prerequisites:
-	@./prerequisites.sh
+	@chmod +x ./prerequisites.sh \
+	&& ./prerequisites.sh
 
 .PHONY: pre
 pre: prerequisites
 
+.PHONY: install-dependencies
+install-dependencies:
+	@pnpm container:dependencies
+
+.PHONY: install-src
+install-src:
+	@pnpm container:src
+
 .PHONY: install-containers
 install-containers:
-ifdef CI
-	@podman pull ghcr.io/leadof/leadof/libraries:latest
-	@podman pull ghcr.io/leadof/leadof/node:latest
-	@podman pull ghcr.io/leadof/leadof/node-chrome:latest
-	@podman pull ghcr.io/leadof/leadof/playwright:latest
-else
-	@pnpm --recursive --filter "@leadof-containers/*" build
-endif
+	@pnpm build:containers
 
 .PHONY: format
 format:
-	@pnpm format
+	@pnpm local:format
 
 .PHONY: check-formatting
 check-formatting:
-	@./check-formatting.sh
+	@pnpm container:check:formatting
 
 .PHONY: check-spelling
 check-spelling:
-	@./check-spelling.sh
+	@pnpm container:check:spelling
 
-.PHONY:spellcheck
-spellcheck: check-spelling
-
-.PHONY:check-quick
-check-quick: check-formatting check-spelling
+.PHONY: check-quick
+check-quick:
+	@pnpm container:check:repository
 
 .PHONY: check
-check: check-quick install-libraries
-	@cd ./src/apps/leadof-us/ \
-	&& "$(MAKE)" check
+check: check-quick install-containers
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" $@
 
 .PHONY: install
 install:
@@ -72,18 +69,37 @@ ifndef name
 endif
 	@cp "./src/docs/decisions/adr-template.md" "./src/docs/decisions/$(n)-$(name).md"
 
-.PHONY: create-leadof-us
-create-leadof-us:
-	@echo 'N' | pnpm ionic start leadof-us blank \
-		--type=angular-standalone \
-		--no-deps \
-		--no-git \
-		--capacitor
-	@mv ./leadof-us/ ./src/apps/leadof-us/
-	@cd ./src/apps/leadof-us/ \
-	&& rm -f ./package-lock.json \
-	&& pnpm install \
-	&& pnpm add -D @ionic/cli
+# ARCHIVE 2023-07-22: kept for posterity
+# .PHONY: create-leadof-us
+# create-leadof-us:
+# 	@echo 'N' | pnpm dlx @ionic/cli@7.1.1 start leadof-us blank \
+# 		--type=angular-standalone \
+# 		--no-deps \
+# 		--no-git \
+# 		--capacitor
+# 	@mv ./leadof-us/ ./src/apps/leadof-us/
+# 	@cd ./src/apps/leadof-us/ \
+# 	&& rm --force ./package-lock.json \
+# 	&& pnpm install \
+# 	&& pnpm add -D @ionic/cli
+
+.PHONY: update
+update:
+	@pnpm update \
+		--color \
+		--interactive \
+		--recursive
+
+.PHONY: upgrade
+upgrade: update
+
+.PHONY: update-latest
+update-latest:
+	@pnpm update \
+		--color \
+		--interactive \
+		--recursive \
+		--latest
 
 .PHONY: pr
 pr:
@@ -120,7 +136,29 @@ ifndef title
 endif
 	@gh pr create --fill --assignee "@me" --label documentation --title "docs: $(title)"
 
+.PHONY: clean
+clean:
+	@rm --recursive --force \
+		./.wireit/*/cache \
+		./.task-output/
+
 .PHONY: reset
-reset:
-	@pnpm dlx npkill
+reset: clean
+	@rm --recursive --force ./.containers/ ./.wireit/ ./node_modules/
+	@podman rmi --force localhost/leadof/chrome-src || true
+	@podman rmi --force localhost/leadof/src || true
+	@podman rmi --force localhost/leadof/dependencies || true
+
+.PHONY: clean-all
+clean-all: clean
 	@cd ./src/apps/leadof-us/ && "$(MAKE)" clean
+	@cd ./src/containers/ && "$(MAKE)" clean
+	@cd ./src/libraries/node/ && "$(MAKE)" clean
+
+.PHONY: reset-all
+reset-all: clean-all reset
+	@cd ./src/apps/leadof-us/ && "$(MAKE)" reset
+	@cd ./src/containers/ && "$(MAKE)" reset
+	@cd ./src/libraries/node/ && "$(MAKE)" reset
+	@podman system prune --force
+	@podman volume prune --force

@@ -10,7 +10,16 @@ import bootstrap from './src/main.server';
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/app/browser');
+  const buildOutputRelativeDirectoryPath = process.env['APP_PATH']
+    ? process.env['APP_PATH']
+    : './.task-output/build/';
+
+  const distFolder = join(
+    process.cwd(),
+    buildOutputRelativeDirectoryPath,
+    './app/browser',
+  );
+
   const indexHtml = existsSync(join(distFolder, 'index.original.html'))
     ? 'index.original.html'
     : 'index';
@@ -20,7 +29,7 @@ export function app(): express.Express {
     'html',
     ngExpressEngine({
       bootstrap,
-    })
+    }),
   );
 
   server.set('view engine', 'html');
@@ -33,7 +42,7 @@ export function app(): express.Express {
     '*.*',
     express.static(distFolder, {
       maxAge: '1y',
-    })
+    }),
   );
 
   // All regular routes use the Universal engine
@@ -52,8 +61,18 @@ function run(): void {
 
   // Start up the Node server
   const server = app();
-  server.listen(port, () => {
+
+  // TODO: server health checks
+  // https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
+  const activeServer = server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+
+  process.on('SIGTERM', () => {
+    console.debug('SIGTERM signal received: closing HTTP server');
+    activeServer.close(() => {
+      console.debug('HTTP server closed');
+    });
   });
 }
 

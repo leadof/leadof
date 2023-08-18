@@ -1,0 +1,24 @@
+{
+  "name": "@leadof-libraries/node",
+  "version": "1.0.0",
+  "description": "Node library for LeadOf projects",
+  "author": "Eric Swanson",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "wireit"
+  },
+  "wireit": {
+    "build": {
+      "files": [
+        "*.js",
+        "package.json"
+      ]
+    }
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.0",
+    "winston": "^3.10.0",
+    "wireit": "^0.10.0"
+  }
+}

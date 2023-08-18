@@ -1,0 +1,12 @@
+**/.containers
+**/.wireit
+**/dist
+**/node_modules
+
+**/.env
+**/containerfile
+**/makefile
+**/package.json
+
+deploy.sh
+install.sh

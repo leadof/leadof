@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Makes repository scripts executable.
+
+# fail if anything errors
+set -e
+# fail if a function call is missing an argument
+set -u
+
+#######################################
+# Script entry point.
+# Arguments:
+#   None
+#######################################
+main() {
+  echo 'Granting execute permissions to all scripts in the repository...'
+
+  find . -type f -path '*.sh' -not -path './node_modules/*' -exec chmod +x {} \;
+  find . -type f -path '*.sh' -not -path './node_modules/*' -exec echo "Granted execute to:" {} \;
+
+  echo 'Successfully granted execute permissions to all scripts in the repository.'
+}
+
+main

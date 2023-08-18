@@ -1,0 +1,31 @@
+{
+  "name": "@leadof-containers/smol",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "container:build": "wireit",
+    "clean": "wireit"
+  },
+  "wireit": {
+    "container:build": {
+      "command": "node ./build.js",
+      "dependencies": [
+        "../../libraries/node:build"
+      ],
+      "output": [
+        ".task-output/build.js/*"
+      ]
+    },
+    "clean": {
+      "command": "make clean"
+    }
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "wireit": "^0.10.0"
+  }
+}

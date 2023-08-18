@@ -2,13 +2,16 @@
 #
 # Initializes the project for development.
 
+# fail if anything errors
 set -e
+# fail if a function call is missing an argument
+set -u
 
 # import command functions
-. ./src/containers/libraries/shell/_command.sh
+. ./src/containers/libraries/src/shell/_command.sh
 
 # import node functions
-. ./src/containers/libraries/shell/_node.sh
+. ./src/containers/libraries/src/shell/_node.sh
 
 #######################################
 # Initializes node version manager (nvm).

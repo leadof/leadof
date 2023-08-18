@@ -1,20 +1,30 @@
 $schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
 version: "0.2"
 ignorePaths:
-  - node_modules/**
-  - src/apps/leadof-us/.angular/**
-  - src/apps/leadof-us/dist/**
-  - src/apps/leadof-us/node_modules/**
-  - src/apps/leadof-us/performance-report*
-  - src/apps/leadof-us/test-results/**
-  - src/apps/leadof-us/www/**
+  - "**/.angular/"
+  - "**/.containers/"
+  - "**/.wireit/"
+  - "**/dist/"
+  - "**/node_modules/"
+  - "**/test-results/"
+  - "src/apps/leadof-us/performance-report*"
+  - "src/apps/leadof-us/www/"
+  - "src/tmp/"
   - "*.ai"
   - "*.drawio"
+  - "*.groovy"
   - "*.json"
+  - "*.properties"
   - "*.svg"
   - "*.yaml"
-  - makefile
-  - pnpm-lock.yaml
+  - ".containerignore"
+  - ".gitignore"
+  - ".prettierignore"
+  - "makefile"
+  - "mvnw"
+  - "mvnw.cmd"
+  - "pom.xml"
+  - "pnpm-lock.yaml"
 languageSettings:
   - languageId:
       - markdown
@@ -27,6 +37,7 @@ ignoreWords:
   - containerignore
   - czvf
   - dotenv
+  - Dgroovy
   - Durandal
   - ignorefile
   - MADR
@@ -45,10 +56,13 @@ ignoreWords:
   - opencontainers
   - pnpmrc
   - shellguide
+  - sonatype
   - subdir
   - textbox
   - unamestr
+  - uuidv4
   - viewports
+  - wireit
   - WORKDIR
 words:
   - smol

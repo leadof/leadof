@@ -4,16 +4,22 @@ all: install
 
 .PHONY: install
 install:
-	@./install.sh
+	@pnpm container:build
 
 .PHONY: deploy
-deploy: install
-	@./deploy.sh
+deploy:
+	@pnpm container:deploy
 
 .PHONY: clean
 clean:
-	@rm -rf ./dist/ ./.wireit/*/cache ./node_modules/
+	@rm --recursive --force \
+		./.wireit/*/cache \
+		./.task-output/
 
 .PHONY: reset
 reset: clean
-	@rm -rf ./.wireit/
+	@rm --recursive --force \
+		./.wireit/ \
+		./node_modules/
+	@podman rmi --force localhost/leadof/node-chrome || true
+	@podman rmi --force ghcr.io/leadof/leadof/node-chrome || true

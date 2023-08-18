@@ -6,46 +6,68 @@
   "author": "Eric Swanson",
   "homepage": "https://leadof.us/",
   "scripts": {
-    "start::comment": "Normal start for front-end Angular application without SSR",
-    "start": "ng serve --port 4200",
-    "build::comment": "Normal build for front-end Angular application without SSR",
-    "build": "ng build --progress false --configuration production",
-    "watch::comment": "Watched build for front-end Angular application without SSR",
-    "watch": "ng build --watch --configuration development",
-    "lint::comment": "Linting",
-    "lint": "ng lint",
-    "test::comment": "Unit tests",
-    "test": "ng test --code-coverage true --progress false --watch false",
-    "e2e::comment": "End-to-end tests",
-    "e2e": "playwright test",
-    "e2e:debug::comment": "Debugging end-to-end tests with a headed browser",
-    "e2e:debug": "playwright test --project chromium --headed",
-    "dev:ssr::comment": "Development server for SSR",
-    "dev:ssr": "ng run app:serve-ssr",
-    "build:ssr::comment": "Build both the front-end and SSR versions of this application",
-    "build:ssr": "ng build --progress false --configuration production && ng run app:server:production",
-    "serve:ssr::comment": "Run the SSR application",
-    "serve:ssr": "node dist/app/server/main.js",
-    "prerender::comment": "Executes the SSR-prerendering process.",
-    "prerender": "ng run app:prerender:production",
+    "local:start::comment": "Normal start for front-end Angular application without SSR",
+    "local:start": "ng serve --port 4200",
+    "local:watch::comment": "Watched build for front-end Angular application without SSR",
+    "local:watch": "ng build --watch --configuration development",
+    "local:check:formatting:comment": "Formatting checks",
+    "local:check:formatting": "ng lint",
+    "local:check:testing::comment": "Unit tests",
+    "local:check:testing": "ng test --code-coverage true --progress false --watch false",
+    "local:install:e2e::comment": "Install Playwright dependencies",
+    "local:install:e2e": "wireit",
+    "local:check:e2e::comment": "End-to-end tests",
+    "local:check:e2e": "wireit",
+    "local:check:e2e:debug::comment": "Debugging end-to-end tests with a headed browser",
+    "local:check:e2e:debug": "playwright test --project chromium --headed",
+    "local:build::comment": "Build both the front-end and SSR versions of this application",
+    "local:build": "ng build --progress false --configuration production && ng run app:server:production",
+    "local:dev:ssr::comment": "Development server for SSR",
+    "local:dev:ssr": "ng run app:serve-ssr",
+    "local:build:ssr::comment": "Build both the front-end and SSR versions of this application",
+    "local:build:ssr": "ng build --progress false --configuration production && ng run app:server:production",
+    "local:serve:ssr::comment": "Run the SSR application",
+    "local:serve:ssr": "node ./.task-ouput/build/app/server/main.js",
+    "local:prerender::comment": "Executes the SSR-prerendering process.",
+    "local:prerender": "ng run app:prerender:production",
     "container:dependencies::comment": "Containerized build of system dependencies only",
     "container:dependencies": "wireit",
-    "container:lint::comment": "Containerized linting",
-    "container:lint": "wireit",
-    "container:test::comment": "Containerized unit testing",
-    "container:test": "wireit",
-    "container:e2e::comment": "Containerized end-to-end testing",
-    "container:e2e": "wireit",
+    "container:src::comment": "Containerized source code",
+    "container:src": "wireit",
+    "container:check:formatting::comment": "Containerized linting",
+    "container:check:formatting": "wireit",
+    "container:check:testing::comment": "Containerized unit testing",
+    "container:check:testing": "wireit",
+    "container:check:e2e::comment": "Containerized end-to-end testing",
+    "container:check:e2e": "wireit",
+    "container:check::comment": "All containerized checks and testing",
+    "container:check": "wireit",
+    "check::comment": "Containerized build; creates a production-ready SSR container.",
+    "check": "wireit",
     "container:build::comment": "Containerized build; creates a production-ready SSR container.",
     "container:build": "wireit",
+    "build::comment": "Containerized build; creates a production-ready SSR container.",
+    "build": "wireit",
+    "container:all::comment": "All containerized tasks",
+    "container:all": "wireit",
     "container:start::comment": "Starts a production-ready SSR server locally",
     "container:start": "wireit",
     "container:stop::comment": "Stops the production-ready SSR server locally",
     "container:stop": "wireit",
     "container:restart::comment": "Restarts the production-ready SSR server locally",
-    "container:restart": "wireit"
+    "container:restart": "wireit",
+    "clean": "wireit"
   },
   "wireit": {
+    "local:install:e2e": {
+      "command": "pnpm playwright install"
+    },
+    "local:check:e2e": {
+      "command": "pnpm playwright test",
+      "dependencies": [
+        "local:install:e2e"
+      ]
+    },
     "container:dependencies": {
       "command": "make install-dependencies",
       "files": [
@@ -54,13 +76,10 @@
         "./install-dependencies.sh",
         "./makefile",
         "./package.json"
-      ],
-      "output": [
-        "dist/dependencies_container-digest.txt"
       ]
     },
-    "container:lint": {
-      "command": "make check-lint",
+    "container:src": {
+      "command": "make src",
       "dependencies": [
         "container:dependencies"
       ],
@@ -71,83 +90,112 @@
         "!dist",
         "!node_modules",
         "!test-results"
-      ],
-      "output": [
-        "test-results/lint/container-digest.txt"
       ]
     },
-    "container:test": {
-      "command": "make check-test",
+    "container:check:formatting": {
+      "command": "node ./check-formatting.js",
       "dependencies": [
-        "container:dependencies"
+        "../../../:container:src"
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.task-output",
+        "!**/.wireit",
+        "!**/node_modules"
       ],
       "output": [
-        "test-results/unit_test/container-digest.txt"
+        ".task-output/check-formatting.js/*"
       ]
     },
-    "container:e2e": {
-      "command": "make check-e2e",
+    "container:check:testing": {
+      "command": "node ./check-testing.js",
       "dependencies": [
-        "container:dependencies"
+        "../../../:container:chrome:src"
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.task-output",
+        "!**/.wireit",
+        "!**/node_modules"
       ],
       "output": [
-        "test-results/e2e/container-digest.txt"
+        ".task-output/check-testing.js/*"
+      ]
+    },
+    "container:check:e2e": {
+      "command": "node ./check-e2e.js",
+      "dependencies": [
+        "../../../:container:playwright:src"
+      ],
+      "files": [
+        "./*",
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.task-output",
+        "!**/.wireit",
+        "!**/node_modules"
+      ],
+      "output": [
+        ".task-output/check-e2e.js/*"
+      ]
+    },
+    "container:check": {
+      "dependencies": [
+        "container:check:formatting",
+        "container:check:testing",
+        "container:check:e2e"
       ]
     },
     "container:build": {
-      "command": "make install",
+      "command": "node ./build.js",
       "dependencies": [
-        "container:dependencies"
+        "../../../:container:src"
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.task-output",
+        "!**/.wireit",
+        "!**/node_modules",
+        "!start.js",
+        "!stop.js"
       ],
       "output": [
-        "dist/app_container-digest.txt"
+        ".task-output/build.js/*"
+      ]
+    },
+    "container:all": {
+      "dependencies": [
+        "container:check",
+        "container:build"
       ]
     },
     "container:start": {
-      "command": "make start",
+      "command": "node ./start.js",
       "dependencies": [
         "container:build"
       ],
       "files": [
         "./*",
-        "!.angular",
-        "!.wireit",
-        "!dist",
-        "!node_modules",
-        "!test-results"
+        "!**/.angular",
+        "!**/.containers",
+        "!**/.task-output",
+        "!**/.wireit",
+        "!**/node_modules"
       ],
       "output": [
-        "dist/leadof-us-dev_container-digest.txt"
+        ".task-output/start.js/*"
       ]
     },
     "container:stop": {
-      "command": "make stop",
-      "files": [
-        "dist/leadof-us-dev_container-digest.txt"
+      "command": "node ./stop.js",
+      "output": [
+        ".task-output/stop.js/*"
       ]
     },
     "container:restart": {
@@ -158,68 +206,68 @@
     }
   },
   "dependencies": {
-    "@angular/animations": "^16.0.4",
-    "@angular/common": "^16.0.4",
-    "@angular/core": "^16.0.4",
-    "@angular/forms": "^16.0.4",
-    "@angular/platform-browser": "^16.0.4",
-    "@angular/platform-browser-dynamic": "^16.0.4",
-    "@angular/platform-server": "^16.0.4",
-    "@angular/router": "^16.0.4",
-    "@angular/service-worker": "^16.0.4",
-    "@capacitor/app": "5.0.2",
-    "@capacitor/core": "5.0.4",
-    "@capacitor/haptics": "5.0.2",
-    "@capacitor/keyboard": "5.0.2",
-    "@capacitor/status-bar": "5.0.2",
-    "@ionic/angular": "^7.0.10",
-    "@ionic/angular-server": "^7.0.10",
-    "@nguniversal/express-engine": "^16.0.2",
+    "@angular/animations": "^16.1.6",
+    "@angular/common": "^16.1.6",
+    "@angular/core": "^16.1.6",
+    "@angular/forms": "^16.1.6",
+    "@angular/platform-browser": "^16.1.6",
+    "@angular/platform-browser-dynamic": "^16.1.6",
+    "@angular/platform-server": "^16.1.6",
+    "@angular/router": "^16.1.6",
+    "@angular/service-worker": "^16.1.6",
+    "@capacitor/app": "5.0.6",
+    "@capacitor/core": "5.2.2",
+    "@capacitor/haptics": "5.0.6",
+    "@capacitor/keyboard": "5.0.6",
+    "@capacitor/status-bar": "5.0.6",
+    "@ionic/angular": "^7.2.0",
+    "@ionic/angular-server": "^7.2.0",
+    "@nguniversal/express-engine": "^16.1.1",
     "express": "^4.15.2",
     "ionicons": "^7.1.2",
     "rxjs": "~7.8.1",
-    "tslib": "^2.5.3",
-    "zone.js": "~0.13.0"
+    "tslib": "^2.6.0",
+    "zone.js": "~0.13.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.0.4",
-    "@angular-eslint/builder": "^16.0.3",
-    "@angular-eslint/eslint-plugin": "^16.0.3",
-    "@angular-eslint/eslint-plugin-template": "^16.0.3",
-    "@angular-eslint/schematics": "^16.0.3",
-    "@angular-eslint/template-parser": "^16.0.3",
-    "@angular/cli": "^16.0.4",
-    "@angular/compiler": "^16.0.4",
-    "@angular/compiler-cli": "^16.0.4",
-    "@angular/language-service": "^16.0.4",
-    "@capacitor/cli": "5.0.4",
-    "@ionic/angular-toolkit": "^9.0.0",
+    "@angular-devkit/build-angular": "^16.1.5",
+    "@angular-eslint/builder": "^16.1.0",
+    "@angular-eslint/eslint-plugin": "^16.1.0",
+    "@angular-eslint/eslint-plugin-template": "^16.1.0",
+    "@angular-eslint/schematics": "^16.1.0",
+    "@angular-eslint/template-parser": "^16.1.0",
+    "@angular/cli": "^16.1.5",
+    "@angular/compiler": "^16.1.6",
+    "@angular/compiler-cli": "^16.1.6",
+    "@angular/language-service": "^16.1.6",
+    "@capacitor/cli": "5.2.2",
+    "@ionic/angular-toolkit": "^10.0.0",
     "@ionic/cli": "^7.1.1",
-    "@nguniversal/builders": "^16.0.2",
-    "@playwright/test": "^1.35.1",
+    "@nguniversal/builders": "^16.1.1",
+    "@playwright/test": "^1.36.1",
     "@types/express": "^4.17.0",
-    "@types/jasmine": "~4.3.2",
-    "@types/node": "^20.2.5",
-    "@typescript-eslint/eslint-plugin": "5.59.8",
-    "@typescript-eslint/parser": "5.59.8",
-    "chrome-launcher": "^0.15.2",
-    "eslint": "^8.41.0",
+    "@types/jasmine": "~4.3.5",
+    "@types/node": "^20.4.4",
+    "@typescript-eslint/eslint-plugin": "6.1.0",
+    "@typescript-eslint/parser": "6.1.0",
+    "chrome-launcher": "^1.0.0",
+    "eslint": "^8.45.0",
     "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-jsdoc": "46.2.0",
+    "eslint-plugin-jsdoc": "46.4.4",
     "eslint-plugin-prefer-arrow": "1.2.3",
-    "get-port": "^6.1.2",
-    "jasmine-core": "~5.0.0",
+    "get-port": "^7.0.0",
+    "jasmine-core": "~5.0.1",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
+    "karma-coverage": "~2.2.1",
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.0.0",
-    "lighthouse": "10.2.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "lighthouse": "10.4.0",
     "ts-node": "^10.9.1",
-    "typescript": "~5.0.4",
+    "typescript": "~5.1.6",
     "wait-on": "^7.0.1",
-    "wireit": "^0.9.5"
+    "wireit": "^0.10.0"
   }
 }

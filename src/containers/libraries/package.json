@@ -6,20 +6,17 @@
   "author": "",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "wireit",
+    "container:build": "wireit",
     "clean": "wireit"
   },
   "wireit": {
-    "build": {
-      "command": "make",
-      "files": [
-        "./shell/*",
-        "*.sh",
-        "./containerfile",
-        "./makefile"
+    "container:build": {
+      "command": "node ./build.js",
+      "dependencies": [
+        "../../libraries/node:build"
       ],
       "output": [
-        "dist/*"
+        ".task-output/build.js/*"
       ]
     },
     "clean": {
@@ -27,6 +24,7 @@
     }
   },
   "devDependencies": {
-    "wireit": "^0.9.5"
+    "dotenv": "^16.3.1",
+    "wireit": "^0.10.0"
   }
 }

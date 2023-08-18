@@ -4,16 +4,19 @@ all: install
 
 .PHONY: install
 install:
-	@./install.sh
-
-.PHONY: deploy
-deploy: install
-	@./deploy.sh
+	@pnpm container:build
 
 .PHONY: clean
 clean:
-	@rm -rf ./dist/ ./.wireit/*/cache ./node_modules/
+	@rm --recursive --force \
+		./.wireit/*/cache \
+		./.task-output/
 
 .PHONY: reset
 reset: clean
-	@rm -rf ./.wireit/
+	@rm --recursive --force \
+		./.containers/ \
+		./.wireit/ \
+		./node_modules/
+	@podman rmi --force localhost/leadof/libraries || true
+	@podman rmi --force ghcr.io/leadof/leadof/libraries || true

@@ -22,10 +22,8 @@ concurrency:
 
 env:
   CI: true
-  # Should match ".nvmrc" file.
-  NODE_VERSION: 18.16.1
-  # Should match ".pnpm-version" file.
-  PNPM_VERSION: 8.6.5
+  PUBLISHED_SOURCE_URL: https://github.com/leadof/leadof
+  PUBLISHED_DOCUMENTATION_URL: https://github.com/leadof/leadof#readme
 
 jobs:
   integrate:
@@ -37,37 +35,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Setup the environment with a specific version of NodeJS.
-      - name: Install node ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
+      - name: setup-task-execution
+        uses: ./.github/actions/setup-task-execution/
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          container-registry-password: ${{ secrets.GH_PACKAGES_WRITE_TOKEN }}
 
-      # Setup the environment with a specific version of `pnpm`.
-      - name: Install pnpm ${{ env.PNPM_VERSION }}
-        uses: pnpm/action-setup@v2
-        id: pnpm-install
+      - name: check-repository
+        run: pnpm container:check:repository
+
+      - name: upload-task-output
+        uses: actions/upload-artifact@v3
         with:
-          version: ${{ env.PNPM_VERSION }}
-          run_install: false
-
-      # Determine where `pnpm` will store files in order to cache them.
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      # Setup the `pnpm` cache.
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Make
-        run: |
-          chmod +x ./prerequisites.sh
-          make ci
+          name: task-output
+          path: "**/.task-output/"
+          if-no-files-found: error
